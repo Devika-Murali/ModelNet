@@ -23,7 +23,9 @@ def Home(request):
 def About(request):
     return render(request,'About.html')  
 def basepatient(request):
-    return render(request,'basepatient.html')  
+    return render(request,'basepatient.html')
+def bookscreening(request):
+    return render(request,'bookscreening.html')
 def doctors_basedoctor(request):
 
     existing_certification = Certification.objects.filter(user=request.user).first()
@@ -81,9 +83,17 @@ def admins_index(request):
 def admins_registereduser(request):
     return render(request, 'admins/registereduser.html')
 def admins_patientlist(request):
-    return render(request, 'admins/patientlist.html')
-def patient_bookappointment(request):
-    return render(request, 'patient/bookappointment.html')
+    # Retrieve the list of patients (users) from the database
+    patients = User.objects.filter(is_superuser=False, is_staff=False)
+
+    # Pass the list of patients to the template
+    return render(request, 'admins/patientlist.html', {'users': patients})
+# def patient_bookappointment(request):
+#     return render(request, 'patient/bookappointment.html')
+def admins_appointmentlist(request):
+    return render(request, 'admins/appointmentlist.html')
+
+
 def patient_medicalhistory(request):
     current_user = request.user
     patient_info = PatientInfo.objects.get(user=current_user)
@@ -668,7 +678,7 @@ def add_time_slot(request):
         # Handle the case where there is no Docprofile associated with the user
         messages.error(request, 'No Docprofile associated with your account. Please create one.')
 
-    return render(request, 'doctors/timeslot.html')
+    return redirect('view_timeslots')
 
 
 
@@ -789,4 +799,40 @@ def activate_user(request, user_id):
     return redirect('admins_registereduser') 
      
 
- 
+#  patient/ bookapponment
+from django.shortcuts import render
+from .models import Docprofile, Timeslot
+
+def patient_bookappointment(request):
+    # Retrieve a list of doctors from the Docprofile model
+    doctors = Docprofile.objects.all()
+
+    # Retrieve a list of available dates from the Timeslot model
+    date_options = Timeslot.objects.values_list('date', flat=True).distinct()
+
+    # Retrieve a list of available time slots
+    time_options = Timeslot.objects.all()
+
+    context = {
+        'doctors': doctors,
+        'date_options': date_options,
+        'time_options': time_options,
+    }
+
+    return render(request, 'patient/bookappointment.html', context)
+import logging
+
+logger = logging.getLogger(__name__)
+def count_view(request):
+    # Count the number of doctors and patients
+    doctors_count = Docprofile.objects.count()
+    patients_count = UserProfile.objects.count()
+    # Log the counts for debugging
+    logger.debug(f"Doctors Count: {doctors_count}")
+    logger.debug(f"Patients Count: {patients_count}")
+    # Pass the counts as context variables to the template
+    context = {
+        'doctors_count': doctors_count,
+        'patients_count': patients_count,
+    }
+    return render(request, 'admins_index.html', context)

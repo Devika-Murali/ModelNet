@@ -188,8 +188,8 @@
 							<li> 
 								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user"></i> <span>Registered Users</span></a>
 							</li>
-							<li> 
-								<a href="appointment-list.html"><i class="fe fe-layout"></i> <span>Appointments</span></a>
+							<li class="active"> 
+								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
 							</li>
 							<li> 
 								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
@@ -197,7 +197,7 @@
 							<li> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
-							<li class="active"> 
+							<li> 
 								<a href="{% url 'admins_patientlist' %}"><i class="fe fe-users"></i> <span>Patients</span></a>
 							</li>
 							
@@ -205,75 +205,67 @@
                 </div>
             </div>
 			<!-- /Sidebar -->
-            <div class="page-wrapper">
-				<div class="content container-fluid">
-					<!-- Page Header -->
-					<div class="page-header">
-						<div class="row">
-							<div class="col-sm-12">
-								<h3 class="page-title">PATIENTS LISTS</h3>
-								<ul class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-									<li class="breadcrumb-item active">Patients List</li>
-								</ul>
-							</div>
-						</div>
+
+
+
+		
+			<div class="page-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h3 class="page-title">Appointments</h3>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+							<li class="breadcrumb-item active">Appointments</li>
+						</ul>
 					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="card">
-								<div class="card-body">
-									<div class="table-responsive">
-										
-                                        <table class="datatable table table-hover table-center mb-0">
-											<thead>
-											<tr>
-												<th>Name</th>
-												<th>Email</th>
-												<th>Emergency Contact Number</th>
-												<th>Appointment Information</th>
-											</tr>
-											</thead>
-											<tbody>
-												{% for user in users %}
-													{% if not user.is_superuser and not user.is_staff %}
-														<tr>
-															<td>{{ user.userprofile.name }}</td>
-															<td>{{ user.email }}</td>
-															<td>{{ user.userprofile.phone_number }}</td>
-															<td></td>
-														</tr>
-													{% endif %}
-												{% endfor %}
-											</tbody>
-											
-										</table>
-									</div>
-								</div>
+				</div>
+			</div>
+			<!-- /Page Header -->
+			<div class="row">
+				<div class="col-md-12">
+			
+					<!-- Recent Orders -->
+					<div class="card">
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="datatable table table-hover table-center mb-0">
+									<thead>
+										<tr>
+											<th>Doctor Name</th>
+											<th>Speciality</th>
+											<th>Patient Name</th>
+											<th>Appointment Time</th>
+								
+											<th class="text-right">Amount</th>
+										</tr>
+									</thead>
+									<!-- Table content here -->
+								</table>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-										<!-- jQuery -->
-		<script src="{% static 'assets/js/jquery.min.js'%}" ></script>
-
-        <script src="{% static 'admin/assets/js/jquery-3.2.1.min.js'%}"></script>
+			
+		
+		<!-- jQuery -->
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
 		
 		<!-- Bootstrap Core JS -->
-        <script src="{% static 'admin/assets/js/popper.min.js'%}"></script>
-        <script src="{% static 'admin/assets/js/bootstrap.min.js'%}"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
 		
 		<!-- Slimscroll JS -->
-        <script src="{% static 'admin/assets/plugins/slimscroll/jquery.slimscroll.min.js'%}"></script>
+        <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 		
-		<!-- Datatables JS -->
-		<script src="{% static 'admin/assets/plugins/datatables/jquery.dataTables.min.js'%}"></script>
-		<script src="{% static 'admin/assets/plugins/datatables/datatables.min.js'%}"></script>
+		<script src="assets/plugins/raphael/raphael.min.js"></script>    
+		<script src="assets/plugins/morris/morris.min.js"></script>  
+		<script src="assets/js/chart.morris.js"></script>
 		
 		<!-- Custom JS -->
-		<script  src="{% static 'admin/assets/js/script.js'%}"></script>
+		<script  src="assets/js/script.js"></script>
 		
     </body>
 
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:34 GMT -->
 </html>

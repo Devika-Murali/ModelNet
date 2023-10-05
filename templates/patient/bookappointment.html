@@ -181,40 +181,42 @@ select:focus {
                 <label for="email">Email Address:</label>
                 <input type="email" id="email" name="email" class="form-control" required>
             </div>
+            
+        
+            <!-- Date Dropdown -->
+           
+        
+            <!-- Time Dropdown -->
             <div class="form-group">
                 <label for="doctor">Select a Doctor:</label>
                 <select id="doctor" name="doctor" class="form-control" required>
                     <option value="" disabled selected>Select a doctor</option>
                     {% for doctor in doctors %}
-                    <option value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}</option>
-                {% endfor %}
-                    {% comment %} {% for doctor in doctors %}
-                        <option value="{{ doctor.id }}">{{ doctor.name }}</option>
-                    {% endfor %} {% endcomment %}
-                </select>
+                        <option value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}</option>
+                    {% endfor %}
+                </select> 
             </div>
-        
-            <!-- Date Dropdown -->
+            
             <div class="form-group">
                 <label for="appointmentDate">Preferred Date of Appointment:</label>
                 <select id="appointmentDate" name="appointmentDate" class="form-control" required>
                     <option value="" disabled selected>Select a date</option>
-                    {% for i in date_options %}
-                    <option value="{{slots.slots }}">{{slots.slots}}</option>
+                    {% for date in date_options %}
+                        <option value="{{ date }}">{{ date }}</option>
                     {% endfor %}
                 </select>
             </div>
-        
-            <!-- Time Dropdown -->
+            
             <div class="form-group">
                 <label for="appointmentTime">Preferred Time of Appointment:</label>
                 <select id="appointmentTime" name="appointmentTime" class="form-control" required>
                     <option value="" disabled selected>Select a time</option>
                     {% for option in time_options %}
-                    <option value="{{option.id }}">{{option.text}}
-                        {% endfor %}  
+                        <option value="{{ option.id }}">{{ option.text }}</option>
+                    {% endfor %}
                 </select>
             </div>
+            
         
     
             <div class="form-group">
@@ -277,7 +279,7 @@ select:focus {
         });
     </script> {% endcomment %}
 
-    <script>
+    {% comment %} <script>
         $(document).ready(function () {
             $("#doctor").change(function () {
                 var doctor_id = $(this).val();
@@ -328,8 +330,37 @@ select:focus {
                 });
             });
         });
-    </script>
-
+    </script> {% endcomment %}
+    <script>
+        $(document).ready(function () {
+            $("#doctor").change(function () {
+                var doctor_id = $(this).val();
+        
+                // Send an AJAX request to get available time slots for the selected doctor
+                $.ajax({
+                    url: "/get_timeslots_for_date/",  // Replace with the correct URL
+                    data: { 'doctor_id': doctor_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        var timeSelect = $("#appointmentTime");
+                        timeSelect.empty().append('<option value="" disabled selected>Select a Time Slot</option>');
+                        $.each(data.time_options, function (index, value) {
+                            timeSelect.append($('<option>', {
+                                value: value.id,
+                                text: value.text
+                            }));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);  // Log any AJAX request errors
+                    }
+                });
+            });
+        });
+        
+        
+    
+</script>
 </body>
 </html>
 

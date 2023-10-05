@@ -148,7 +148,8 @@ class Timeslot(models.Model):
     end_time = models.TimeField()
 
     def __str__(self):
-        return f"{self.doctor_name} - {self.date} {self.start_time}-{self.end_time}"
+        doctor_name_str = str(self.doctor_name.name) if self.doctor_name else "No Doctor Assigned"
+        return f"{doctor_name_str} - {self.date} {self.start_time}-{self.end_time}"     
 class Appointment(models.Model):
     fullName = models.CharField(max_length=100)
     age = models.IntegerField()

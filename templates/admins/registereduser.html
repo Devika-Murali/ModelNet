@@ -7,6 +7,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Admin - Dashboard</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
 
 		<!-- Favicon -->
@@ -316,31 +318,33 @@
 			</div>
 			<!-- /Page Wrapper -->
 			<script>
-				$(document).ready(function () {
-					$("#role-filter").on("change", function () {
-						const selectedRole = $(this).val().toLowerCase();
+			$(document).ready(function () {
+				$("#role-filter").on("change", function () {
+					const selectedRole = $(this).val().toLowerCase();
 			
-						$(".datatable tbody tr").each(function () {
-							const role = $(this).find("td:nth-child(3)").text().toLowerCase();
-							if (selectedRole === 'all' || role.includes(selectedRole)) {
-								$(this).show();
-							} else {
-								$(this).hide();
-							}
-						});
+					console.log("Selected Role:", selectedRole);
 			
-						const visibleRows = $(".datatable tbody tr:visible").length;
-						if (visibleRows === 0) {
-							$("#no-user-message").show();
+					$(".datatable tbody tr").each(function () {
+						const role = $(this).find("td:nth-child(3)").text().toLowerCase();
+						console.log("User Role:", role);
+			
+						if (selectedRole === 'all' || role.includes(selectedRole)) {
+							$(this).show();
 						} else {
-							$("#no-user-message").hide();
+							$(this).hide();
 						}
 					});
+			
+					const visibleRows = $(".datatable tbody tr:visible").length;
+					if (visibleRows === 0) {
+						$("#no-user-message").show();
+					} else {
+						$("#no-user-message").hide();
+					}
 				});
-			</script>
+			});
 			
-			
-			
+		</script>
 			
 			
 			  
