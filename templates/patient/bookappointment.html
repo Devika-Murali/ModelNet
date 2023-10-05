@@ -1,0 +1,335 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colon Cancer Doctor Appointment Form</title>
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+    <!-- Add these links in the <head> section of your HTML -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+       body{
+        background-image: url('../img/Home.jpg');
+                margin: 0;
+            padding: 0;
+       }
+         h1, form {
+            
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 632px; /* Increase the max-width to your desired value */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        /* Center align the h1 */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style form groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Style labels */
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Style form elements with focus and hover effects */
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+input[type="text"]:hover,
+input[type="date"]:hover,
+input[type="email"]:hover,
+input[type="tel"]:hover,
+textarea:hover,
+select:hover {
+    border-color: #0056b3;
+}
+input:invalid,
+select:invalid,
+textarea:invalid {
+    border-color: #dc3545;
+}
+label[for]:before {
+    content: "*";
+    color: #dc3545;
+    margin-right: 5px;
+}
+button[type="submit"]:focus,
+button[type="submit"]:hover {
+    background-color: #0056b3;
+    outline: none;
+}
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 5px;
+    vertical-align: middle;
+    padding: 0;
+}
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
+.gender-group label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6"><polygon points="0,0 12,0 6,6"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+/* Style the select element when focused */
+select:focus {
+    border-color: #007BFF;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Doctor Appointment Request</h1>
+        <form action="submit.php" method="POST" class="needs-validation" novalidate>
+            <!-- Patient Information -->
+            <div class="form-group">
+                <label for="fullName">Patient Name:</label>
+                <input type="text" id="fullName" name="fullName" value="{{ userprofile.name}}" class="form-control" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" class="form-control" required>
+            </div>
+    
+            <!-- Gender -->
+            <div class="form-group">
+                <label>Gender:</label>
+                <div class="form-check">
+                    <input type="radio" id="male" name="gender" value="Male" class="form-check-input" required>
+                    <label for="male" class="form-check-label">Male</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="female" name="gender" value="Female" class="form-check-input" required>
+                    <label for="female" class="form-check-label">Female</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="other" name="gender" value="Other" class="form-check-input" required>
+                    <label for="other" class="form-check-label">Other</label>
+                </div>
+            </div>
+    
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" class="form-control" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor">Select a Doctor:</label>
+                <select id="doctor" name="doctor" class="form-control" required>
+                    <option value="" disabled selected>Select a doctor</option>
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}</option>
+                {% endfor %}
+                    {% comment %} {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                    {% endfor %} {% endcomment %}
+                </select>
+            </div>
+        
+            <!-- Date Dropdown -->
+            <div class="form-group">
+                <label for="appointmentDate">Preferred Date of Appointment:</label>
+                <select id="appointmentDate" name="appointmentDate" class="form-control" required>
+                    <option value="" disabled selected>Select a date</option>
+                    {% for i in date_options %}
+                    <option value="{{slots.slots }}">{{slots.slots}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <!-- Time Dropdown -->
+            <div class="form-group">
+                <label for="appointmentTime">Preferred Time of Appointment:</label>
+                <select id="appointmentTime" name="appointmentTime" class="form-control" required>
+                    <option value="" disabled selected>Select a time</option>
+                    {% for option in time_options %}
+                    <option value="{{option.id }}">{{option.text}}
+                        {% endfor %}  
+                </select>
+            </div>
+        
+    
+            <div class="form-group">
+                <label for="symptoms">Reason for Appointment:</label>
+                <textarea id="symptoms" name="symptoms" rows="4" class="form-control" required></textarea>
+            </div>
+    
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'assets/js/popper.min.js'%}">
+	</script>
+	<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+	
+	<!-- Slick JS -->
+	<script src="{% static 'assets/js/slick.js'%}"></script>
+	
+	<!-- Custom JS -->
+	<script src="{% static 'assets/js/script.js'%}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% comment %} <script>
+        $(document).ready(function() {
+            // Handle doctor selection change
+            $('#doctor').change(function() {
+                var doctorId = $(this).val();
+                if (doctorId) {
+                    $.ajax({
+                        url: '/get_available_dates/',  // Replace with your actual URL
+                        data: {'doctor_id': doctorId},
+                        dataType: 'json',
+                        success: function(data) {
+                            // Populate date dropdown
+                            var dateDropdown = $('#appointmentDate');
+                            dateDropdown.empty();
+                            dateDropdown.append('<option value="" disabled selected>Select a date</option>');
+                            $.each(data.dates, function(index, date) {
+                                dateDropdown.append('<option value="' + date + '">' + date + '</option>');
+                            });
+
+                            // Populate time dropdown
+                            var timeDropdown = $('#appointmentTime');
+                            timeDropdown.empty();
+                            timeDropdown.append('<option value="" disabled selected>Select a time</option>');
+                            $.each(data.times, function(index, time) {
+                                timeDropdown.append('<option value="' + time + '">' + time + '</option>');
+                            });
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.status + ': ' + xhr.statusText);
+                        }
+                    });
+                }
+            });
+        });
+    </script> {% endcomment %}
+
+    <script>
+        $(document).ready(function () {
+            $("#doctor").change(function () {
+                var doctor_id = $(this).val();
+    
+                // Send an AJAX request to get available dates for the selected Ashaworker
+                $.ajax({
+                    url: "{% url 'get_dates_for_doctor' %}",
+                    data: { 'doctor_id': doctor_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        var dateSelect = $("#date");
+                        dateSelect.empty().append('<option value="" selected>Select a Date</option>');
+                        $.each(data.date_options, function (index, value) {
+                            dateSelect.append($('<option>', {
+                                value: value,
+                                text: value
+                            }));
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data.error_message);
+                    }
+                });
+            });
+    
+            $("#date").change(function () {
+                var doctor_id = $("#doctor").val();
+                var selected_date = $(this).val();
+    
+                // Send an AJAX request to get available time slots for the selected Ashaworker and date
+                $.ajax({
+                    url: "{% url 'get_timeslots_for_date' %}",
+                    data: { 'doctor_id': doctor_id, 'selected_date': selected_date },
+                    dataType: 'json',
+                    success: function (data) {
+                        var timeSelect = $("#time");
+                        timeSelect.empty().append('<option value="" selected>Select a Time Slot</option>');
+                        $.each(data.time_options, function (index, value) {
+                            timeSelect.append($('<option>', {
+                                value: value.id,
+                                text: value.text
+                            }));
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data.error_message);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,170 @@
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'assets/css/userlist1.css' %}">
+<title>UserList</title>
+<div class="top-header-area" id="sticker">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-center">
+                <div class="main-menu-wrap">
+                    <!-- logo -->
+                    <div class="site-logo">
+                        <!-- <a href="index.html">
+                            <img src="Images/Logo.png" alt="">
+                        </a> -->
+                    </div>
+                    <!-- logo -->
+
+                    <!-- menu start -->
+                    <nav class="main-menu">
+                        <ul>
+                          <h1>{{ user.username }}</h1>
+
+                            <li ><a href="{% url 'Home' %}">Home</a></li>
+                            <li><a href="{% url 'userlist' %}">Registered Users</a></li>
+                            {% comment %} <li><a href="{% url '' %}">View Models</a></li> {% endcomment %}
+                            <li><a href="contact.html">View Models</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle"></i></a>
+                              <ul class="sub-menu">
+                                  
+                                  <li><a href="{% url 'loggout' %}">Logout</li></a>
+                              </ul>
+                            </li>
+                            {% else %}
+                            <li><a href="{% url 'login_page' %}">Login</a></li>
+                        
+                            {% endif %}
+                    
+                            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end header -->
+</nav>
+<div class="container-fluid" style="padding-bottom: 5%;">
+    <div class="text-center">
+    <h2 class="my-4">REGISTERED USERS</h2>
+  </div>
+  <div class="card shadow">
+    <div class="card-body">
+      <div id="filters" class="mb-4">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="role-filter" class="form-label">Filter by Role:</label>
+            <select id="role-filter" class="form-select">
+              <option value="all">All</option>
+              <option value="admin">Admin</option>
+              <option value="doctor">Doctor</option>
+              <option value="researcher">Researcher</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <form class="d-flex">
+              <input type="text" id="username" name="username" class="form-control me-2" placeholder="Search by Username">
+              {% comment %} <button type="submit" class="btn btn-search">Search</button> {% endcomment %}
+            </form>
+          </div>
+        </div>
+      </div>
+      <p id="no-user-message" class="alert alert-warning" style="display: none;">No such user</p>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>status</th>
+              <th>change</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                {% if user.is_superuser %}
+                <span class="badge bg-primary">Admin</span>
+                {% elif user.is_staff %}
+                <span class="badge bg-success">Doctor</span>
+                {% else %}
+                <span class="badge bg-info">Researcher</span>
+                {% endif %}
+              </td>
+              {% comment %} <td><a href="{% url 'edit_user' user.id %}" class="btn btn-sm btn-primary">Edit</a></td> {% endcomment %}
+              <td>
+                {% if user.is_active == True %}
+                <span class="text-success" style="font-weight: bolder;font-size: large;" >Active</span>
+                {% else %}
+                <span class="text-danger" style="font-weight: bolder;font-size: large;" >Inactive</span>
+                {% endif %}
+              </td>
+              <td style="padding-left:6%;">
+                <div class="approval-status">                   
+                  {% if user.is_active == True %}
+                  <form method="post" action="{% url 'deactivate_user' user.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-danger reject-btn" type="submit" >Deactivate</button>
+                </form>
+                {% else %}
+                <form method="post" action="{% url 'activate_user' user.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-success approve-btn" type="submit">Activate</button>
+                </form>                       
+                  {% endif %}                 
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.querySelector('#username');
+    const roleFilter = document.querySelector('#role-filter');
+    const rows = document.querySelectorAll('.table tbody tr');
+    const noUserMessage = document.querySelector('#no-user-message');
+
+    input.addEventListener('input', filterUsers);
+    roleFilter.addEventListener('change', filterUsers);
+
+    function filterUsers() {
+      const searchTerm = input.value.toLowerCase();
+      const selectedRole = roleFilter.value;
+      let found = false;
+
+      rows.forEach(function (row) {
+        const username = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        const role = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+        if ((selectedRole === 'all' || role.includes(selectedRole)) &&
+          (searchTerm.length === 0 || username.includes(searchTerm))) {
+          row.style.display = 'table-row';
+          found = true;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (found) {
+        noUserMessage.style.display = 'none';
+      } else {
+        noUserMessage.style.display = 'block';
+      }
+    }
+  });
+</script>
+
+{% endblock %}

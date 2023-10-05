@@ -1,0 +1,294 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>BASE-DOCTOR-PAGE</title>
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav">
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<ul class="main-nav">
+					<li class="active">
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Home</a>
+					</li>
+					{% comment %} <li class="active">
+						<a href="{% url 'doctors_basedoctor' %}">Detections</a>
+					</li> {% endcomment %}
+					<li class="main-nav">
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
+					</li>
+                    <li class="main-nav">
+						<a href="{% url 'doctors_appointments' %}"class="nav-link">Appointments</a>
+					</li>
+					<li class="has-submenu"class="nav-link">
+								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+									<li><a href="{% url 'mypatients' %}"class="nav-link">My Patients</a></li>
+                                    
+								</ul>
+                                
+							</li>
+						
+							<li class="has-submenu"class="nav-link">
+								<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+                                    <li><a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a></li>
+									<li><a href="{% url 'patientappointment' %}"class="nav-link">My Appointments</a></li>
+                                    <li><a href="{% url 'doctors_timeslot' %}">Doctors Time Slot</a></li>
+									<li><a href="{% url 'view_timeslots' %}">Show  Time Slot</a></li>
+									
+								</ul>
+							</li>
+					{% if user.is_authenticated %}
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<ul class="submenu">
+							<li>{{ user.username }}</li>
+							<li><a href="{% url 'loggout' %}">Logout</li></a>
+						</ul>
+					</li>
+					{% else %}
+					<li><a href="{% url 'login_page' %}">Login</a></li>				
+					{% endif %}
+						</ul>
+					</li>
+
+				</ul>		 
+			</div>		 
+		</nav>
+	</header>
+	<section class="section section-search">
+		<div class="container-fluid">
+			<div class="banner-wrapper">
+				<div class="banner-header text-center">
+					<h1>ColonCare Medical Center</h1>
+					<p>Your partner in comprehensive colon health and cancer care.</p>`
+					<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+					<!--  Main wrapper -->
+					<div class="body-wrapper" >
+					  <div class="container-fluid" >
+						<div class="card" style="border-style: none; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; ">
+						  <div class="card-body">
+							<h5 class="card-title fw-semibold mb-4"> </h5>
+						  {% if existing_certification %}
+				
+							{% if existing_certification.is_approved == 'pending' %}
+							<p class="certification-message">Thank you for submitting your license details. Your access to the website is pending approval.</p>
+				
+							{% elif existing_certification.is_approved == 'approved' %}
+							<p class="certification-message">Your Application is approved.</p>
+							{% elif existing_certification.is_approved == 'rejected' %}
+							<p class="certification-message">Your Application is rejected.</p>
+							{% else %}
+							  <p> Not working </p>                
+							{% endif %}
+						  {% else %}
+							<!-- Display the certification form -->
+							<form method="post" enctype="multipart/form-data" >
+							  {% csrf_token %}
+							  
+							  <div class="form-group mb-3" style="margin-top: 10px;">
+								<label for="certification_image">Doctor License:</label>
+								<input type="file" id="certification_image" name="certification_image" ="image/*" required>
+								<span id="certification_image_error" class="text-danger"></span>accept
+							  </div>
+							  <div class="form-group mb-3" style="margin-top: 10px;">
+								<label for="owner_name">Doctor Name:</label>
+								<input type="text" id="owner_name" name="owner_name" class="form-control" value="{{ user.docprofile.name }}" readonly>
+								<span id="owner_name_error" class="text-danger"></span>
+				
+							  </div>
+							  <div class="form-group mb-3" style="margin-top: 10px;">
+								<label for="store_name"> Specialization:</label>
+								<input type="text" id="store_name" name="specialization" class="form-control" value="{{ user.docprofile.specialist.specialization_name }}" readonly>
+								<span id="store_name_error" class="text-danger"></span>
+				
+							  </div>
+							  <div class="form-group mb-3" style="margin-top: 10px;">
+								<label for="expiry_date_to">Valid To:</label>
+								<input type="date" id="expiry_date_to" name="expiry_date_to" class="form-control" required>
+								<span id="expiry_date_to_error" class="text-danger"></span>
+				
+							  </div>
+							  <button type="submit" class="btn btn-primary" type="submit">Submit</button>
+							</form>
+						  {% endif %}
+							</div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  <script>
+					
+					$(document).ready(function () {
+					  $("#certification_image").change(function () {
+						validateCertificationImage("#certification_image");
+					  });
+					
+					  $("#owner_name").keyup(function () {
+						validateOwnerName("#owner_name");
+					  });
+					
+					  $("#store_name").keyup(function () {
+						validateStoreName("#store_name");
+					  });
+					
+					  $("#expiry_date_from").change(function () {
+						validateExpiryDateFrom("#expiry_date_from");
+					  });
+					
+					  $("#expiry_date_to").change(function () {
+						validateExpiryDateTo("#expiry_date_to");
+					  });
+				  });  
+					  function validateCertificationImage(fieldId) {
+						var certificationImage = $(fieldId).val().trim();
+						var certificationImageError = $("#certification_image_error");
+						if (certificationImage === "") {
+						$("#certification_image_error").html("Store License Image is required").css("color", "red");
+						  certificationImageError.text("Store License Image is required").css("color", "red");
+						} else {
+						  $("#certification_image_error").html("").css("color", "red");
+					  }
+					  }
+					
+					  function validateOwnerName(fieldId) {
+						var ownerName = $(fieldId).val().trim();
+						var lettersOnlyPattern = /^[A-Za-z\s]+$/;
+					
+						if (ownerName === "") {
+						  $("#owner_name_error").html("Enter your Owner name").css("color", "red");
+						} else if (!lettersOnlyPattern.test(ownerName)) {
+						  $("#owner_name_error").html("Owner Name should contain only letters and spaces").css("color", "red");
+					   } else {
+						  $("#owner_name_error").html("");
+					  }
+					  }
+					
+					  function validateStoreName(fieldId) {
+						var storeName = $(fieldId).val().trim();
+					
+						if (storeName === "") {
+						  $("#store_name_error").html("Store Name is required").css("color", "red");
+						} else {
+						  $("#store_name_error").html("").css("color", "red");
+						}
+					  }
+					
+					  function validateExpiryDateFrom(fieldId) {
+						var expiryDateFrom = $(fieldId).val().trim();
+						var datePattern = /^\d{4}-\d{2}-\d{2}$/; // Updated date pattern
+						var today = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }); // Format the date as "yyyy-mm-dd"
+					
+						if (expiryDateFrom === "") {
+						  $("#expiry_date_from_error").html("Expiry Date From is required").css("color", "red");
+						} else if (!datePattern.test(expiryDateFrom) || expiryDateFrom > today) {
+						  $("#expiry_date_from_error").html("Expiry Date from should not be after the current date").css("color", "red");
+						} else {
+						  $("#expiry_date_from_error").html("").css("color", "red");
+						}
+					  }
+					
+					  function validateExpiryDateTo(fieldId) {
+						var expiryDateTo = $(fieldId).val().trim();
+						var datePattern = /^\d{4}-\d{2}-\d{2}$/; // Updated date pattern
+						var today = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }); // Format the date as "yyyy-mm-dd"
+					
+						if (expiryDateTo === "") {
+						  $("#expiry_date_to_error").html("Expiry Date To is required").css("color", "red");
+						} else if (!datePattern.test(expiryDateTo) || expiryDateTo <= today) {
+						  $("#expiry_date_to_error").html("Expiry Date from should not be the current date or before the current date").css("color", "red");
+						} else {
+						  $("#expiry_date_to_error").html("").css("color", "red");
+						}
+					  }
+					  // Add other validations if needed
+					  
+						// Check if the license is pending approval (you can modify this condition as per your logic)
+						var isLicensePending = {% if existing_certification.is_approved == 'pending' %} true {% else %} false {% endif %};
+					  
+						// Disable navigation links if the license is pending
+						if (isLicensePending) {
+						  var navLinks = document.querySelectorAll('.nav-link');
+						  navLinks.forEach(function(link) {
+							link.classList.add('disabled'); // Add a 'disabled' class to style as needed
+							link.href = 'javascript:void(0)'; // Remove the href attribute to disable the link
+						  });
+						}
+				
+					
+				  
+				  </script>`
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<!-- /Home Banner -->
+	  
+	
+<script src="{% static 'assets/js/jquery.min.js'%}" ></script>
+
+<!-- Bootstrap Core JS -->
+<script src="{% static 'assets/js/popper.min.js'%}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+
+<!-- Slick JS -->
+<script src="{% static 'assets/js/slick.js'%}"></script>
+
+<!-- Custom JS -->
+<script src="{% static 'assets/js/script.js'%}"></script>
+
+</body>
+</html>
+

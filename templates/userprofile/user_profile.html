@@ -1,0 +1,265 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'Home_css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'Home_css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'Home_css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Home_css/style.css.map' %}">
+    <link rel="stylesheet" href="{% static 'Home_css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'Home_css/style.scss' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'assets/img/favicon.pn' %}g">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.cs' %}s">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+	<!-- animate css -->
+	<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
+	<!-- main style -->
+	<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+	<!-- responsive -->
+	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+</head>
+<style>
+    .proform
+    {
+                align-items: center; 
+                width:90%; 
+                border-width: 2px;
+                margin-left: 20%;
+                box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; 
+                padding-left: 5%; 
+                padding-top: 5%; 
+                padding-bottom: 5%;
+                width: 500px;
+    }
+
+    #cardelement
+    {
+        border-color: #27350F;
+                        border-style:solid;
+                        border-width: 1px;
+                        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                        width: 200px;
+                        height: 40px;
+                        padding: 10px;
+    }
+</style>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% if user.is_superuser %}
+    <nav class="main-menu">
+        <ul>
+            <li ><a href="{% url 'Home' %}">Home</a></li>
+            </li>
+            <li><a href="#">About</a></li>
+            {% comment %} <li><a href="#">Detections</a>
+                <ul class="sub-menu">
+                    <li><a href="{% url 'Model' %}">Model Creation</a></li>
+                    <li><a href="{% url 'Preprocessing' %}">Preprocessing</a></li>
+                    <li><a href="{% url 'Training' %}">Training</li></a>
+                    <li><a href="{% url 'Validation' %}">Validation</a></li>
+                    <li><a href="{% url 'Deployment' %}">Deployment</a> </li>
+                </ul>
+            </li> {% endcomment %}
+            
+            {% comment %} <li><a href="contact.html">Contact</a></li> {% endcomment %}
+            {% if user.is_authenticated %}
+            <li><a href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle"></i></a>
+                <ul class="sub-menu">
+                    <li>{{ user.username }}</li>
+                    <li><a></a></li>
+                    <li><a href="{% url 'loggout' %}">Logout</li></a>
+                </ul>
+            </li>
+            {% else %}
+            <li><a href="{% url 'login_page' %}">Login</a></li>
+        
+            {% endif %}
+        <!-- menu end -->
+    </div>
+</div>
+</div>
+</div>
+</div>
+{% elif user.is_staff %}
+<nav class="main-menu" style="margin-left:50%;">
+    <ul>
+        <li ><a href="{% url 'Home' %}">Home</a></li>
+        </li>
+        <li><a href="#">About</a></li>
+        {% comment %} <li><a href="#">Detections</a>
+            <ul class="sub-menu">
+                <li><a href="{% url 'Model' %}">Model Creation</a></li>
+                <li><a href="{% url 'Preprocessing' %}">Preprocessing</a></li>
+                <li><a href="{% url 'Training' %}">Training</li></a>
+                <li><a href="{% url 'Validation' %}">Validation</a></li>
+                <li><a href="{% url 'Deployment' %}">Deployment</a> </li>
+            </ul>
+        </li> {% endcomment %}
+        
+        <li><a href="contact.html">Contact</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle"></i></a>
+            <ul class="sub-menu">
+                <li>{{ user.username }}</li>
+                <li><a></a></li>
+                <li><a href="{% url 'loggout' %}">Logout</li></a>
+            </ul>
+        </li>
+        {% else %}
+        <li><a href="{% url 'login_page' %}">Login</a></li>
+    
+        {% endif %}
+    <!-- menu end -->
+</div>
+</div>
+</div>
+</div>
+</div>
+{% else  %}
+<nav class="main-menu">
+    <ul>
+        <li ><a href="{% url 'Home' %}">Home</a></li>
+        </li>
+        <li><a href="#">About</a></li>
+        {% comment %} <li><a href="#">Detections</a>
+            <ul class="sub-menu">
+                <li><a href="{% url 'Model' %}">Model Creation</a></li>
+                <li><a href="{% url 'Preprocessing' %}">Preprocessing</a></li>
+                <li><a href="{% url 'Training' %}">Training</li></a>
+                <li><a href="{% url 'Validation' %}">Validation</a></li>
+                <li><a href="{% url 'Deployment' %}">Deployment</a> </li>
+            </ul>
+        </li> {% endcomment %}
+        
+        <li><a href="contact.html">Contact</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle"></i></a>
+            <ul class="sub-menu">
+                <li>{{ user.username }}</li>
+                <li><a></a></li>
+                <li><a href="{% url 'loggout' %}">Logout</li></a>
+            </ul>
+        </li>
+        {% else %}
+        <li><a href="{% url 'login_page' %}">Login</a></li>
+    
+        {% endif %}
+    <!-- menu end -->
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endif  %}
+{% if messages %}
+        <div class="error-message" style="border-style: groove; border-color: #184170; border-width: 2px; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; height: 35px; width: 180px; margin-left: 20px; margin-top: 5px;">
+            <p style="color: #03162b; margin-left: 20px; font-size: larger;">
+                {% for message in messages %}
+                Profile Updated
+                {% endfor %}
+            </p>
+        </div>
+        {% endif %}
+        
+
+        <body style="font-family:  sans-serif; background-image: url({% static 'assets/img/profile.jpg' %}); background-repeat: no-repeat; background-size: cover;">
+    
+    <form method="post" enctype="multipart/form-data" style="display: flex; margin-top: 2%; justify-content: center; margin-left:-100%">
+        {% csrf_token %}
+        <div style="align-items: center; background-color: white; border-width: 2px; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; padding-left: 2.8%; width: 280px; height: 320px; padding-top: 1%; padding-bottom: 3%;">
+            {% if user.is_staff %}
+        <h5 id="usern" class=" text animated rubberBand"> Doctor </h5>
+        {% else  %}
+        <h5 id="usern" class=" text animated rubberBand"> Researcher </h5>
+        {% endif  %}
+            <!-- Profile Picture -->
+            {% if user.userprofile.profile_pic %}
+            <img src="{{user.userprofile.profile_pic.url }}" alt="profile pic" class="card-img-top" style="width: 200px; height: 200px; border-radius: 180px;" />
+            {% else %}
+            <!-- Display a default profile picture or a message if no profile picture is available -->
+            <img src="{% static 'assets/img/usericon.png' %}" class="card-img-top" style="width: 200px; height: 200px; border-radius: 180px;" />
+            {% endif %}
+            {% if user.is_staff %}
+            <h5 style="margin-top: 20px; margin-left: 27%;">{{ user.docprofile.name }}</h5>
+
+                        {% else %}
+                        <h5 style="margin-top: 20px; margin-left: 27%;">{{ user.userprofile.name }}</h5>
+                        {% endif  %}
+        </div>
+        
+        <div style="align-items: center; background-color: white; border-width: 2px; margin-left: 3%; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; padding-left: 4.5%; width: 800px; max-height: 178vh; padding-top: 6%; padding-bottom: 4%;">
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                <div class="form-section">
+                    <div>
+                        {% if user.is_staff %}
+                            <label for="name" id="carde" class="form-label text animated zoomIn">Full Name:</label>
+                            <hr class=" text animated zoomIn" id="signintext2">
+                            <input type="text" class="form-control text animated zoomIn" value="{{ user.docprofile.name }}" name="name" id="cardelement" >
+                        {% else %}
+                            <label for="name" id="carde" class="form-label text animated zoomIn">Full Name:</label>
+                            <hr class=" text animated zoomIn" id="signintext2">
+                            <input type="text" class="form-control text animated zoomIn" value="{{ user.userprofile.name }}" name="name" id="cardelement" >
+                        {% endif  %}
+                        
+                    </div>
+                    <div>
+                        <label for="profile_pic"  id="carde"  class="form-label text animated zoomIn">Profile Picture:</label><br>
+                        <hr class=" text animated zoomIn" id="signintext2">
+                        <input type="file"  class="form-control text animated zoomIn"  id="cardelement" name="profile_pic" >
+                    </div>
+                    <div>
+                        <label for="email" id="carde" class="form-label text animated zoomIn">Email:</label>
+                        <hr class=" text animated zoomIn" id="signintext2">
+                        <input type="email"  class="form-control text animated zoomIn" id="cardelement" name="email" value="{{ user.email }}" readonly>
+                    </div>
+                    <div>
+                        {% if user.is_staff %}
+                        <label for="name" id="carde" class="form-label text animated zoomIn">Medical License Number</label>
+                        <hr class=" text animated zoomIn" id="signintext2">
+                        <input type="text" class="form-control text animated zoomIn" value="{{ user.docprofile.licensenumber }}" name="licensenumber" id="cardelement" >
+                        
+                        {% endif  %}
+                       
+                        {% if not user.is_staff%}
+                        <label for="name" id="carde" class="form-label text animated zoomIn">University</label>
+                        <hr class=" text animated zoomIn" id="signintext2">
+                        <input type="text" class="form-control text animated zoomIn" value="{{ user.docprofile.licensenumber }}" name="name" id="cardelement" >
+
+                        <label for="name" id="carde" class="form-label text animated zoomIn">Department</label>
+                        <hr class=" text animated zoomIn" id="signintext2">
+                        <input type="text" class="form-control text animated zoomIn" value="{{ user.docprofile.licensenumber }}" name="name" id="cardelement" >
+
+                        <label for="name" id="carde" class="form-label text animated zoomIn">Research Papers</label>
+                        <hr class=" text animated zoomIn" id="signintext2">
+                        <input type="text" class="form-control text animated zoomIn" value="{{ user.docprofile.licensenumber }}" name="name" id="cardelement" >
+                        {% endif  %}
+                        {% comment %} <div>
+                            <label for="publications_link" class="form-label">Link to Text Publications:</label>
+                            <input type="text" class="form-control" id="cardelement" name="link" style="border-color: #27350F; background-color: white; border: none;
+                            border-bottom: solid;
+                            border-radius: 0px;
+                            border-width: 1px;
+                            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                            width: 300px;
+                            height: 40px;
+                            padding: 10px;" value="{{ user.userprofile.link }}">
+                        </div>
+                    </div> {% endcomment %}
+                <button type="submit" class="btn btn-primary" style="background-color: #184170; border-radius: 100px; margin-top: 10px; margin-left: 90px; color: white; width: 100px; transition: 0.5s; height: 35px; border: none;">Update</button>
+                </form>    
+</div>
+</body>
+</html>

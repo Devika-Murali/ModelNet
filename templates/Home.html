@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>HOME-PAGE</title>
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav">
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<ul class="main-nav">
+					<li class="active">
+						<a href="index-2.html">Home</a>
+					</li>
+					<li class="main-nav">
+						<a href="">About</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'Doctor_profile' %}">Book For screening</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'patient_bookappointment' %}">Book Appointment</a>
+					</li>
+					<li class="main-nav">
+						<a href="">Testimonials</a>
+					
+					
+					
+					<li class="login-link">
+						<a href="{% url 'login_page' %}">Login / Signup</a>
+					</li>
+				</ul>		 
+			</div>		 
+			<ul class="nav header-navbar-rht">
+				<li class="nav-item contact-item">
+					<div class="header-contact-img">
+						<i class="far fa-hospital"></i>							
+					</div>
+					<div class="header-contact-detail">
+						<p class="contact-header">Contact</p>
+						<p class="contact-info-header"> +1 315 369 5943</p>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link header-login" href="{% url 'login_page' %}">login / Signup </a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<!-- /Header -->
+<script src="{% static 'assets/js/jquery.min.js'%}" ></script>
+<!-- Home Banner -->
+			<section class="section section-search">
+				<div class="container-fluid">
+					<div class="banner-wrapper">
+						<div class="banner-header text-center">
+							<h1>ColonCare Medical Center</h1>
+							<p>Your partner in comprehensive colon health and cancer care.</p>
+							
+						</div>	
+					</div>
+					<div class="button-container text-center">
+						<a href="your-link-here" class="btn btn-primary">Make Appointment</a>
+					</div>
+				</div>
+			</section>
+			<!-- /Home Banner -->
+			  
+			
+<script src="{% static 'assets/js/jquery.min.js'%}" ></script>
+
+<!-- Bootstrap Core JS -->
+<script src="{% static 'assets/js/popper.min.js'%}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+
+<!-- Slick JS -->
+<script src="{% static 'assets/js/slick.js'%}"></script>
+
+<!-- Custom JS -->
+<script src="{% static 'assets/js/script.js'%}"></script>
+
+</body>
+</html>

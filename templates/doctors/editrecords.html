@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>PATIENT-PAGE</title>
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+    <style>
+        /* Custom CSS for additional styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .medical-history {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-left:150px;
+        }
+    </style>
+
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav">
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<ul class="main-nav">
+					<li class="active">
+						<a href="{% url 'doctors_basedoctor' %}">Home</a>
+					</li>
+					<li class="active">
+						<a href="{% url 'doctors_basedoctor' %}">Detections</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'doctors_basedoctor' %}">Refer a Patient</a>
+					</li>
+                    <li class="main-nav">
+						<a href="{% url 'doctors_appointments' %}">Appointments</a>
+					</li>
+					<li class="has-submenu">
+								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+									<li><a href="{% url 'mypatients' %}">My Patients</a></li>
+                                    <li><a href="{% url 'patientprofile' %}">Patients Medical Records</a></li>
+								</ul>
+                                
+							</li>
+						
+							<li class="has-submenu">
+								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+                                    <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
+									<li><a href="{% url 'patientappointment' %}">My Appointments</a></li>
+                                    <li><a href="{% url 'scheduletiming' %}">Schedule Timings</a></li>
+								</ul>
+							</li>
+					{% if user.is_authenticated %}
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<ul class="submenu">
+							<li>{{ user.username }}</li>
+							<li><a href="{% url 'profile' %}">Profile</li></a>
+							<li><a href="{% url 'loggout' %}">Logout</li></a>
+						</ul>
+					</li>
+					{% else %}
+					<li><a href="{% url 'login_page' %}">Login</a></li>				
+					{% endif %}
+						</ul>
+					</li>
+
+				</ul>		 
+			</div>		 
+		</nav>
+	</header>
+    <!-- Breadcrumb -->
+			<div class="breadcrumb-bar">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-md-12 col-12">
+							<nav aria-label="breadcrumb" class="page-breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Edit Medical Records</li>
+								</ol>
+							</nav>
+							<h2 class="breadcrumb-title">Edit Medical Records</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Breadcrumb -->
+            
+            <main>
+                <div class="container">
+                     {% comment %} <section class="patient-info">
+                        <h2>Patient Information</h2>
+                        <div class="form-group">
+                            <label for="patient_name">Name:</label>
+                            <input type="text" id="patient_name" name="patient_name" value="{{ user.userprofile.name }}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" name="age" value="{{ user.userprofile.age }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="bloodgroup">Blood group:</label>
+                            <input type="number" id="bloodgroup" name="bloodgroup" value="{{ user.userprofile.blood_group }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" name="gender" required>
+                                <option value="male" {% if gender == 'male' %}selected{% endif %}>Male</option>
+                                <option value="female" {% if gender == 'female' %}selected{% endif %}>Female</option>
+                                <option value="other" {% if gender == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact_number">Contact Number:</label>
+                            <input type="tel" id="contact_number" name="contact_number" value="{{ user.userprofile.phone_number }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="{{ user.userprofile.email }}">
+                        </div>
+                    </section> {% endcomment %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <!-- Medical History -->
+                        <section class="medical-history">
+                            <h2>Medical History</h2>
+                            <div class="form-group">
+                                <label for="diagnosis_date">Diagnosis Date:</label>
+                                <input type="date" id="diagnosis_date" name="diagnosis_date" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="cancer_stage">Cancer Stage:</label>
+                                <input type="text" id="cancer_stage" name="cancer_stage" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="biopsy_results">Biopsy Results:</label>
+                                <textarea id="biopsy_results" name="biopsy_results" rows="4" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="oncologist_name">Oncologist's Name:</label>
+                                <input type="text" id="oncologist_name" name="oncologist_name" class="form-control">
+                            </div>
+                            <!-- Add more medical history input fields as needed -->
+                            <h2>Allergies</h2>
+                            <div class="form-group">
+                                <label for="allergy_name">Allergy Name:</label>
+                                <input type="text" id="allergy_name" name="allergy_name" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="allergy_severity">Allergy Severity:</label>
+                                <select id="allergy_severity" name="allergy_severity" class="form-control">
+                                    <option value="mild">Mild</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="severe">Severe</option>
+                                </select>
+                            </div>
+                            <h2>Medications</h2>
+                            <div class="form-group">
+                                <label for="medication_name">Medication Name:</label>
+                                <input type="text" id="medication_name" name="medication_name" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="dosage">Dosage:</label>
+                                <input type="text" id="dosage" name="dosage" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="frequency">Frequency:</label>
+                                <input type="text" id="frequency" name="frequency" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="start_date">Start Date:</label>
+                                <input type="date" id="start_date" name="start_date" class="form-control">
+                            </div>
+                            <!-- Add more medication input fields as needed -->
+                        
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                    </section>
+                    </form>
+            </main>
+        </div>
+</body>
+</html>

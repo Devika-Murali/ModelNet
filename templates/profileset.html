@@ -1,0 +1,445 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- title -->
+	<title>PATIENT-PAGE</title>
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav">
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				{% comment %} <a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a> {% endcomment %}
+				</div>
+				<ul class="main-nav">
+					<li class="active">
+						<a href="{% url 'doctors_basedoctor' %}">Home</a>
+					</li>
+                    <li class="main-nav">
+						<a href="{% url 'doctors_appointments' %}">Appointments</a>
+					</li>
+					<li class="has-submenu">
+								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+									<li><a href="{% url 'mypatients' %}">My Patients</a></li>
+                                    <li><a href="{% url 'patientprofile' %}">Patient profile</a></li>
+								</ul>
+                                
+							</li>
+						
+							<li class="has-submenu">
+								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+                                    <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
+									<li><a href="{% url 'patientappointment' %}">My Appointments</a></li>
+                                    <li><a href="{% url 'scheduletiming' %}">Schedule Timings</a></li>
+								</ul>
+							</li>
+					{% if user.is_authenticated %}
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<ul class="submenu">
+							<li>{{ user.username }}</li>
+							<li><a href="{% url 'profile' %}">Profile</li></a>
+							<li><a href="{% url 'loggout' %}">Logout</li></a>
+						</ul>
+					</li>
+					{% else %}
+					<li><a href="{% url 'login_page' %}">Login</a></li>				
+					{% endif %}
+						</ul>
+					</li>
+
+				</ul>		 
+			</div>		 
+		</nav>
+	</header>
+	<!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Profile Settings</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Profile Settings</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+    
+    <!-- Page Content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                
+                    
+                    
+                </div>
+                <div class="col-md-7 col-lg-8 col-xl-9">
+                
+                    <!-- Basic Information -->
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- Profile Picture -->
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">Profile</h4>
+                                            <div class="change-avatar">
+                                                <div class="profile-img">
+                                                    {% if user.docprofile.profile_pic %}
+                                                    <img src="{{ user.docprofile.profile_pic.url }}" alt="User Image">
+                                                    {% else %}
+                                                    <img src="{% static 'assets/img/12.png' %}" alt="User Image">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="upload-img">
+                                                    <div class="change-photo-btn">
+                                                        <span><i class="fa fa-upload"></i> Upload Photo</span>
+                                                        <input type="file" class="upload" name="profile_pic">
+                                                    </div>
+                                                    <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <!-- Basic Information -->
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Basic Information</h4>
+                                            <div class="row form-row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>First Name <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" name="fname" id="fname" value="{{ user.docprofile.fname }}">
+                                                        <span id="fname-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Last Name <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" name="lname" id="lname" value="{{ user.docprofile.lname }}">
+                                                        <span id="lname-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Phone Number</label>
+                                                        <input type="text" class="form-control" name="phone" id="phone" value="{{ user.docprofile.phone }}">
+                                                        <span id="phone-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Gender</label>
+                                                        <select class="form-control select" name="gender" id="gender">
+                                                            <option>Select</option>
+                                                            <option>Male</option>
+                                                            <option>Female</option>
+                                                        </select>
+                                                        <span id="gender-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-0">
+                                                        <label>Date of Birth</label>
+                                                        <input type="text" class="form-control" name="dob" id="dob" value="{{ user.docprofile.dob }}">
+                                                        <span id="dob-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Contact Details -->
+                                    <div class="card contact-card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Contact Details</h4>
+                                            <div class="row form-row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Address Line 1</label>
+                                                        <input type="text" class="form-control" name="add1" id="add1" value="{{ user.docprofile.add1 }}">
+                                                        <span id="add1-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Address Line 2</label>
+                                                        <input type="text" class="form-control" name="add2" id="add2" value="{{ user.docprofile.add2 }}">
+                                                        <span id="add2-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">City</label>
+                                                        <input type="text" class="form-control" name="city" id="city" value="{{ user.docprofile.city }}">
+                                                        <span id="city-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">State</label>
+                                                        <input type="text" class="form-control" name="state" id="state" value="{{ user.docprofile.state }}">
+                                                        <span id="state-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Country</label>
+                                                        <input type="text" class="form-control" name="country" id="country" value="{{ user.docprofile.country }}">
+                                                        <span id="country-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Postal Code</label>
+                                                        <input type="text" class="form-control" name="postalcode" id="postalcode" value="{{ user.docprofile.postalcode }}">
+                                                        <span id="postalcode-error" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Services and Specialization -->
+                                    <div class="card services-card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Services and Specialization</h4>
+                                            <div class="form-group">
+                                                <label>Services</label>
+                                                <input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services" name="services" id="services" value="{{ user.docprofile.services }}">
+                                                <small class="form-text text-muted">Note : Type & Press enter to add new services</small>
+                                            </div> 
+                                        </div>              
+                                    </div>
+                                    
+                                    <!-- Change Password -->
+                                    <div class="card services-card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Change Password</h4>
+                                            <div class="form-group">
+                                                <label>Old Password</label>
+                                                <input type="password" class="form-control" name="old_password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>New Password</label>
+                                                <input type="password" class="form-control" name="reset_password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Confirm New Password</label>
+                                                <input type="password" class="form-control" name="confirm_reset_password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="submit-section submit-btn-bottom">
+                                        <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    <!-- /Page Content -->
+    <script>
+        $(document).ready(function() {
+            // Function to validate first name
+            function validateFirstName() {
+                var firstName = $("#fname").val();
+                if (!/^[A-Z][a-zA-Z]*$/.test(firstName)) {
+                    $("#fname-error").text("First name should start with a capital letter and contain only alphabetic characters.");
+                    return false;
+                } else {
+                    $("#fname-error").text("");
+                    return true;
+                }
+            }
+    
+            // Function to validate last name
+            function validateLastName() {
+                var lastName = $("#lname").val();
+                if (!/^[A-Z][a-zA-Z]*$/.test(lastName)) {
+                    $("#lname-error").text("Last name should start with a capital letter and contain only alphabetic characters.");
+                    return false;
+                } else {
+                    $("#lname-error").text("");
+                    return true;
+                }
+            }
+    
+            // Function to validate phone number
+            function validatePhoneNumber() {
+                var phoneNumber = $("#phone").val();
+                if (!/^\d{10}$/.test(phoneNumber)) {
+                    $("#phone-error").text("Phone number should be 10 digits long.");
+                    return false;
+                } else {
+                    $("#phone-error").text("");
+                    return true;
+                }
+            }
+    
+            // Function to validate date of birth
+            function validateDateOfBirth() {
+                var dob = $("#dob").val();
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(dob)) {
+                    $("#dob-error").text("Date of birth should be in YYYY-MM-DD format.");
+                    return false;
+                } else {
+                    $("#dob-error").text("");
+                    return true;
+                }
+            }
+    
+            // Address Line 1 validation
+            $("#add1").keyup(function() {
+                var address1 = $(this).val();
+                if (address1.trim() === "") {
+                    $("#add1-error").text("Address Line 1 is required.");
+                } else {
+                    $("#add1-error").text("");
+                }
+            });
+    
+            // Address Line 2 validation (optional)
+            $("#add2").keyup(function() {
+                var address2 = $(this).val();
+                // You can add any specific validation for Address Line 2 here if needed.
+            });
+    
+            // City validation
+            $("#city").keyup(function() {
+                var city = $(this).val();
+                if (city.trim() === "") {
+                    $("#city-error").text("City is required.");
+                } else {
+                    $("#city-error").text("");
+                }
+            });
+    
+            // State / Province validation
+            $("#state").keyup(function() {
+                var state = $(this).val();
+                if (state.trim() === "") {
+                    $("#state-error").text("State / Province is required.");
+                } else {
+                    $("#state-error").text("");
+                }
+            });
+    
+            // Country validation
+            $("#country").keyup(function() {
+                var country = $(this).val();
+                if (country.trim() === "") {
+                    $("#country-error").text("Country is required.");
+                } else {
+                    $("#country-error").text("");
+                }
+            });
+    
+            // Postal Code validation
+            $("#postalcode").keyup(function() {
+                var postalcode = $(this).val();
+                if (postalcode.trim() === "") {
+                    $("#postalcode-error").text("Postal Code is required.");
+                } else {
+                    $("#postalcode-error").text("");
+                }
+            });
+    
+            // Function to validate the entire form before submission
+            function validateForm() {
+                var isFirstNameValid = validateFirstName();
+                var isLastNameValid = validateLastName();
+                var isPhoneNumberValid = validatePhoneNumber();
+                var isDateOfBirthValid = validateDateOfBirth();
+    
+                // Return false to prevent form submission if any validation fails
+                return isFirstNameValid && isLastNameValid && isPhoneNumberValid && isDateOfBirthValid;
+            }
+    
+            // Attach validation functions to input fields
+            $("#fname").keyup(validateFirstName);
+            $("#lname").keyup(validateLastName);
+            $("#phone").keyup(validatePhoneNumber);
+            $("#dob").keyup(validateDateOfBirth);
+    
+            // Prevent form submission if there are validation errors
+            $("form1").submit(function() {
+                return validateForm();
+            });
+        });
+    </script>
+    
+    
+    <script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="{% static 'assets/js/popper.min.js'%}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+
+<!-- Slick JS -->
+<script src="{% static 'assets/js/slick.js'%}"></script>
+
+<!-- Custom JS -->
+<script src="{% static 'assets/js/script.js'%}"></script>
+ 
+</body>
+</html>
+

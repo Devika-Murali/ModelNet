@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>MY PATIENTS PAGE</title>
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav">
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<ul class="main-nav">
+					<li class="main-nav">
+						<a href="{% url 'doctors_basedoctor' %}">Home</a>
+					</li>
+                    <li class="main-nav">
+						<a href="{% url 'doctors_basedoctor' %}">Detection</a>
+					</li>
+                    <li class="main-nav">
+						<a href="{% url 'doctors_appointments' %}">Appointments</a>
+					</li>
+					<li class="has-submenu" >
+								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+									<li><a href="{% url 'Doctor_profile' %}">My Patients</a></li>
+                                    <li><a href="{% url 'patientprofile' %}">Patient profile</a></li>
+								</ul>
+                                
+							</li>
+						
+							<li class="has-submenu">
+								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+                                    <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
+									<li><a href="{% url 'patientappointment' %}">My Appointments</a></li>
+                                    <li><a href="{% url 'scheduletiming' %}">Schedule Timings</a></li>
+								</ul>
+							</li>
+					{% if user.is_authenticated %}
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<ul class="submenu">
+							<li>{{ user.username }}</li>
+							<li><a href="{% url 'loggout' %}">Logout</li></a>
+						</ul>
+					</li>
+					{% else %}
+					<li><a href="{% url 'login_page' %}">Login</a></li>				
+					{% endif %}
+						</ul>
+					</li>
+
+				</ul>		 
+			</div>		 
+		</nav>
+	</header>
+    <!-- Breadcrumb -->
+			<div class="breadcrumb-bar">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-md-12 col-12">
+							<nav aria-label="breadcrumb" class="page-breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">My Patients</li>
+								</ol>
+							</nav>
+							<h2 class="breadcrumb-title">My Patients</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Breadcrumb -->
+	<!-- Page Content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar"> 
+                </div>
+                <div class="col-md-7 col-lg-8 col-xl-9">
+                
+                    <div class="row row-grid">
+                        {% for user in users %}
+                        {% if not user.is_superuser and not user.is_staff %}   
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="card widget-profile pat-widget-profile">
+                                <div class="card-body">
+                                    <div class="pro-widget-content">
+                                        <div class="profile-info-widget">
+                                            <a href="patient-profile.html" class="booking-doc-img">
+                                                <img src="{{ user.userprofile.profile_pic }}" alt="User Image">
+                                            </a>
+                                            <div class="profile-det-info">
+                                                <h3><a href="patient-profile.html">{{ user.userprofile.name }}</a></h3>
+                                                
+                                                <div class="patient-details">
+                                                    <h5><b>Email :</b> {{ user.email }}</h5>
+                                                    <h5 class="mb-0">Place:<i class="fas fa-map-marker-alt"></i> {{ user.userprofile.place }}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="patient-info">
+                                        <ul>
+                                            <li>Phone <span>{{ user.userprofile.phone_number }}</span></li>
+                                            <li>Age <span>{{ user.userprofile.age }} Years, {{ user.userprofile.gender  }}</span></li>
+                                            <li>Blood Group <span>{{ user.userprofile.blood_group }}</span></li>
+
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        {% comment %} <a href="{% url 'edit_records' user.id %}" class="btn btn-primary">Edit Medical Records</a> {% endcomment %}
+										<a href="{% url 'editrecords' user.userprofile.id %}"class="btn btn-primary">Edit Records</a><br><br>
+										<a href="{% url 'doctors_testresult'  %}"class="btn btn-primary">Add Test Results</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}   
+                        {% endfor %}
+ 
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>		
+    <!-- /Page Content -->
+<script src="{% static 'assets/js/jquery.min.js'%}" ></script>
+
+<!-- Bootstrap Core JS -->
+<script src="{% static 'assets/js/popper.min.js'%}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+<!-- Slick JS -->
+<script src="{% static 'assets/js/slick.js'%}"></script>
+<!-- Custom JS -->
+<script src="{% static 'assets/js/script.js'%}"></script>
+</body>
+</html>
+	<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'assets/js/popper.min.js'%}">
+	</script>
+	<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>	
+	<!-- Slick JS -->
+	<script src="{% static 'assets/js/slick.js'%}"></script>	
+	<!-- Custom JS -->
+	<script src="{% static 'assets/js/script.js'%}"></script>
+</body>
+</html>
+
