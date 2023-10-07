@@ -46,10 +46,8 @@ urlpatterns = [
     path('patient_bookappointment/', views.patient_bookappointment, name='patient_bookappointment'), 
     path('patient_medicalhistory/', views.patient_medicalhistory, name='patient_medicalhistory'),  
     path('doctors_appointments/',views.doctors_appointments,name='doctors_appointments'),
-    path('doctors_timeslot/',views.doctors_timeslot,name='doctors_timeslot'),
     path('doctors_timeslotdisplay/',views.doctors_timeslotdisplay,name='doctors_timeslotdisplay'),
     path('doctors_testresult/',views.doctors_testresult,name='doctors_testresult'),
-    path('doctors_changepass/', views.doctors_changepass, name='doctors_changepass'),
 
     path('Doctor_patienthistory/',views.Doctor_patienthistory,name='Doctor_patienthistory'),
     path('delete_specialization/', views.delete_specialization, name='delete_specialization'),

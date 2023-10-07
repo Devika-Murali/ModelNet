@@ -202,7 +202,7 @@ select:focus {
                 <select id="appointmentDate" name="appointmentDate" class="form-control" required>
                     <option value="" disabled selected>Select a date</option>
                     {% for date in date_options %}
-                        <option value="{{ date }}" >{{ date }}</option>
+                        <option value="{{ date }}">{{ date }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -211,11 +211,14 @@ select:focus {
                 <label for="appointmentTime">Preferred Time of Appointment:</label>
                 <select id="appointmentTime" name="appointmentTime" class="form-control" required>
                     <option value="" disabled selected>Select a time</option>
-                    {% for option in time_options %}
+                    {% for time in time_options %}
                         <option value="{{ option.id }}">{{ option.text }}</option>
                     {% endfor %}
                 </select>
             </div>
+            
+        
+    
             <div class="form-group">
                 <label for="symptoms">Reason for Appointment:</label>
                 <textarea id="symptoms" name="symptoms" rows="4" class="form-control" required></textarea>
@@ -226,6 +229,7 @@ select:focus {
             </div>
         </form>
     </div>
+    
     <script src="{% static 'assets/js/jquery.min.js'%} " ></script>
 
 	<!-- Bootstrap Core JS -->

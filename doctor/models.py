@@ -49,7 +49,9 @@ class Docprofile(models.Model):
     postalcode = models.CharField(max_length=100, null=True, blank=True)
     services = models.TextField( null=True, blank=True)
     specialist = models.ForeignKey(Specialization, on_delete=models.CASCADE,  null=True, blank=True)  # Reference to the category
+
     def __str__(self):
+
         return self.name
 # class MedicalRecord(models.Model):
 #     diagnosis_date = models.DateField()
@@ -139,16 +141,15 @@ class Certification(models.Model):
     )
 from django.db import models
 
-class Timeslot(models.Model): 
-    doctor_name = models.ForeignKey(Docprofile, on_delete=models.CASCADE, null=True, blank=True) 
+class Timeslot(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
 
     def __str__(self):
-        # doctor_name_str = str(self.doctor_name.name) if self.doctor_name else "No Doctor Assigned"
-        return f"{doctor_name.user} - {self.date} {self.start_time}-{self.end_time}" 
-            
+        return f"{self.user.email} - {self.date} {self.start_time}-{self.end_time}"
+
 class Appointment(models.Model):
     fullName = models.CharField(max_length=100)
     age = models.IntegerField()
@@ -162,8 +163,9 @@ class Appointment(models.Model):
     email = models.EmailField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, null=True, blank=True) 
-    slot = Timeslot
     symptoms = models.TextField()
+    date = models.DateField()
     slot = models.ForeignKey(Timeslot, on_delete=models.CASCADE, null=True, blank=True)
+
     def __str__(self):
         return self.fullName

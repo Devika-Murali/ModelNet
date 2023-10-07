@@ -59,14 +59,12 @@ def doctors_basedoctor(request):
     })
 
     return render(request,'doctors_basedoctor.html') 
-def doctors_timeslot(request):
-    return render(request,'doctors/timeslot.html')
-def doctors_changepass(request):
-    return render(request,'doctors/changepass.html')  
+# def doctors_timeslot(request):
+#     return render(request,'doctors/timeslot.html')
 def doctors_testresult(request):
-    return render(request,'doctors/testresult.html')
-def doctors_timeslotdisplay(request):
-    return render(request,'doctors/timeslotdisplay.html') 
+    return render(request,'doctors/testresult.html')  
+# def doctors_timeslotdisplay(request):
+#     return render(request,'doctors/timeslotdisplay.html') 
 def testresult(request):
     return render(request,'testresult.html') 
 def doctors_appointments(request):
@@ -653,56 +651,86 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Timeslot, Docprofile  # Import Docprofile model
+from datetime import datetime
+
 
 @login_required
 def add_time_slot(request):
-    try:
-        # Attempt to get the Docprofile associated with the logged-in user
-        doctor_profile = request.user.docprofile  # Note lowercase "docprofile"
-
-        if request.method == 'POST':
-            date = request.POST['date']
-            start_time = request.POST['start_time']
-            end_time = request.POST['end_time']
-
-            try:
-                # Create a new Timeslot associated with the doctor's profile
-                Timeslot.objects.create(
-                    doctor_name=doctor_profile,
-                    date=date,
-                    start_time=start_time,
-                    end_time=end_time
-                )
-                messages.success(request, 'Time slot added successfully!')
-            except Exception as e:
-                messages.error(request, f'Error: {e}')
-    except Docprofile.DoesNotExist:
-        # Handle the case where there is no Docprofile associated with the user
-        messages.error(request, 'No Docprofile associated with your account. Please create one.')
-
-    return redirect('view_timeslots')
+    if request.method == 'POST':
+        # Get user from the request (you may need to adjust this depending on your authentication system)
+        user = request.user  # Assuming you have authentication and the user is logged in
+        # doctor_name = user.Docprofile.name
+        # Get data from the form
+        date = request.POST.get('date')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        
+        # Create a new Timeslot object and save it
+        timeslot = Timeslot(user=user, date=date, start_time=start_time, end_time=end_time)
+        timeslot.save()
+        
+        # Optionally, you can add a success message
+        messages.success(request, 'Time slot added successfully')
+        
+        # Redirect to a different page or template
+        return redirect('view_timeslots')  # Replace 'some_success_page' with the actual URL name or path
+        
+    return render(request, 'doctors/timeslot.html')
 
 
 
+
+
+def deactivate_user(request, user_id):
+    # Get the user by ID or return a 404 error if not found
+    user = get_object_or_404(User, id=user_id)
+    
+    # Check if the user is not already inactive
+    if user.is_active:
+        # Deactivate the user
+        user.is_active = False
+        user.save()
+    
+    # Redirect back to the user list or a different page as needed
+    return redirect('admins_registereduser')  # Change to your desired URL name
+
+def activate_user(request, user_id):
+    # Get the user by ID or return a 404 error if not found
+    user = get_object_or_404(User, id=user_id)
+    
+    # Check if the user is not already active
+    if not user.is_active:
+        # Activate the user
+        user.is_active = True
+        user.save()
+    
+    # Redirect back to the user list or a different page as needed
+    return redirect('admins_registereduser') 
+     
+
+
+import logging
+
+logger = logging.getLogger(__name__)
+def count_view(request):
+    # Count the number of doctors and patients
+    doctors_count = Docprofile.objects.count()
+    patients_count = UserProfile.objects.count()
+    # Log the counts for debugging
+    logger.debug(f"Doctors Count: {doctors_count}")
+    logger.debug(f"Patients Count: {patients_count}")
+    # Pass the counts as context variables to the template
+    context = {
+        'doctors_count': doctors_count,
+        'patients_count': patients_count,
+    }
+    return render(request, 'admins_index.html', context)
+    
 from django.shortcuts import render
 from .models import Timeslot, Docprofile
 from django.contrib.auth.decorators import login_required
 
-@login_required
-def view_timeslots(request):
-    doctor_name = request.user.docprofile
-
-    # Retrieve timeslots for the specific doctor
-    timeslots = Timeslot.objects.filter(doctor_name=doctor_name)
-
-    context = {
-        'doctor_name': doctor_name,
-        'timeslots': timeslots,
-    }
-
-    return render(request, 'doctors/timeslotdisplay.html', context)
-
-def book_appointment(request, appointment_id=None):
+def book_appointment(request):
     userprofile = request.user.UserProfile
     doctors = Docprofile.objects.all()
 
@@ -745,96 +773,3 @@ def book_appointment(request, appointment_id=None):
             return render(request, 'bookappointment.html', {'error_message': 'Invalid time format'})
 
     return render(request, 'bookappointment.html', {'doctors': doctors,'userprofile': userprofile,'appointment_id': appointment_id})
-
-        
-
-def get_dates_for_doctor(request):
-    doctor_id = request.GET.get('doctor_id')
-    try:
-        doctor = Docprofile.objects.get(id=doctor_id)
-        slots = Timeslot.objects.filter(doctor=doctor)
-        date_options = [slot.date.strftime('%Y-%m-%d') for slot in slots]
-        return JsonResponse({'date_options': date_options})
-    except Docprofile.DoesNotExist:
-        return JsonResponse({'error_message': 'Doctor not found'})
-
-@login_required
-def get_timeslots_for_date(request):
-    doctor_id = request.GET.get('doctor_id')
-    selected_date = request.GET.get('selected_date')
-
-    try:
-        doctor = Docprofile.objects.get(id=doctor_id)
-        slots = Timeslot.objects.filter(doctor=doctor, date=selected_date)
-        time_options = [{'id': slot.id, 'text': f'{slot.start_time.strftime("%I:%M %p")} - {slot.end_time.strftime("%I:%M %p")}'}
-                        for slot in slots]
-        return JsonResponse({'time_options': time_options})
-    except Docprofile.DoesNotExist:
-        return JsonResponse({'error_message': 'Doctor not found'})
-
-
-
-def deactivate_user(request, user_id):
-    # Get the user by ID or return a 404 error if not found
-    user = get_object_or_404(User, id=user_id)
-    
-    # Check if the user is not already inactive
-    if user.is_active:
-        # Deactivate the user
-        user.is_active = False
-        user.save()
-    
-    # Redirect back to the user list or a different page as needed
-    return redirect('admins_registereduser')  # Change to your desired URL name
-
-def activate_user(request, user_id):
-    # Get the user by ID or return a 404 error if not found
-    user = get_object_or_404(User, id=user_id)
-    
-    # Check if the user is not already active
-    if not user.is_active:
-        # Activate the user
-        user.is_active = True
-        user.save()
-    
-    # Redirect back to the user list or a different page as needed
-    return redirect('admins_registereduser') 
-     
-
-#  patient/ bookapponment
-from django.shortcuts import render
-from .models import Docprofile, Timeslot
-
-def patient_bookappointment(request):
-    # Retrieve a list of doctors from the Docprofile model
-    doctors = Docprofile.objects.all()
-
-    # Retrieve a list of available dates from the Timeslot model
-    date_options = Timeslot.objects.values_list('date', flat=True).distinct()
-
-    # Retrieve a list of available time slots
-    time_options = Timeslot.objects.all()
-
-    context = {
-        'doctors': doctors,
-        'date_options': date_options,
-        'time_options': time_options,
-    }
-
-    return render(request, 'patient/bookappointment.html', context)
-import logging
-
-logger = logging.getLogger(__name__)
-def count_view(request):
-    # Count the number of doctors and patients
-    doctors_count = Docprofile.objects.count()
-    patients_count = UserProfile.objects.count()
-    # Log the counts for debugging
-    logger.debug(f"Doctors Count: {doctors_count}")
-    logger.debug(f"Patients Count: {patients_count}")
-    # Pass the counts as context variables to the template
-    context = {
-        'doctors_count': doctors_count,
-        'patients_count': patients_count,
-    }
-    return render(request, 'admins_index.html', context)
