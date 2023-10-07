@@ -95,8 +95,11 @@
 								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
-									<li><a href="{% url 'patientappointment' %}">My Appointments</a></li>
-                                    <li><a href="{% url 'scheduletiming' %}">Schedule Timings</a></li>
+									<li><a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a></li>
+                                    <li><a href="{% url 'doctors_timeslot' %}">Doctors Time Slot</a></li>
+									<li><a href="{% url 'view_timeslots' %}">Show  Time Slot</a></li>
+                                    <li><a href="{% url 'doctors_changepass	' %}">Change Password</a></li>
+                                    
 								</ul>
 							</li>
 					{% if user.is_authenticated %}

@@ -63,9 +63,9 @@
 					{% comment %} <li class="active">
 						<a href="{% url 'doctors_basedoctor' %}">Detections</a>
 					</li> {% endcomment %}
-					<li class="main-nav">
+					{% comment %} <li class="main-nav">
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
-					</li>
+					</li> {% endcomment %}
                     <li class="main-nav">
 						<a href="{% url 'doctors_appointments' %}"class="nav-link">Appointments</a>
 					</li>
@@ -82,9 +82,9 @@
 								<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a></li>
-									
-                                    <li><a href="{% url 'scheduletiming' %}"class="nav-link">Schedule Timings</a></li>
-									<li><a href="{% url 'doctors_changepass	' %}">Change Password</a></li>
+                                    <li><a href="{% url 'doctors_timeslot' %}">Doctors Time Slot</a></li>
+									<li><a href="{% url 'view_timeslots' %}">Show  Time Slot</a></li>
+									<li><a href="{% url 'view_timeslots' %}">Change Password</a></li>
 								</ul>
 							</li>
 					{% if user.is_authenticated %}
@@ -104,36 +104,30 @@
 				</ul>		 
 			</div>		 
 		</nav>
-        <body>
-            <h1>Add Time Slots </h1>
-            <form method="POST" action="{% url 'add_time_slot' %}">
-				{% csrf_token %}
-				<div class="form-group">
-					<label for="doctor_name">Doctor Name:</label>
-					<input type="text" id="doctor_name" name="doctor_name" value="{{ request.user.email }}" readonly>
-				</div>
-				<div class="form-group">
-					<label for="date">Date:</label>
-					<input type="date" id="date" name="date" required>
-				</div>
-				<div class="form-group">
-					<label for="start_time">Start Time:</label>
-					<input type="time" id="start_time" name="start_time" required>
-				</div>
-				<div class="form-group">
-					<label for="end_time">End Time:</label>
-					<input type="time" id="end_time" name="end_time" required>
-				</div>
-				
-				<!-- Add more date-time slots as needed -->
-				
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-			
-			
-        </body>
-	  
-	
+	</header>
+    <div class="card services-card">
+        <div class="card-body">
+            <h4 class="card-title">Change Password</h4>
+            <div class="form-group">
+                <label>Old Password</label>
+                <input type="password" class="form-control" name="old_password">
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" class="form-control" name="reset_password">
+            </div>
+            <div class="form-group">
+                <label>Confirm New Password</label>
+                <input type="password" class="form-control" name="confirm_reset_password">
+            </div>
+        </div>
+    </div>
+    
+    <div class="submit-section submit-btn-bottom">
+        <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+    </div>
+
+
 <script src="{% static 'assets/js/jquery.min.js'%}" ></script>
 
 <!-- Bootstrap Core JS -->

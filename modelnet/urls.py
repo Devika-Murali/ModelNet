@@ -49,6 +49,7 @@ urlpatterns = [
     path('doctors_timeslot/',views.doctors_timeslot,name='doctors_timeslot'),
     path('doctors_timeslotdisplay/',views.doctors_timeslotdisplay,name='doctors_timeslotdisplay'),
     path('doctors_testresult/',views.doctors_testresult,name='doctors_testresult'),
+    path('doctors_changepass/', views.doctors_changepass, name='doctors_changepass'),
 
     path('Doctor_patienthistory/',views.Doctor_patienthistory,name='Doctor_patienthistory'),
     path('delete_specialization/', views.delete_specialization, name='delete_specialization'),

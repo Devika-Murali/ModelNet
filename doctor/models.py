@@ -49,9 +49,7 @@ class Docprofile(models.Model):
     postalcode = models.CharField(max_length=100, null=True, blank=True)
     services = models.TextField( null=True, blank=True)
     specialist = models.ForeignKey(Specialization, on_delete=models.CASCADE,  null=True, blank=True)  # Reference to the category
-
     def __str__(self):
-
         return self.name
 # class MedicalRecord(models.Model):
 #     diagnosis_date = models.DateField()
@@ -148,8 +146,9 @@ class Timeslot(models.Model):
     end_time = models.TimeField()
 
     def __str__(self):
-        doctor_name_str = str(self.doctor_name.name) if self.doctor_name else "No Doctor Assigned"
-        return f"{doctor_name_str} - {self.date} {self.start_time}-{self.end_time}"     
+        # doctor_name_str = str(self.doctor_name.name) if self.doctor_name else "No Doctor Assigned"
+        return f"{doctor_name.user} - {self.date} {self.start_time}-{self.end_time}" 
+            
 class Appointment(models.Model):
     fullName = models.CharField(max_length=100)
     age = models.IntegerField()

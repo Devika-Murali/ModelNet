@@ -61,8 +61,10 @@ def doctors_basedoctor(request):
     return render(request,'doctors_basedoctor.html') 
 def doctors_timeslot(request):
     return render(request,'doctors/timeslot.html')
+def doctors_changepass(request):
+    return render(request,'doctors/changepass.html')  
 def doctors_testresult(request):
-    return render(request,'doctors/testresult.html')  
+    return render(request,'doctors/testresult.html')
 def doctors_timeslotdisplay(request):
     return render(request,'doctors/timeslotdisplay.html') 
 def testresult(request):
