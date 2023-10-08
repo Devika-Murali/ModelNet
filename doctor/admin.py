@@ -13,5 +13,9 @@ admin.site.register(Certification)
 
 from .models import PatientInfo  
 admin.site.register(PatientInfo)
-from .models import Timeslot  
-admin.site.register(Timeslot)
+from .models import Slots  
+admin.site.register(Slots)
+
+from .models import TimeSlot 
+admin.site.register(TimeSlot)
+

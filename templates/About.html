@@ -8,260 +8,154 @@
 	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
 	<!-- title -->
-	<title>About</title>
+	<title>HOME-PAGE</title>
 
-	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">
-	<!-- google font -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<!-- fontawesome -->
-	<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
-	<!-- owl carousel -->
-	<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.cs' %}s">
-	<!-- magnific popup -->
-	<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
-	<!-- animate css -->
-	<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
-	<!-- mean menu css -->
-	<link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
-	<!-- main style -->
-	<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
-	<!-- responsive -->
-	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+	<style>
+		
+		.section-header {
+			
+			color: white;
+			padding: 20px;
+		}
+		
+		.sub-title {
+			font-style: italic;
+		}
+		
+		.section-images img {
+			
+			max-width: 100%;
+			height: auto;
+			margin: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+	</style>
+
 </head>
-<body>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav">
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<ul class="main-nav">
+					<li class="active">
+						<a href="index-2.html">Home</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'bookscreening' %}">About</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'bookscreening' %}">Book For screening</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'patient_bookappointment' %}">Book Appointment</a>
+					</li>
+					<li class="main-nav">
+						<a href="">Testimonials</a>
+					
+					
+					
+					<li class="login-link">
+						<a href="{% url 'login_page' %}">Login / Signup</a>
+					</li>
+				</ul>		 
+			</div>		 
+			<ul class="nav header-navbar-rht">
+				<li class="nav-item contact-item">
+					<div class="header-contact-img">
+						<i class="far fa-hospital"></i>							
+					</div>
+					<div class="header-contact-detail">
+						<p class="contact-header">Contact</p>
+						<p class="contact-info-header"> +1 315 369 5943</p>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link header-login" href="{% url 'login_page' %}">login / Signup </a>
+				</li>
+			</ul>
+		</nav>
+	</header>
 	
-	{% comment %} <!--PreLoader-->
-    <div class="loader">
-        <div class="loader-inner">
-            <div class="circle"></div>
+	<section class="section section-specialities">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>About Us</h2>
+                <h1>ColonCare Medical Center</h1>
+                <p class="sub-title">Your partner in comprehensive colon health and cancer care.</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <p>ColonCare stands as a testament to our unwavering commitment to revolutionize colon health and cancer care, offering a seamless and integrated solution for patients, doctors, and administrators alike.</p>
+                    <p>Our meticulously designed web-based system empowers administrators with a robust suite of tools, enabling them to effortlessly oversee and enhance the operational aspects of the center.</p>
+                    <p>Patients are at the heart of our platform, benefiting from an intuitive interface that simplifies their healthcare journey, facilitates informed decision-making, and ensures the secure sharing of critical medical information.</p>
+                    <p>ColonCare empowers healthcare providers by streamlining appointment management, allowing doctors to efficiently review patient lists, manage appointments, and maintain up-to-date professional profiles.</p>
+                    <p>With a strong emphasis on user-centricity, ColonCare optimizes the overall efficiency of healthcare delivery within colon cancer centers, ultimately enhancing the experiences of patients and healthcare professionals alike.</p>
+                </div>
+            </div>
         </div>
-    </div>
-    <!--PreLoader Ends--> {% endcomment %}
+    </section>
+
+    <!-- Add images -->
+    <section class="section section-images">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-4">
+					<img src="{% static 'assets/img/about2.png' %}" alt="Image 1">
+				</div>
+				<div class="col-md-4">
+					<img src="{% static 'assets/img/Home.png' %}" alt="Image 2">
+				</div>
+				<div class="col-md-4">
+					<img src="{% static 'assets/img/about3.jpg' %}" alt="Image 3">
+				</div>
+			</div>
+		</div>
+	</section>
 	
-	<!-- header -->
-	<div class="top-header-area" id="sticker">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-sm-12 text-center">
-					<div class="main-menu-wrap">
-						<!-- logo -->
-						<div class="site-logo">
-							<a href="index.html">
-								<img src="assets/img/logo.png" alt="">
-							</a>
-						</div>
-						<!-- logo -->
-
-						<!-- menu start -->
-						<nav class="main-menu">
-							<ul>
-								<li ><a href="{% url 'Home' %}">Home</a></li>
-								</li>
-								<li><a href="{% url 'About' %}">About</a></li>
-								<li><a href="#">Detections</a>
-									<ul class="sub-menu">
-										<li><a href="{% url 'Model' %}">Model Creation</a></li>
-										<li><a href="{% url 'Preprocessing' %}">Preprocessing</a></li>
-										<li><a href="{% url 'Training' %}">Training</li></a>
-										<li><a href="{% url 'Validation' %}">Validation</a></li>
-										<li><a href="{% url 'Deployment' %}">Deployment</a> </li>
-									</ul>
-								</li>
-								
-								<li><a href="contact.html">Contact</a></li>
-								{% if user.is_authenticated %}
-								<li><a href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle"></i></a>
-									<ul class="sub-menu">
-										<li>{{ user.username }}</li>
-										<li><a href="{% url 'profile' %}">Profile</li></a>
-										<li><a href="{% url 'loggout' %}">Logout</li></a>
-									</ul>
-								</li>
-								{% else %}
-								<li><a href="{% url 'login_page' %}">Login</a></li>
-							
-								{% endif %}
-                        
-								
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end header -->
-</nav>
-						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-						<div class="mobile-menu"></div>
-						<!-- menu end -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end header -->
-
-	
-	
-	<!-- breadcrumb-section -->
-	<div class="breadcrumb-section breadcrumb-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="breadcrumb-text">
-						<p>Shaping the Future of Healthcare</p>
-						<h1>About Us</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end breadcrumb section -->
-
-	<!-- featured section -->
-	<div class="feature-bg" >
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-7">
-					<div class="featured-text">
-						<h2 class="pb-3">Why <span class="orange-text">ModelNet</span></h2>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 mb-4 mb-md-5">
-								<div class="list-box d-flex">
-									<div class="list-icon">
-										<i class="fas fa-shipping-fast"></i>
-									</div>
-									<div class="content">
-										<h3>Early Detection and Diagnosis</h3>
-										<p>A polyp detection system's primary benefit lies in its capacity to identify polyps at an early stage, mitigating the risk of progression to severe conditions like colorectal cancer and improving patient outcomes through timely intervention and treatment.</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 mb-5 mb-md-5">
-								<div class="list-box d-flex">
-									<div class="list-icon">
-										<i class="fas fa-money-bill-alt"></i>
-									</div>
-									<div class="content">
-										<h3>Improved Accuracy and Consistency</h3>
-										<p>Polyp detection systems, leveraging advanced algorithms and deep learning techniques, offer high-precision and consistent identification of polyps within endoscopic images, mitigating the potential for human error and ensuring the detection of subtle or challenging-to-spot polyps in examinations.</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 mb-5 mb-md-5">
-								<div class="list-box d-flex">
-									<div class="list-icon">
-										<i class="fas fa-briefcase"></i>
-									</div>
-									<div class="content">
-										<h3>Time and Cost Savings</h3>
-										<p>Automating polyp detection in healthcare settings not only results in time and cost savings but also enables doctors and medical professionals to efficiently validate the system's findings, redirecting their efforts toward complex cases, and offers the potential for less invasive and cost-effective treatment options due to early detection.</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="list-box d-flex">
-									<div class="list-icon">
-										<i class="fas fa-sync-alt"></i>
-									</div>
-									<div class="content">
-										<h3>Enhanced Patient Care</h3>
-										<p>A polyp detection system, by enabling early detection and precise diagnosis, enhances overall patient care through timely interventions, lowered complication risks, increased treatment success rates, and bolstered patient confidence and satisfaction due to the use of advanced diagnostic technology by healthcare providers.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end featured section -->
-
-	{% comment %} <!-- team section -->
-	<div class="mt-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="section-title">
-						<h3>Our <span class="orange-text">Team</span></h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-4 col-md-6">
-					<div class="single-team-item">
-						<div class="team-bg team-bg-1"></div>
-						<h4>Jimmy Doe <span>Farmer</span></h4>
-						<ul class="social-link-team">
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="single-team-item">
-						<div class="team-bg team-bg-2"></div>
-						<h4>Marry Doe <span>Farmer</span></h4>
-						<ul class="social-link-team">
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
-					<div class="single-team-item">
-						<div class="team-bg team-bg-3"></div>
-						<h4>Simon Joe <span>Farmer</span></h4>
-						<ul class="social-link-team">
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end team section --> {% endcomment %}
-
-	
-
-	<!-- logo carousel -->
-	<div class="logo-carousel-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="logo-carousel-inner">
-						<div class="single-logo-item">
-							<img src="assets/img/company-logos/1.png" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="assets/img/company-logos/2.png" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="assets/img/company-logos/3.png" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="assets/img/company-logos/4.png" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="assets/img/company-logos/5.png" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end logo carousel -->
-
+		
+		  
+		
 
 	
 	

@@ -141,14 +141,22 @@ class Certification(models.Model):
     )
 from django.db import models
 
-class Timeslot(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)
-    date = models.DateField()
+# class Timeslot(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)
+#     date = models.DateField()
+#     start_time = models.TimeField()
+#     end_time = models.TimeField()
+
+#     def __str__(self):
+#         return f"{self.user.email} - {self.date} {self.start_time}-{self.end_time}"
+class Slots(models.Model):
+    doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE)
+    date = models.DateField(null=True,blank=True)
     start_time = models.TimeField()
     end_time = models.TimeField()
-
+    
     def __str__(self):
-        return f"{self.user.email} - {self.date} {self.start_time}-{self.end_time}"
+        return f"Slot for Dr. {self.user.name} on {self.date} at {self.start_time}-{self.end_time}"
 
 class Appointment(models.Model):
     fullName = models.CharField(max_length=100)
@@ -165,7 +173,14 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, null=True, blank=True) 
     symptoms = models.TextField()
     date = models.DateField()
-    slot = models.ForeignKey(Timeslot, on_delete=models.CASCADE, null=True, blank=True)
+    slot = models.ForeignKey(Slots, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.fullName
+
+class TimeSlot(models.Model):
+    date = models.DateField()
+    time = models.TimeField()
+
+    def __str__(self):
+        return f"{self.date} - {self.time}"

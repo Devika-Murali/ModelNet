@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colon Cancer Doctor Appointment Form</title>
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+    <!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
 	
 	<!-- Fontawesome CSS -->
 	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
@@ -18,129 +22,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <style>
-       body{
-        background-image: url('../img/Home.jpg');
-                margin: 0;
-            padding: 0;
-       }
-         h1, form {
-            
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 632px; /* Increase the max-width to your desired value */
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-        }
-        /* Center align the h1 */
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* Style form groups */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        /* Style labels */
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        /* Style form elements with focus and hover effects */
-input[type="text"]:focus,
-input[type="date"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-textarea:focus,
-select:focus {
-    border-color: #007BFF;
-    outline: none;
-}
-
-input[type="text"]:hover,
-input[type="date"]:hover,
-input[type="email"]:hover,
-input[type="tel"]:hover,
-textarea:hover,
-select:hover {
-    border-color: #0056b3;
-}
-input:invalid,
-select:invalid,
-textarea:invalid {
-    border-color: #dc3545;
-}
-label[for]:before {
-    content: "*";
-    color: #dc3545;
-    margin-right: 5px;
-}
-button[type="submit"]:focus,
-button[type="submit"]:hover {
-    background-color: #0056b3;
-    outline: none;
-}
-input[type="radio"],
-input[type="checkbox"] {
-    margin-right: 5px;
-    vertical-align: middle;
-    padding: 0;
-}
-.error-message {
-    color: #dc3545;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-
-.gender-group label {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-
-.success-message {
-    color: #28a745;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-    background-color: #fff;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6"><polygon points="0,0 12,0 6,6"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-}
-
-/* Style the select element when focused */
-select:focus {
-    border-color: #007BFF;
-}
-
-    </style>
 </head>
-
 <body>
+   
     <div class="container">
         <h1>Doctor Appointment Request</h1>
         <form action="submit.php" method="POST" class="needs-validation" novalidate>
@@ -181,12 +65,7 @@ select:focus {
                 <label for="email">Email Address:</label>
                 <input type="email" id="email" name="email" class="form-control" required>
             </div>
-            
-        
-            <!-- Date Dropdown -->
-           
-        
-            <!-- Time Dropdown -->
+          
             <div class="form-group">
                 <label for="doctor">Select a Doctor:</label>
                 <select id="doctor" name="doctor" class="form-control" required>
@@ -202,7 +81,7 @@ select:focus {
                 <select id="appointmentDate" name="appointmentDate" class="form-control" required>
                     <option value="" disabled selected>Select a date</option>
                     {% for date in date_options %}
-                        <option value="{{ date }}">{{ date }}</option>
+                        <option value="{{ date.date }}">{{ date.date }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -229,11 +108,11 @@ select:focus {
             </div>
         </form>
     </div>
-    
-    <script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+   
 
 	<!-- Bootstrap Core JS -->
 	<script src="{% static 'assets/js/popper.min.js'%}">
+    <script src="{% static 'assets/js/jquery.min.js'%} " ></script>
 	</script>
 	<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
 	
@@ -243,124 +122,8 @@ select:focus {
 	<!-- Custom JS -->
 	<script src="{% static 'assets/js/script.js'%}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {% comment %} <script>
-        $(document).ready(function() {
-            // Handle doctor selection change
-            $('#doctor').change(function() {
-                var doctorId = $(this).val();
-                if (doctorId) {
-                    $.ajax({
-                        url: '/get_available_dates/',  // Replace with your actual URL
-                        data: {'doctor_id': doctorId},
-                        dataType: 'json',
-                        success: function(data) {
-                            // Populate date dropdown
-                            var dateDropdown = $('#appointmentDate');
-                            dateDropdown.empty();
-                            dateDropdown.append('<option value="" disabled selected>Select a date</option>');
-                            $.each(data.dates, function(index, date) {
-                                dateDropdown.append('<option value="' + date + '">' + date + '</option>');
-                            });
-
-                            // Populate time dropdown
-                            var timeDropdown = $('#appointmentTime');
-                            timeDropdown.empty();
-                            timeDropdown.append('<option value="" disabled selected>Select a time</option>');
-                            $.each(data.times, function(index, time) {
-                                timeDropdown.append('<option value="' + time + '">' + time + '</option>');
-                            });
-                        },
-                        error: function(xhr) {
-                            console.log(xhr.status + ': ' + xhr.statusText);
-                        }
-                    });
-                }
-            });
-        });
-    </script> {% endcomment %}
-
-    {% comment %} <script>
-        $(document).ready(function () {
-            $("#doctor").change(function () {
-                var doctor_id = $(this).val();
     
-                // Send an AJAX request to get available dates for the selected Ashaworker
-                $.ajax({
-                    url: "{% url 'get_dates_for_doctor' %}",
-                    data: { 'doctor_id': doctor_id },
-                    dataType: 'json',
-                    success: function (data) {
-                        var dateSelect = $("#date");
-                        dateSelect.empty().append('<option value="" selected>Select a Date</option>');
-                        $.each(data.date_options, function (index, value) {
-                            dateSelect.append($('<option>', {
-                                value: value,
-                                text: value
-                            }));
-                        });
-                    },
-                    error: function (data) {
-                        console.log(data.error_message);
-                    }
-                });
-            });
     
-            $("#date").change(function () {
-                var doctor_id = $("#doctor").val();
-                var selected_date = $(this).val();
-    
-                // Send an AJAX request to get available time slots for the selected Ashaworker and date
-                $.ajax({
-                    url: "{% url 'get_timeslots_for_date' %}",
-                    data: { 'doctor_id': doctor_id, 'selected_date': selected_date },
-                    dataType: 'json',
-                    success: function (data) {
-                        var timeSelect = $("#time");
-                        timeSelect.empty().append('<option value="" selected>Select a Time Slot</option>');
-                        $.each(data.time_options, function (index, value) {
-                            timeSelect.append($('<option>', {
-                                value: value.id,
-                                text: value.text
-                            }));
-                        });
-                    },
-                    error: function (data) {
-                        console.log(data.error_message);
-                    }
-                });
-            });
-        });
-    </script> {% endcomment %}
-    <script>
-        $(document).ready(function () {
-            $("#doctor").change(function () {
-                var doctor_id = $(this).val();
-        
-                // Send an AJAX request to get available time slots for the selected doctor
-                $.ajax({
-                    url: "/get_timeslots_for_date/",  // Replace with the correct URL
-                    data: { 'doctor_id': doctor_id },
-                    dataType: 'json',
-                    success: function (data) {
-                        var timeSelect = $("#appointmentTime");
-                        timeSelect.empty().append('<option value="" disabled selected>Select a Time Slot</option>');
-                        $.each(data.time_options, function (index, value) {
-                            timeSelect.append($('<option>', {
-                                value: value.id,
-                                text: value.text
-                            }));
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(xhr.responseText);  // Log any AJAX request errors
-                    }
-                });
-            });
-        });
-        
-        
-    
-</script>
 </body>
 </html>
 

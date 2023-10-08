@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login as auth_login,logout,get_user_model
-from .models import UserProfile,Docprofile,Specialization,Certification,Timeslot
+from .models import UserProfile,Docprofile,Specialization,Certification
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
@@ -24,8 +24,7 @@ def About(request):
     return render(request,'About.html')  
 def basepatient(request):
     return render(request,'basepatient.html')
-def bookscreening(request):
-    return render(request,'bookscreening.html')
+
 def doctors_basedoctor(request):
 
     existing_certification = Certification.objects.filter(user=request.user).first()
@@ -88,8 +87,7 @@ def admins_patientlist(request):
 
     # Pass the list of patients to the template
     return render(request, 'admins/patientlist.html', {'users': patients})
-# def patient_bookappointment(request):
-#     return render(request, 'patient/bookappointment.html')
+
 def admins_appointmentlist(request):
     return render(request, 'admins/appointmentlist.html')
 
@@ -628,54 +626,35 @@ def doctor_list(request):
 
 #     return render(request, 'timeslotdisplay.html', {'time_slots': time_slots})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Timeslot, Docprofile  # Import Docprofile model
+from .models import  Docprofile  # Import Docprofile model
 from datetime import datetime
 
 
-@login_required
-def add_time_slot(request):
-    if request.method == 'POST':
-        # Get user from the request (you may need to adjust this depending on your authentication system)
-        user = request.user  # Assuming you have authentication and the user is logged in
-        # doctor_name = user.Docprofile.name
-        # Get data from the form
-        date = request.POST.get('date')
-        start_time = request.POST.get('start_time')
-        end_time = request.POST.get('end_time')
+# @login_required
+# def add_time_slot(request):
+#     if request.method == 'POST':
+#         # Get user from the request (you may need to adjust this depending on your authentication system)
+#         user = request.user  # Assuming you have authentication and the user is logged in
+#         # doctor_name = user.Docprofile.name
+#         # Get data from the form
+#         date = request.POST.get('date')
+#         start_time = request.POST.get('start_time')
+#         end_time = request.POST.get('end_time')
         
-        # Create a new Timeslot object and save it
-        timeslot = Timeslot(user=user, date=date, start_time=start_time, end_time=end_time)
-        timeslot.save()
+#         # Create a new Timeslot object and save it
+#         timeslot = Timeslot(user=user, date=date, start_time=start_time, end_time=end_time)
+#         timeslot.save()
         
-        # Optionally, you can add a success message
-        messages.success(request, 'Time slot added successfully')
+#         # Optionally, you can add a success message
+#         messages.success(request, 'Time slot added successfully')
         
-        # Redirect to a different page or template
-        return redirect('view_timeslots')  # Replace 'some_success_page' with the actual URL name or path
+#         # Redirect to a different page or template
+#         return redirect('view_timeslots')  # Replace 'some_success_page' with the actual URL name or path
         
-    return render(request, 'doctors/timeslot.html')
+#     return render(request, 'doctors/timeslot.html')
 
 
 
@@ -725,51 +704,111 @@ def count_view(request):
         'patients_count': patients_count,
     }
     return render(request, 'admins_index.html', context)
-    
+
 from django.shortcuts import render
-from .models import Timeslot, Docprofile
+from .models import Slots, Docprofile
 from django.contrib.auth.decorators import login_required
 
-def book_appointment(request):
-    userprofile = request.user.UserProfile
-    doctors = Docprofile.objects.all()
+# def patient_bookappointment(request):
+#     userprofile = request.user.UserProfile
+#     doctors = Docprofile.objects.all()
+
+#     if request.method == 'POST':
+#         name = request.POST.get('fullName')
+#         age = request.POST.get('age')
+#         gender = request.POST.get('gender')
+#         phone = request.POST.get('phone')
+#         email = request.POST.get('email')
+#         phone_number = request.POST.get('phone')
+#         doctor = request.POST.get('doctor')
+#         date_id = request.POST.get('appointmentDate')
+#         selected_time_slot = request.POST.get('appointmentTime')
+#         symptoms=request.POST.get('symptoms')
+
+#         try:
+#             slot = Timeslot.objects.get(id=selected_time_slot)
+#             doctor = Docprofile.objects.get(id=doctor_id)
+#             user = user.objects.get(id=request.user.id)
+
+#             appointment = Appointment(
+#                 name=name,
+#                 age=age,
+#                 gender=gender,
+#                 phone=phone,
+#                 email=email,
+#                 doctor=doctor,
+#                 user=user,
+#                 slot=slot,
+#                 date=date_id,
+                
+#             )
+#             appointment.save()
+#             return redirect('basedoctor')  # Redirect to a success page
+
+#         except Timeslot.DoesNotExist:
+#             # Handle the case where the selected time slot does not exist
+#             return render(request, 'patient_bookappointment.html', {'error_message': 'Time slot not found'})
+#         except ValueError:
+#             # Handle the case where the selected_time_slot is in an invalid format
+#             return render(request, 'patient_bookappointment.html', {'error_message': 'Invalid time format'})
+
+#     return render(request, 'patient_bookappointment.html', {'doctors': doctors,'userprofile': userprofile,'appointment_id': appointment_id})
+def dr_timeslots(request):
+    # Check if a 'Docs' object exists for the logged-in user
+    try:
+        logged_in_doctor = Docprofile.objects.get(user=request.user)
+    except Docs.DoesNotExist:
+        # Handle the case where a 'Docs' object does not exist for the logged-in user
+        # You can redirect or display an error message as needed
+        return render(request, 'error_template.html', {'error_message': 'Doctor profile not found'})
+
+    # Extract the doctor's name from the 'Name' attribute of the 'Docs' object
+    doctor_name = logged_in_doctor.Name
 
     if request.method == 'POST':
-        name = request.POST.get('fullName')
+        # Retrieve form data from POST request
+        date = request.POST.get('date')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+
+        if start_time:
+            doctor = logged_in_doctor  # Use the 'logged_in_doctor' from your previous code
+            slot = Slots(doctor=doctor, date=date, start_time=start_time, end_time=end_time)
+            slot.save()
+
+            # Optionally, you can add a success message or redirect to another page
+            return render(request, 'doctors/timeslot', {'doctor_name': doctor_name, 'success_message': 'Time slot saved successfully'})
+        else:
+            # Handle the case where 'start_time' is not provided
+            # You can render an error message or take appropriate action
+            return render(request, 'doctors/timeslot', {'doctor_name': doctor_name, 'error_message': 'Please provide a valid start time'})
+
+    # Render the template for both GET and POST requests
+    return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name})
+def bookscreening(request):
+    if request.method == 'POST':
+        # Retrieve form data from request.POST
+        name = request.POST.get('name')
+        email = request.POST.get('email')
         age = request.POST.get('age')
         gender = request.POST.get('gender')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        doctor = request.POST.get('doctor')
-        date_id = request.POST.get('appointmentDate')
-        selected_time_slot = request.POST.get('appointmentTime')
+        comments = request.POST.get('comments')
 
-        try:
-            slot = Timeslot.objects.get(id=selected_time_slot)
-            doctor = Docprofile.objects.get(id=doctor_id)
-            user = user.objects.get(id=request.user.id)
+        # Create and save the form data to the database
+        form_data = FormData(
+            name=name,
+            email=email,
+            age=age,
+            gender=gender,
+            comments=comments
+        )
+        form_data.save()
 
-            appointment = Appointment(
-                name=name,
-                age=age,
-                gender=gender,
-                phone=phone,
-                email=email,
-                doctor=doctor,
-                user=user,
-                slot=slot,
-                date=date_id,
-                
-            )
-            appointment.save()
-            return redirect('basedoctor')  # Redirect to a success page
+        # Redirect to a success page or perform other actions
+        return redirect('bookscreening.html')  # Replace 'success_page' with your success URL
+    
+    return render(request,'bookscreening.html')
 
-        except Timeslot.DoesNotExist:
-            # Handle the case where the selected time slot does not exist
-            return render(request, 'bookappointment.html', {'error_message': 'Time slot not found'})
-        except ValueError:
-            # Handle the case where the selected_time_slot is in an invalid format
-            return render(request, 'bookappointment.html', {'error_message': 'Invalid time format'})
+def patient_bookappointment(request):
+   return render(request, 'patient/bookappointment.html')
 
-    return render(request, 'bookappointment.html', {'doctors': doctors,'userprofile': userprofile,'appointment_id': appointment_id})
