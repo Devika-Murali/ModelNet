@@ -83,8 +83,8 @@
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a></li>
 									<li><a href="{% url 'patientappointment' %}"class="nav-link">My Appointments</a></li>
-                                    <li><a href="{% url 'add_time_slot' %}">Doctors Time Slot</a></li>
-									<li><a href="{% url 'doctors_timeslotdisplay' %}">Show  Time Slot</a></li>
+                                    <li><a href="{% url 'dr_timeslots' %}">Doctors Time Slot</a></li>
+									<li><a href="{% url 'dr_timeslots_shows' %}">Show  Time Slot</a></li>
 									
 								</ul>
 							</li>
@@ -107,31 +107,35 @@
 		</nav>
 	</header>
 	<body>
-		<h1>Added Timeslots</h1>
-		
-		<h2> Name: {{ user.username }}</h2>
-		
-		<table>
-			<thead>
-				<tr>
-					<th>Date</th>
-					<th>Start Time</th>
-					<th>End Time</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for timeslot in timeslots %}
-				<tr>
-					<td>{{ timeslot.date }}</td>
-					<td>{{ timeslot.start_time }}</td>
-					<td>{{ timeslot.end_time }}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+		<div class="container mt-5">
+			<h1 class="text-center">Added Timeslots</h1>
 	
-		{% comment %} <a href="edit_timeslots.html">Edit Timeslots</a> <!-- Link to the page where the doctor can edit timeslots --> {% endcomment %}
-	</body>
+			<!-- You can uncomment this section if needed -->
+			<!-- <h2 class="text-center">Name: {{ user.username }}</h2> -->
+	
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th>Date</th>
+						<th>Start Time</th>
+						<th>End Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for timeslot in time_slots %}
+					<tr>
+						<td>{{ timeslot.date }}</td>
+						<td>{{ timeslot.start_time }}</td>
+						<td>{{ timeslot.end_time }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	
+			<!-- You can uncomment this section if needed -->
+			<!-- <a href="edit_timeslots.html" class="btn btn-primary">Edit Timeslots</a> -->
+	
+		</div>
 	
 	  
 	

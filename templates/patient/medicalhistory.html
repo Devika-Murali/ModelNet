@@ -106,8 +106,96 @@
 			</div>		 
 		</nav>
 	</header>
+	<main class="container mt-5">
+		<div class="row">
+			<!-- Patient Information Card -->
+			<div class="col-md-6">
+				<div class="card shadow mb-4">
+					<div class="card-body">
+						<div class="text-center">
+							<h2 class="card-title text-primary">Patient Information</h2>
+						</div>
+						<div class="patient-info">
+							<div class="row mb-3">
+								<div class="col-4"><strong>Name:</strong></div>
+								<div class="col-8">{{ user.userprofile.name }}</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-4"><strong>Age:</strong></div>
+								<div class="col-8">{{ user.userprofile.age }}</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-4"><strong>Blood Group:</strong></div>
+								<div class="col-8">{{ user.userprofile.blood_group }}</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-4"><strong>Gender:</strong></div>
+								<div class="col-8">{{ user.userprofile.gender }}</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-4"><strong>Contact Number:</strong></div>
+								<div class="col-8">{{ user.userprofile.phone_number }}</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-4"><strong>Email:</strong></div>
+								<div class="col-8">{{ user.userprofile.email }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 	
-    <main>
+			<!-- Medical History Card -->
+			<div class="col-md-6">
+				<div class="card shadow mb-4">
+					<div class="card-body">
+						<div class="text-center">
+							<h2 class="card-title text-primary">Medical History</h2>
+						</div>
+						<!-- Sample entry for a medical condition -->
+						<div class="medical-condition">
+							<h3 class="card-subtitle mb-3">Colon Cancer</h3>
+							<ul class="list-unstyled">
+								<li><strong>Diagnosis Date:</strong> {{ patient_info.diagnosis_date }}</li>
+								<li><strong>Location:</strong> {{ patient_info.cancer_location }}</li>
+								<li><strong>Stage:</strong> {{ patient_info.cancer_stage }}</li>
+								<li><strong>Biopsy Results:</strong> {{ patient_info.biopsy_results }}</li>
+								<li><strong>Oncologist:</strong> {{ patient_info.oncologist_name }}</li>
+							</ul>
+						</div>
+	
+						<!-- Sample entry for allergies -->
+						<div class="medical-condition mt-4">
+							<h3 class="card-subtitle mb-3">Allergies</h3>
+							<ul class="list-unstyled">
+								<li><strong>Allergy:</strong> {{ patient_info.allergy_name }}</li>
+								<li><strong>Severity:</strong> {{ patient_info.allergy_severity }}</li>
+							</ul>
+						</div>
+	
+						<!-- Sample entry for medications -->
+						<div class="medical-condition mt-4">
+							<h3 class="card-subtitle mb-3">Medications</h3>
+							<ul class="list-unstyled">
+								<li><strong>Medication:</strong> {{ patient_info.medication_name }}</li>
+								<li><strong>Dosage:</strong> {{ patient_info.dosage }}</li>
+								<li><strong>Frequency:</strong> {{ patient_info.frequency }}</li>
+								<li><strong>Start Date:</strong> {{ patient_info.start_date }}</li>
+							</ul>
+						</div>
+						
+						<!-- Add more medical history entries as needed -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+	
+	
+	
+	
+    {% comment %} <main>
         <section class="patient-info">
             <!-- Display patient information here -->
             <h2>Patient Information</h2>
@@ -153,8 +241,8 @@
             </div>
             <!-- Add more medical history entries as needed -->
         </section>
-    </main>
-	
+    </main> {% endcomment %}
+
 
 	<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
 

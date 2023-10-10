@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib.auth.decorators import login_required
 from django.contrib import admin
 from django.urls import path, include
 from doctor import views
@@ -76,7 +77,10 @@ urlpatterns = [
     path('deactivate_user/<int:user_id>/', views.deactivate_user, name='deactivate_user'),
     path('activate_user/<int:user_id>/', views.activate_user, name='activate_user'),
     path('count/', views.count_view, name='count_view'),
-
+    path('dr_timeslots',views.dr_timeslots,name="dr_timeslots"),
+    path('dr_timeslots_shows',views.dr_timeslots_shows, name= 'dr_timeslots_shows'),
+    path('get_dates/<int:doctor_id>/', views.get_dates, name='get_dates'),
+    path('get_times/<int:doctor_id>/<str:selected_date>/', views.get_times, name='get_times'),
     path('patient_bookappointment/', views.patient_bookappointment, name='patient_bookappointment'),
    
 ]

@@ -50,9 +50,7 @@ class Docprofile(models.Model):
     services = models.TextField( null=True, blank=True)
     specialist = models.ForeignKey(Specialization, on_delete=models.CASCADE,  null=True, blank=True)  # Reference to the category
 
-    def __str__(self):
 
-        return self.name
 # class MedicalRecord(models.Model):
 #     diagnosis_date = models.DateField()
 #     cancer_stage = models.CharField(max_length=255)
@@ -156,7 +154,7 @@ class Slots(models.Model):
     end_time = models.TimeField()
     
     def __str__(self):
-        return f"Slot for Dr. {self.user.name} on {self.date} at {self.start_time}-{self.end_time}"
+        return f"Slot for Dr. {self.doctor.name} on {self.date} at {self.start_time}-{self.end_time}"
 
 class Appointment(models.Model):
     fullName = models.CharField(max_length=100)
@@ -170,17 +168,12 @@ class Appointment(models.Model):
     phone = models.CharField(max_length=15)
     email = models.EmailField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-    doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, null=True, blank=True) 
+    doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, related_name='appointments') 
     symptoms = models.TextField()
     date = models.DateField()
-    slot = models.ForeignKey(Slots, on_delete=models.CASCADE, null=True, blank=True)
+    slot = models.ForeignKey(Slots, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.fullName
 
-class TimeSlot(models.Model):
-    date = models.DateField()
-    time = models.TimeField()
 
-    def __str__(self):
-        return f"{self.date} - {self.time}"
