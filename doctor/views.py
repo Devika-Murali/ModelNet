@@ -708,7 +708,7 @@ def count_view(request):
     return render(request, 'admins_index.html', context)
 
 from django.shortcuts import render
-from .models import Slots, Docprofile
+from .models import Slots, Docprofile,Appointment
 from django.contrib.auth.decorators import login_required
 
 @login_required
@@ -725,33 +725,34 @@ def patient_bookappointment(request):
         email = request.POST.get('email')
         phone_number = request.POST.get('phone')
         doctor_id = request.POST.get('doctor')
-        date_id = request.POST.get('appointmentDate')
-        selected_time_slot = request.POST.get('appointmentTime')
         symptoms=request.POST.get('symptoms')
+        appdate=request.POST.get('appdate')
+        apptime=request.POST.get('apptime')
 
         try:
-            slot = Slots.objects.get(id=selected_time_slot)
             doctor = Docprofile.objects.get(id=doctor_id)
-            user = user.objects.get(id=request.user.id)
+            user = User.objects.get(id=request.user.id)
 
             appointment = Appointment(
-                name=name,
+                fullName=name,
                 age=age,
                 gender=gender,
                 phone=phone,
                 email=email,
                 doctor=doctor,
                 user=user,
-                slot=slot,
-                date=date_id,
+                
+
+                app_date=appdate,
+                app_time=apptime,
                 
             )
             appointment.save()
             return redirect('basepatient')  # Redirect to a success page
 
-        except Slots.DoesNotExist:
-            # Handle the case where the selected time slot does not exist
-            return render(request, 'patient/bookappointment.html', {'error_message': 'Time slot not found'})
+        # except Slots.DoesNotExist:
+        #     # Handle the case where the selected time slot does not exist
+        #     return render(request, 'patient/bookappointment.html', {'error_message': 'Time slot not found'})
         except ValueError:
             # Handle the case where the selected_time_slot is in an invalid format
             return render(request, 'patient/bookappointment.html', {'error_message': 'Invalid time format'})

@@ -1,136 +1,208 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Book an Appointment</title>
-    <!-- Include Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            background-image: url(' https://www.eye-care-hospital.com/images/slide-2.jpg'); /* Replace with your background image URL */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: #fff; /* Text color */
-        }
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
-        .container {
-            background-color: rgba(0, 0, 0, 0.7); /* Background color with transparency */
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
+	<!-- title -->
+	<title>PATIENT-PAGE</title>
 
-        .form-label {
-            font-weight: bold;
-        }
-
-        .form-control {
-            background-color: rgba(255, 255, 255, 0.1); /* Input field background color with transparency */
-            color: #fff; /* Input text color */
-        }
-
-        .btn-primary {
-            background-color: #007bff; /* Primary button color */
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3; /* Button color on hover */
-        }
-    </style>
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+<style>
+</style>
 </head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav custom-width">
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<ul class="main-nav">
+					<li class="active">
+						<a href="{% url 'basepatient' %}">Home</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'finddoctor' %}">Find a Doctor</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'patient_bookappointment' %}">Book Appointment</a>
+					</li>
+					<li class="has-submenu">
+								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+									<li><a href="{% url 'patient_medicalhistory' %}">Medical History</a></li>
+									<li><a href="{% url 'testresult' %}">Test Results</a></li>
+									<li><a href="{% url 'patientbooking' %}">Prescriptions</a></li>
+									<li><a href="{% url 'testresult' %}">Surgery Records</a></li>
+									<li><a href="{% url 'testresult' %}">My Health Summary</a></li>
+								</ul>
+								
+							</li>	
+					
+							<li class="has-submenu">
+								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+                                    <li><a href="{% url 'patientprofileset' %}">Profile Settings</a></li>
+									<li><a href="{% url 'patientprofileset' %}">Change Password</a></li>
+									<li><a href="{% url 'patientbooking' %}">My Appointments</a></li>
+                                    
+								</ul>
+							</li>
+					{% if user.is_authenticated %}
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<ul class="submenu">
+							<li><a>{{ user.username }}</li></a>
+							<li><a href="{% url 'loggout' %}">Logout</li></a>
+						</ul>
+					</li>
+					{% else %}
+					<li><a href="{% url 'login_page' %}">Login</a></li>				
+					{% endif %}
+						</ul>
+					</li>
+
+				</ul>		 
+			</div>		 
+		</nav>
+	</header>
 <body>
     <div class="container">
-        <h1 class="mt-5">Book an Appointment</h1>
-        <form method="POST" >
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Address:</label>
-                <input type="text" class="form-control" id="address" name="address" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="place" class="form-label">Place:</label>
-                <input type="text" class="form-control" id="place" name="place" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="dob" class="form-label">Date of Birth:</label>
-                <input type="date" class="form-control" id="dob" name="dob" required>
-            </div>
-            <div class="mb-3">
-                <label for="gender" class="form-label">Gender:</label>
-                <select class="form-select" id="gender" name="gender">
-                    <option value="Male" {% if user_profile.gender == 'Male' %} selected {% endif %}>Male</option>
-                    <option value="Female" {% if user_profile.gender == 'Female' %} selected {% endif %}>Female</option>
-                    <option value="Others" {% if user_profile.gender == 'Other' %} selected {% endif %}>Others</option>
-                </select>
-            </div>
-
-             
-
-            <div class="mb-3">
-                <label for="mobile" class="form-label">Mobile Number:</label>
-                <input type="text" class="form-control" id="mobile" name="mobile" required>
-            </div>
-
-
-            <div class="mb-3">
-                <label for="allergy" class="form-label">Do you have allergies?</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="allergy" id="allergy_yes" value="Yes" required>
-                    <label class="form-check-label" for="allergy_yes">Yes</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="allergy" id="allergy_no" value="No" required>
-                    <label class="form-check-label" for="allergy_no">No</label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="reason" class="form-label">Reason for Consultation:</label>
-                <textarea class="form-control" id="reason" name="reason" required></textarea>
-            </div> 
-            
-            <div class="mb-3">
-                <label for="doctor" class="form-label">Select a Doctor:</label>
-                <select class="form-select" id="doctor" name="doctor" required>
-                    <option value="" disabled>Select a Doctor</option>
-                    {% for doctor in doctors %}
-                        <option  value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}</option>
-                    {% endfor %}
-                 
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Select a Date:</label>
-                <select class="form-select" id="date" name="date" required>
-                   
-                    <option value="" >Select a Date</option>
-                    {% for date in date_options %}
-                        <option value="{{ date.date }}">{{ date.date }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="time" class="form-label">Select a Time Slot:</label>
-                <select class="form-select" id="time" name="time" required>
-                    <option value="" disabled selected>Select a Time Slot</option>
-                    {% for option in time_options %}
-                        <option value="{{ option.id }}">{{ option.text }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            
-                      
-            
-            <button type="submit" class="btn btn-primary">Book Appointment</button>
-        </form>
-
+        
+        <div class="container">
+            <div class="container">
+                <div class="container">
+                    <div class="container">
+                        <form method="POST" class="needs-validation p-4 border rounded shadow-lg bg-light" novalidate>
+                            {% csrf_token %}
+                            <h2 class="mb-4 text-center">Book an Appointment</h2>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ user.userprofile.name }}" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your name.
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="text" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your email.
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="place" class="form-label">Place:</label>
+                                    <input type="text" class="form-control" id="place" name="place" value="{{ user.userprofile.place }}"required>
+                                    <div class="invalid-feedback">
+                                        Please enter your place.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="age" class="form-label">Age:</label>
+                                    <input type="number" class="form-control" id="age" name="age" value="{{ user.userprofile.age }}" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your age.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="gender" class="form-label">Gender:</label>
+                                    <input type="text" class="form-control" id="gender" name="gender" value="{{ user.userprofile.gender }}" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your gender.
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="mobile" class="form-label">Mobile Number:</label>
+                                    <input type="text" class="form-control" id="mobile" name="mobile"value="{{ user.userprofile.phone_number }}" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your mobile number.
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="reason" class="form-label">Reason for Consultation:</label>
+                                    <textarea class="form-control" id="reason" name="reason" required></textarea>
+                                    <div class="invalid-feedback">
+                                        Please enter your reason for consultation.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="doctor" class="form-label">Select a Doctor:</label>
+                                    <select class="form-select" id="doctor" name="doctor" required>
+                                        <option value="" disabled>Select a Doctor</option>
+                                        {% for doctor in doctors %}
+                                            <option  value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a doctor.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date" class="form-label">Select a Date:</label>
+                                    <input type="date" class="form-control" name="appdate" id="appdate">
+                                    <div class="invalid-feedback">
+                                        Please select a date.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="time" class="form-label">Select a Time Slot:</label>
+                                    <select class="form-select" name="apptime" id="apptime" required>
+                                        <!-- JavaScript will populate the options here -->
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a time slot.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary mt-4">Book Appointment</button>
+                            </div>
+                        </form>
+                    </div>
         <!-- Display error messages if needed -->
         {% if error_message %}
         <div class="alert alert-danger mt-3">{{ error_message }}</div>
@@ -153,64 +225,57 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.min.js"></script>
 <!-- Include jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Add this script after including jQuery -->
 <script>
-    // Function to update the date dropdown based on the selected doctor
-    $("#doctor").change(function() {
-        var selectedDoctor = $(this).val();
-        if (selectedDoctor) {
-            // Send an AJAX request to fetch dates for the selected doctor
-            $.ajax({
-                url: '/get_dates/' + selectedDoctor + '/',  // Replace with your URL
-                type: 'GET',
-                success: function(data) {
-                    // Update the date dropdown with fetched data
-                    $("#date").html(data.date_options);
-                }
-            });
-        } else {
-            // If no doctor is selected, reset the date dropdown
-            $("#date").html('<option value="" disabled selected>Select a Date</option>');
+    function validateDate() {
+        var selectedDate = new Date(document.getElementById('appdate').value);
+        var currentDate = new Date();
+        var oneWeekLater = new Date(currentDate);
+        oneWeekLater.setDate(currentDate.getDate() + 7);
+    
+        if (selectedDate < currentDate || selectedDate > oneWeekLater) {
+            alert("Please select a date within the next week.");
+            return false;
         }
-    });
-
-      
-$("#date").change(function() {
-    var selectedDate = $(this).val();
-    var selectedDoctor = $("#doctor").val();
-    if (selectedDate && selectedDoctor) {
-        // Send an AJAX request to fetch time slots for the selected date and doctor
-        $.ajax({
-            url: `/get_times/${selectedDoctor}/${selectedDate}/`,  // Use template literals to construct the URL
-            type: 'GET',
-            success: function(data) {
-                // Update the time dropdown with fetched data
-                var timeDropdown = $("#time");
-                timeDropdown.empty();  // Clear existing options
-                timeDropdown.append('<option value="" disabled selected>Select a Time Slot</option>');
-                $.each(data.time_options, function(index, option) {
-                    timeDropdown.append($('<option>', {
-                        value: option.id,
-                        text: option.text
-                    }));
-                });
-            },
-            error: function() {
-                // Handle any AJAX errors here
-                console.log("Error fetching time slots.");
-            }
-        });
-    } else {
-        // If no date or doctor is selected, reset the time dropdown
-        $("#time").html('<option value="" disabled selected>Select a Time Slot</option>');
+        
+        return true;
     }
-});
-
-
-
-</script>
-
+    
+    // Disable dates outside the one-week range
+    var currentDate = new Date();
+    var oneWeekLater = new Date(currentDate);
+    oneWeekLater.setDate(currentDate.getDate() + 7);
+    
+    var dateInput = document.getElementById('appdate');
+    dateInput.min = currentDate.toISOString().split('T')[0]; // Set min date
+    dateInput.max = oneWeekLater.toISOString().split('T')[0]; // Set max date
+    function generateTimeSlots() {
+        var select = document.getElementById('apptime');
+        var startTime = 9 * 60; // 9:00 AM in minutes since midnight
+        var endTime = 17 * 60; // 5:00 PM in minutes since midnight
+        
+        for (var i = startTime; i < endTime; i += 15) {
+            var hours = Math.floor(i / 60);
+            var minutes = i % 60;
+            var time = (hours < 10 ? '0' : '') + hours + ':' + (minutes === 0 ? '00' : minutes);
+            var option = new Option(time, time);
+            
+            // Group time slots by hour
+            var groupLabel = (hours < 10 ? '0' : '') + hours + ':00';
+            var optgroup = select.querySelector('optgroup[label="' + groupLabel + '"]');
+            if (!optgroup) {
+                optgroup = document.createElement('optgroup');
+                optgroup.label = groupLabel;
+                select.appendChild(optgroup);
+            }
+            
+            optgroup.appendChild(option);
+        }
+    }
+    
+    // Call the function to generate time slots when the page loads
+    generateTimeSlots();
+    
+    </script>
 
         
         

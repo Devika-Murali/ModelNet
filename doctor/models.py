@@ -49,7 +49,7 @@ class Docprofile(models.Model):
     postalcode = models.CharField(max_length=100, null=True, blank=True)
     services = models.TextField( null=True, blank=True)
     specialist = models.ForeignKey(Specialization, on_delete=models.CASCADE,  null=True, blank=True)  # Reference to the category
-
+    booked_time_slots = models.JSONField(default=dict)
 
 # class MedicalRecord(models.Model):
 #     diagnosis_date = models.DateField()
@@ -137,6 +137,7 @@ class Certification(models.Model):
         choices=APPROVAL_CHOICES,
         default=PENDING,
     )
+ 
 from django.db import models
 
 # class Timeslot(models.Model):
@@ -157,23 +158,24 @@ class Slots(models.Model):
         return f"Slot for Dr. {self.doctor.name} on {self.date} at {self.start_time}-{self.end_time}"
 
 class Appointment(models.Model):
-    fullName = models.CharField(max_length=100)
-    age = models.IntegerField()
+    fullName = models.CharField(max_length=100,null=True, blank=True)
+
+    age = models.IntegerField(null=True, blank=True)
     GENDER_CHOICES = [
         ('Male', 'Male'),
         ('Female', 'Female'),
         ('Other', 'Other'),
     ]
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    phone = models.CharField(max_length=15)
-    email = models.EmailField()
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES,null=True, blank=True)
+    phone = models.CharField(max_length=15,null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, related_name='appointments') 
-    symptoms = models.TextField()
-    date = models.DateField()
-    slot = models.ForeignKey(Slots, on_delete=models.CASCADE, default=1)
+    symptoms = models.TextField(null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
+    app_date = models.DateField(null=True, blank=True)
+    app_time = models.TimeField(null=True, blank=True)
 
-    def __str__(self):
-        return self.fullName
+ 
 
 

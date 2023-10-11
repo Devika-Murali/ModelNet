@@ -293,8 +293,12 @@
 										<div class="row form-row">
 											<div class="col-12 col-sm-6">
 												<div class="form-group">
-													<label>Specialization Name</label>
-													<input type="text" class="form-control" name="specialization_name" required>
+													<label for="specialization_name">Specialization Name</label>
+													<input type="text" class="form-control" id="specialization_name" name="specialization_name" required
+														minlength="3" maxlength="50" pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
+													<div class="invalid-feedback">
+														Please enter a valid specialization name (3-50 characters, only letters and spaces).
+													</div>
 												</div>
 											</div>
 											<div class="col-12">
@@ -302,6 +306,7 @@
 											</div>
 										</div>
 									</form>
+									
 									<!-- /Add Specialization Form -->
 									<div class="table-responsive">
 										<table class="datatable table table-hover table-center mb-0">

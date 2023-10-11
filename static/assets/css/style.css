@@ -6734,3 +6734,7 @@ html.menu-opened body {
 		margin-bottom: 10px;
 	}
 }
+.custom-width {
+    width: 100%; /* Set the desired width, e.g., 100% */
+    /* Add any other custom styles if needed */
+}
