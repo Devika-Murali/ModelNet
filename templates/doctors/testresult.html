@@ -5,46 +5,79 @@
     <meta charset="UTF-8">
     <title>Enter Test Results</title>
     <!-- Add your CSS styles or include external CSS files here -->
+    <style>
+        /* Custom CSS for enhancing the form appearance */
+        .container {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+
+        .page-title {
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h1>Enter Test Results</h1>
-    
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <!-- Patient Information (You can customize these fields) -->
-        <label for="patient_name">Patient Name:</label>
-        <input type="text" id="patient_name" name="patient_name" required><br>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="page-title">Enter Test Results</h3>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="patient_name">Patient Name:</label>
+                                <input type="text" class="form-control" id="patient_name" name="patient_name" required>
+                            </div>
 
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" min="1" required><br>
+                            <div class="form-group">
+                                <label for="age">Age:</label>
+                                <input type="number" class="form-control" id="age" name="age" min="1" required>
+                            </div>
 
+                            <div class="form-group">
+                                <label for="test_name">Test Name:</label>
+                                <input type="text" class="form-control" id="test_name" name="test_name" required>
+                            </div>
 
-        <!-- Test Result Fields (You can customize and add more fields as needed) -->
-        <label for="test_name">Test Name:</label>
-        <input type="text" id="test_name" name="test_name" required><br>
+                            <div class="form-group">
+                                <label for="test_result">Test Result:</label>
+                                <input type="text" class="form-control" id="test_result" name="test_result" required>
+                            </div>
 
-        <label for="test_result">Test Result:</label>
-        <input type="text" id="test_result" name="test_result" required><br>
+                            <div class="form-group">
+                                <label for="test_date">Test Date:</label>
+                                <input type="date" class="form-control" id="test_date" name="test_date" required>
+                            </div>
 
-        
+                            <div class="form-group">
+                                <label for="doctor_comments">Comments:</label>
+                                <textarea class="form-control" id="doctor_comments" name="doctor_comments" rows="4"></textarea>
+                            </div>
 
-        <label for="test_date">Test Date:</label>
-        <input type="date" id="test_date" name="test_date" required><br>
+                            <div class="form-group">
+                                <label for="next_steps">Next Steps:</label>
+                                <textarea class="form-control" id="next_steps" name="next_steps" rows="4"></textarea>
+                            </div>
 
-        <!-- Doctor's Comments -->
-        <label for="doctor_comments">Comments:</label>
-        <textarea id="doctor_comments" name="doctor_comments" rows="4" cols="50"></textarea><br>
-
-        <!-- Next Steps -->
-        <label for="next_steps">Next Steps:</label>
-        <textarea id="next_steps" name="next_steps" rows="4" cols="50"></textarea><br>
-
-        <!-- Add more fields as needed -->
-
-        <!-- Submit Button -->
-        <button type="submit">Submit</button>
-    </form>
-
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'path-to-your-bootstrap-js.js' %}"></script>
 </body>
 </html>
+
+
+
+
+

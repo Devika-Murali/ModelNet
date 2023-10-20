@@ -47,8 +47,7 @@
 		
 	<!-- Header -->
 	<header class="header">
-		<nav class="navbar navbar-expand-lg header-nav">
-			<div class="navbar-header">
+        <nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">			<div class="navbar-header">
 				<a id="mobile_btn" href="javascript:void(0);">
 					<span class="bar-icon">
 						<span></span>
@@ -57,13 +56,16 @@
 					</span>
 				</a>
 				<a href="index-2.html" class="navbar-brand logo">
-					<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
 				</a>
 			</div>
 			<div class="main-menu-wrapper">
 				<div class="menu-header">
 					<a href="index-2.html" class="menu-logo">
-						<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
 					</a>
 					<a id="menu_close" class="menu-close" href="javascript:void(0);">
 						<i class="fas fa-times"></i>
@@ -73,12 +75,12 @@
 					<li class="active">
 						<a href="{% url 'doctors_basedoctor' %}">Home</a>
 					</li>
-					<li class="active">
+					{% comment %} <li class="active">
 						<a href="{% url 'doctors_basedoctor' %}">Detections</a>
 					</li>
 					<li class="main-nav">
 						<a href="{% url 'doctors_basedoctor' %}">Refer a Patient</a>
-					</li>
+					</li> {% endcomment %}
                     <li class="main-nav">
 						<a href="{% url 'doctors_appointments' %}">Appointments</a>
 					</li>
@@ -86,7 +88,7 @@
 								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
 									<li><a href="{% url 'mypatients' %}">My Patients</a></li>
-                                    <li><a href="{% url 'patientprofile' %}">Patients Medical Records</a></li>
+                                    {% comment %} <li><a href="{% url 'patientprofile' %}">Patients Medical Records</a></li> {% endcomment %}
 								</ul>
                                 
 							</li>
@@ -95,16 +97,14 @@
 								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
-									<li><a href="{% url 'patientappointment' %}">My Appointments</a></li>
-                                    <li><a href="{% url 'scheduletiming' %}">Schedule Timings</a></li>
+									<li><a href="{% url 'patientappointment' %}">Change Password</a></li>
 								</ul>
 							</li>
 					{% if user.is_authenticated %}
 					<li class="has-submenu">
 						<a href="#"><i class="fa fa-user-circle"></i></a>
 						<ul class="submenu">
-							<li>{{ user.username }}</li>
-							<li><a href="{% url 'profile' %}">Profile</li></a>
+                            <li><a>{{ user.username }}</li></a>
 							<li><a href="{% url 'loggout' %}">Logout</li></a>
 						</ul>
 					</li>

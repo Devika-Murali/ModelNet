@@ -6520,12 +6520,12 @@ html.menu-opened body {
 		z-index: 99;
 	}
 	.navbar-brand.logo {
-		width: 100%;
+		width: 70%;
 		text-align: center;
 		margin-right: 0;
 	}
 	.navbar-brand.logo img {
-		height: 40px;
+		height: 20px;
 	}
 	.search-box form {
 		display: block;

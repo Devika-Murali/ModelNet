@@ -34,7 +34,7 @@
 		
 	<!-- Header -->
 	<header class="header">
-		<nav class="navbar navbar-expand-lg header-nav">
+		<nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">
 			<div class="navbar-header">
 				<a id="mobile_btn" href="javascript:void(0);">
 					<span class="bar-icon">
@@ -63,9 +63,9 @@
 					{% comment %} <li class="active">
 						<a href="{% url 'doctors_basedoctor' %}">Detections</a>
 					</li> {% endcomment %}
-					<li class="main-nav">
+					{% comment %} <li class="main-nav">
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
-					</li>
+					</li> {% endcomment %}
                     <li class="main-nav">
 						<a href="{% url 'doctors_appointments' %}"class="nav-link">Appointments</a>
 					</li>
@@ -82,9 +82,8 @@
 								<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a></li>
-									<li><a href="{% url 'patientappointment' %}"class="nav-link">My Appointments</a></li>
-                                    <li><a href="{% url 'dr_timeslots' %}">Doctors Time Slot</a></li>
-									<li><a href="{% url 'dr_timeslots_shows' %}">Show  Time Slot</a></li>
+									<li><a href="{% url 'patientappointment' %}"class="nav-link">Change Password</a></li>
+                                    
 									
 								</ul>
 							</li>
@@ -140,7 +139,7 @@
 							  <div class="form-group mb-3" style="margin-top: 10px;">
 								<label for="certification_image">Doctor License:</label>
 								<input type="file" id="certification_image" name="certification_image" ="image/*" required>
-								<span id="certification_image_error" class="text-danger"></span>accept
+								<span id="certification_image_error" class="text-danger"></span>
 							  </div>
 							  <div class="form-group mb-3" style="margin-top: 10px;">
 								<label for="owner_name">Doctor Name:</label>

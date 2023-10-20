@@ -19,4 +19,6 @@ admin.site.register(Slots)
 from .models import Appointment  
 admin.site.register(Appointment)
 
+from .models import Payment  
+admin.site.register(Payment)
 

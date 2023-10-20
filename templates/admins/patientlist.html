@@ -231,7 +231,7 @@
 														<th>Name</th>
 														<th>Email</th>
 														<th>Emergency Contact Number</th>
-														<th>Action</th> <!-- Add an action column -->
+														
 													</tr>
 												</thead>
 												<tbody>
@@ -241,11 +241,7 @@
 																<td>{{ user.userprofile.name }}</td>
 																<td>{{ user.email }}</td>
 																<td>{{ user.userprofile.phone_number }}</td>
-																<td>
-																	<!-- Add buttons or actions here, e.g., edit and delete buttons -->
-																	<button class="btn btn-primary btn-sm">Edit</button>
-																	<button class="btn btn-danger btn-sm">Delete</button>
-																</td>
+																
 															</tr>
 														{% endif %}
 													{% endfor %}

@@ -15,6 +15,7 @@ class UserProfile(models.Model):
     state = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     blood_group = models.CharField(max_length=5, null=True, blank=True) 
+    reset_password=models.CharField(max_length=128,null=True,blank=True)
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -26,6 +27,7 @@ class UserProfile(models.Model):
         return self.name
 class Specialization(models.Model):
     specialization_name = models.CharField(max_length=100)
+    status = models.BooleanField(default=False)
 
     def __str__(self):
         return self.specialization_name
@@ -39,7 +41,7 @@ class Docprofile(models.Model):
     fname = models.CharField(max_length=100, null=True, blank=True)
     lname = models.CharField(max_length=100, null=True, blank=True)
     phone = models.CharField(max_length=100, null=True, blank=True)
-    gender = models.CharField(max_length=100, null=True, blank=True)
+    gender = models.CharField(max_length=50, choices=[('Male', 'Male'), ('Female', 'Female'),('Others', 'Others')],null=True, blank=True) 
     dob = models.CharField(max_length=100, null=True, blank=True)
     add1 = models.CharField(max_length=100, null=True, blank=True)
     add2 = models.CharField(max_length=100, null=True, blank=True)
@@ -49,7 +51,7 @@ class Docprofile(models.Model):
     postalcode = models.CharField(max_length=100, null=True, blank=True)
     services = models.TextField( null=True, blank=True)
     specialist = models.ForeignKey(Specialization, on_delete=models.CASCADE,  null=True, blank=True)  # Reference to the category
-    booked_time_slots = models.JSONField(default=dict)
+    reset_password=models.CharField(max_length=128,null=True,blank=True)
 
 # class MedicalRecord(models.Model):
 #     diagnosis_date = models.DateField()
@@ -172,10 +174,26 @@ class Appointment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, related_name='appointments') 
     symptoms = models.TextField(null=True, blank=True)
-    date = models.DateField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     app_date = models.DateField(null=True, blank=True)
     app_time = models.TimeField(null=True, blank=True)
 
  
+
+
+class Payment(models.Model):
+    PAYMENT_STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Success', 'Success'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES, default='Pending')
+    payment_date = models.DateTimeField(auto_now_add=True, null=True)  # Use auto_now_add=True for initial creation
+
+
+    def _str_(self):
+        return f"Payment ID: {self.id}, Status: {self.payment_status}"
 
 

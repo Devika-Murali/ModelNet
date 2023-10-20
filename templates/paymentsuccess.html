@@ -1,0 +1,61 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Successful</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("{% static 'assets/img/paymentsuccess.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .success-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-top: 246px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #20c0f3;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .confirmation-text {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .hospital-logo {
+            max-width: 100px;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-container">
+            
+            <img src="{% static 'assets/img/logo.png' %}" alt="Hospital Logo" class="hospital-logo">
+            <h1 class="success-message">Booking Successful</h1>
+            <div class="confirmation-text">
+                <p>Payment Status: Success</p>
+                <p>Thank you for booking your appointment with us.</p>
+                <p>Your payment was successful, and your appointment is confirmed.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

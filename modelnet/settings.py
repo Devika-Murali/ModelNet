@@ -162,3 +162,8 @@ SOCIALACCOUNT_LOGIN_ON_GET=True
 ACCOUNT_EMAIL_VERIFICATION='none'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+
+
+RAZOR_KEY_ID = 'rzp_test_nr2ytFl0usSC5F'
+RAZOR_KEY_SECRET = 'xkhmafzM1rtPQk5w7E9PDHTS'

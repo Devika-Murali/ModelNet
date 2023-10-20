@@ -1,0 +1,122 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("{% static 'assets/img/paymentconfirm.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .payment-success {
+            color: #20c0f3;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .confirmation-details {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        /* Add Bootstrap classes for styling */
+        .btn-payment {
+            background-color: #20c0f3;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .center-vertically {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .hospital-logo {
+            max-width: 100px;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <p><a href="javascript:history.back()" class="btn btn-secondary">Back</a></p>
+    <div class="container center-vertically">
+        <div class="payment-container">
+            <img src="{% static 'assets/img/logo.png' %}" alt="Hospital Logo" class="hospital-logo">
+
+            <h1 class="payment-success">Payment Confirmation</h1>
+            <div class="confirmation-details">
+                <!-- Add your confirmation details here -->
+                <p>Patient's Name: <span id="patientName"></span></p>
+                <p>Doctor's Name: <span id="doctorname"></span></p>
+                <p>Appointment Date and Time: {{ appointment.app_date|date:"F j, Y" }}, {{ appointment.app_time|time:"P" }}</p>
+                <p>Payment Amount: ₹200</p>
+                <!-- You can include more details here -->
+            </div>
+            <div class="text-center">
+                <!-- Payment Button -->
+                <button class="btn btn-payment btn-lg" id="pay-btn">PAY</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Razorpay's Javascript code. -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            // Enter the Key ID generated from the Dashboard
+            key: "{{ razorpay_merchant_key }}",
+            // Amount is in currency subunits.
+            // Default currency is INR. Hence,
+            // 50000 refers to 50000 paise
+            amount: "{{ razorpay_amount }}",
+            currency: "{{ currency }}",
+            // Your/store name.
+            name: "Dj Razorpay",
+            // Pass the `id` obtained in the response of Step 1
+            order_id: "{{ razorpay_order_id }}",
+            callback_url: "{{ callback_url }}",
+        };
+    
+        // initialise razorpay with the options.
+        var rzp1 = new Razorpay(options);
+    
+        // add event listener to the payment button.
+        document.getElementById("pay-btn").onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+    <script>
+        // JavaScript code to set the user's name
+        document.getElementById('patientName').textContent = "{{ user.userprofile.name }}";
+        document.getElementById('doctorname').textContent = "{{ user.Docprofile.name }}";
+
+    </script>
+</body>
+</html>

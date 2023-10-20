@@ -8,9 +8,10 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
 from .models import PatientInfo 
-from .models import Specialization
+from .models import Specialization,Payment
 from torchvision import transforms
 from django.http import JsonResponse
+
 from django.shortcuts import render
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -67,7 +68,12 @@ def doctors_testresult(request):
 def testresult(request):
     return render(request,'testresult.html') 
 def doctors_appointments(request):
-    return render(request,'doctors/appointments.html')  
+    doctor = Docprofile.objects.filter(user=request.user).first()
+    #   doctor = Docprofile.objects.all()
+    
+    appointments = Appointment.objects.filter(doctor=doctor)
+    print(appointments)
+    return render(request,'doctors/appointments.html',{'appointments': appointments,})  
 def mypatients(request):
     users = User.objects.all()
     return render(request,'mypatients.html', {'users': users})  
@@ -102,7 +108,9 @@ def patient_medicalhistory(request):
     }
     return render(request, 'patient/medicalhistory.html',context)
 def patient_finddoctor(request):
-    return render(request, 'patient/finddoctor.html')
+    doctors = Docprofile.objects.all()
+    print(doctors)
+    return render(request, 'patient/finddoctor.html',{'doctors':doctors})
 def Doctor_patienthistory(request):
     return render(request,'Doctor/patienthistory.html')   
 def patientappointment(request):
@@ -268,8 +276,9 @@ def loggout(request):
 
 
 def profile(request):
+    print("jy")
     user_profile = UserProfile.objects.get(user=request.user)
-
+    print(request.user)
     if request.method == 'POST':
         # Retrieve form data using the correct field names
         fname = request.POST.get('fname')
@@ -283,9 +292,11 @@ def profile(request):
         country = request.POST.get('country')
         blood_group = request.POST.get('blood_group')
         gender = request.POST.get('gender')
-        
+        reset_password = request.POST.get('reset_password')
+        old_password = request.POST.get('old_password')
         # Retrieve profile picture and medical history files
-        profile_pic = request.FILES.get('profile_pic')
+       
+        
         medical_history = request.FILES.get('new_medical_history')
 
         # Update user_profile fields
@@ -297,16 +308,28 @@ def profile(request):
         user_profile.address = address
         user_profile.place = place
         user_profile.state = state
+        if 'profile_pic' in request.FILES:
+            profile_pic = request.FILES.get['profile_pic']
+            user_profile.profile_pic = profile_pic
+            print('got')
         user_profile.country = country
         user_profile.blood_group = blood_group
         user_profile.gender = gender
 
         # Handle profile picture and medical history files
-        if profile_pic:
-            user_profile.profile_pic = profile_pic
+        
         if medical_history:
             user_profile.medical_history = medical_history
-
+        if request.user.check_password(old_password):
+            #  the old password is correct, set the new password
+                request.user.set_password(reset_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)  # Update the session to prevent logging out
+        else:
+            messages.error(request, "Incorrect old password. Password not updated.")
+        
+        
+        user_profile.reset_password = reset_password
         user_profile.save()
         messages.success(request, "Profile updated successfully")
         return redirect('patientprofileset')
@@ -380,8 +403,7 @@ def DoctorProfileView(request):
         doc_profile.reset_password = reset_password
         doc_profile.save()
         request.user.save()
-        docprofile = Docprofile(user=request.user)
-        docprofile.save()
+        
         return redirect('profileset') 
 
 
@@ -463,7 +485,7 @@ def specializations(request):
             messages.success(request, 'Specialization deleted successfully.')
 
     # Get all specializations for displaying in the template
-    specializations = Specialization.objects.all()
+    specializations = Specialization.objects.filter(status=False)
     return render(request, 'admins/specialities.html', {'specializations': specializations})
    
 #patient data
@@ -725,13 +747,23 @@ def patient_bookappointment(request):
         email = request.POST.get('email')
         phone_number = request.POST.get('phone')
         doctor_id = request.POST.get('doctor')
-        symptoms=request.POST.get('symptoms')
-        appdate=request.POST.get('appdate')
-        apptime=request.POST.get('apptime')
-
+        symptoms = request.POST.get('symptoms')
+        appdate = request.POST.get('appdate')
+        apptime = request.POST.get('apptime')
+        
         try:
             doctor = Docprofile.objects.get(id=doctor_id)
             user = User.objects.get(id=request.user.id)
+
+            existing_appointment = Appointment.objects.filter(
+                doctor=doctor,
+                app_date=appdate,
+                app_time=apptime
+            ).first()
+
+            if existing_appointment:
+                error_message = 'Appointment slot is already booked'
+                return render(request, 'patient/bookappointment.html', {'error_message': error_message, 'doctors': doctors})
 
             appointment = Appointment(
                 fullName=name,
@@ -741,24 +773,20 @@ def patient_bookappointment(request):
                 email=email,
                 doctor=doctor,
                 user=user,
-                
-
                 app_date=appdate,
                 app_time=apptime,
-                
             )
             appointment.save()
-            return redirect('basepatient')  # Redirect to a success page
+            return redirect('payment_confirm')  # Redirect to a success page
 
-        # except Slots.DoesNotExist:
-        #     # Handle the case where the selected time slot does not exist
-        #     return render(request, 'patient/bookappointment.html', {'error_message': 'Time slot not found'})
         except ValueError:
             # Handle the case where the selected_time_slot is in an invalid format
             return render(request, 'patient/bookappointment.html', {'error_message': 'Invalid time format'})
 
     return render(request, 'patient/bookappointment.html', {'doctors': doctors})
-from django.http import JsonResponse
+
+
+
 
 def get_dates(request, doctor_id):
     try:
@@ -836,6 +864,12 @@ def dr_timeslots(request):
     # Render the template for both GET and POST requests
     return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name})
 
+from django.shortcuts import render
+
+def admins_bookscreening(request):
+ 
+     return render(request, 'admins/screeningtimeslot.html')
+    
 
 def bookscreening(request):
     if request.method == 'POST':
@@ -872,3 +906,132 @@ def dr_timeslots_shows(request):
     time_slots = Slots.objects.filter(doctor=logged_in_doctor)
     print(time_slots)
     return render(request, 'doctors/timeslotdisplay.html', {'time_slots': time_slots})
+
+
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+from django.http import HttpResponse
+from django.contrib.auth.models import User  # Import the user model you are using
+
+ 
+# authorize razorpay client with API Keys.
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+ 
+from django.shortcuts import render
+from django.conf import settings
+from razorpay import Client as RazorpayClient
+from .models import Appointment, Payment
+
+
+def payment_confirm(request):
+    # Retrieve the appointment instance
+    
+    currency = 'INR'
+    amount = int(200*100)  # Rs. 200
+
+    # Create a Razorpay Order
+    razorpay_order = razorpay_client.order.create(dict(
+        amount=amount,
+        currency=currency,
+        payment_capture='0'
+    ))
+
+    # order id of the newly created order
+    razorpay_order_id = razorpay_order['id']
+    callback_url = '/paymenthandler/'
+
+    # Create a Payment for the appointment
+    payment = Payment.objects.create(
+        user=request.user,
+        payment_amount=amount,  # Specify the payment amount
+        payment_status='Pending',  # Set payment status to "Pending"
+    )
+
+    # Render the success template with the necessary context
+    context = {
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_merchant_key': settings.RAZOR_KEY_ID,
+        'razorpay_amount': amount,
+        'currency': currency,
+        'callback_url': callback_url
+    }
+
+    return render(request, 'payment_confirm.html', context=context)
+
+
+@csrf_exempt
+def paymenthandler(request):
+    if request.method == "POST":
+        try:
+            # Get the payment details from the POST request
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            amount=request.POST.get('razorpay_amount', '')
+
+            # Verify the payment signature
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature,
+
+            }
+            result = razorpay_client.utility.verify_payment_signature(params_dict)
+
+            if result is not None:
+                amount = int(200*100)  # Rs. 200
+
+                # Capture the payment
+                razorpay_client.payment.capture(payment_id, amount)
+
+                # Save payment details to the Payment model
+                # Assuming you have a Payment model defined
+                payment = Payment.objects.create(
+                    user=request.user,  # Assuming you have a logged-in user
+                    payment_amount=amount/100,
+                    payment_status='Success',  # Assuming payment is successful
+                )
+
+                # Redirect to a success page with payment details
+                return redirect('paymentsuccess')  # Replace 'orders' with your actual success page name or URL
+            else:
+                # Signature verification failed
+                return HttpResponse("Payment signature verification failed", status=400)
+        except Exception as e:
+            # Handle exceptions gracefully
+            return HttpResponse(f"An error occurred: {str(e)}", status=500)
+    else:
+        # Handle non-POST requests
+        return HttpResponse("Invalid request method", status=405)
+def paymentsuccess(request):
+    # Perform any necessary actions, such as updating the payment status in your database
+    # You may also retrieve specific payment-related data and user information here
+    
+    return render(request, 'paymentsuccess.html')
+
+
+
+
+
+def delete_specialization(request, specialization_id):
+    # Retrieve the specialization object from the database or return a 404 error if it doesn't exist
+    specialization = get_object_or_404(Specialization, id=specialization_id)
+    specialization.status = True
+    specialization.save()
+    messages.success(request, 'Specialization deleted successfully.')
+    return redirect('admins_specialities')  
+
+
+def display_booked_appointments(request):
+    bookeddoctor = Docprofile.objects.filter(user = request.user)
+    booked_appointments = Appointment.objects.filter(doctor = bookeddoctor)
+   
+
+    context = {
+        'booked_appointments': booked_appointments,
+    }
+
+    return render(request, 'doctors/appointments.html', context)

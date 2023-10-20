@@ -212,7 +212,7 @@
                                         <tbody>
                                             {% for application in seller_applications %}
                                                 <tr>
-                                                    <td>{{ application.doctor_name }}</td>
+                                                    <td>Dr. {{ application.doctor_name }}</td>
                                                     <td>{{ application.specialization }}</td>
                                                     <td>
                                                         {% if application.expiry_date_to < today %}

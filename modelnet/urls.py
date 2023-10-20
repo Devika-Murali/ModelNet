@@ -31,7 +31,6 @@ urlpatterns = [
 
     path('doctors_basedoctor/',views.doctors_basedoctor,name='doctors_basedoctor'),
     path('mypatients/',views.mypatients,name='mypatients'),
-    path('patientprofile/',views.profile,name='patientprofile'),
     path('profileset/',views.profileset,name='profileset'),
     path('admins_index/', views.admins_index, name='admins_index'),
     path('admins_patientlist/', views.admins_patientlist, name='admins_patientlist'),
@@ -39,11 +38,12 @@ urlpatterns = [
     path('admins_specialities', views.specializations, name='admins_specialities'),
     path('admins_registereduser', views.admins_registereduser, name='admins_registereduser'), 
     path('admins_dashlegal', views.dashlegal, name='admins_dashlegal'),
-   
+    path('admins_bookscreening', views.admins_bookscreening, name='admins_bookscreening'), 
+
 
     path('patientappointment/',views.patientappointment,name='patientappointment'),
     path('patientbooking/',views.patientbooking,name='patientbooking'),
-    path('patientprofileset/',views.patientprofileset,name='patientprofileset'),
+    path('patientprofileset/',views.profile,name='patientprofileset'),
     path('profileset',views.DoctorProfileView,name='profileset'),
     path('admins_doctorlist/',views.admins_doctorlist,name='admins_doctorlist'), 
     path('patient_medicalhistory/', views.patient_medicalhistory, name='patient_medicalhistory'),  
@@ -63,14 +63,15 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('logout/', views.loggout, name='loggout'),
-    path('profile', views.profile, name='profile'),
     path('adddoctor/', views.adddoctor, name='adddoctor'),
     path('edituser/<int:user_id>/', views.edituser, name='edituser'),
     path('approve_certification/<int:certification_id>/', views.approve_certification, name='approve_certification'),
     path('reject_certification/<int:certification_id>/', views.reject_certification, name='reject_certification'),
+    
     path('editrecords/<int:patient_id>/', views.submit_medical_history, name='editrecords'),
     path('finddoctor/', views.patient_finddoctor, name='finddoctor'),
     path('edit_specialization/<int:specialization_id>/', views.edit_specialization, name='edit_specialization'),
+    path('delete_specialization/<int:specialization_id>/', views.delete_specialization, name='delete_specialization'),
     path('doctor-list/', views.doctor_list, name='doctor_list'),
     # URL for getting time slots based on selected Ashaworker and date
     # URL for the get_available_dates view to handle AJAX requests
@@ -82,7 +83,11 @@ urlpatterns = [
     path('get_dates/<int:doctor_id>/', views.get_dates, name='get_dates'),
     path('get_times/<int:doctor_id>/<str:selected_date>/', views.get_times, name='get_times'),
     path('patient_bookappointment/', views.patient_bookappointment, name='patient_bookappointment'),
-   
+    path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
+     path('appointments/', views.display_booked_appointments, name='appointments'),
+    path('payment_confirm/', views.payment_confirm, name='payment_confirm'),
+    path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

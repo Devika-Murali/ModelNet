@@ -202,7 +202,7 @@
 								<a href="{% url 'admins_patientlist' %}"><i class="fe fe-users"></i> <span>Patients</span></a>
 							</li>
 							<li> 
-								<a href="{% url 'add_view_timeslots' %}"><i class="fe fe-vector"></i> <span>Screening Timeslots</span></a>
+								<a href="{% url 'admins_bookscreening' %}"><i class="fe fe-vector"></i> <span>Screening Timeslots</span></a>
 							</li>
 							
 						</div>		
@@ -231,7 +231,7 @@
 <div class="card shadow">
     <div class="card-body">
         <h3 class="page-title">Add Timeslot</h3>
-        <form action="{% url 'add_view_timeslots' %}" method="post">
+        <form action="{% url 'admins_bookscreening' %}" method="post">
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-6">

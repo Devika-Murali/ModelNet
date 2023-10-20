@@ -35,7 +35,7 @@
 		
 	<!-- Header -->
 	<header class="header">
-		<nav class="navbar navbar-expand-lg header-nav">
+		<nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">
 			<div class="navbar-header">
 				<a id="mobile_btn" href="javascript:void(0);">
 					<span class="bar-icon">
@@ -44,7 +44,7 @@
 						<span></span>
 					</span>
 				</a>
-				{% comment %} <a href="index-2.html" class="navbar-brand logo">
+				<a href="index-2.html" class="navbar-brand logo">
 					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
 				</a>
 			</div>
@@ -53,9 +53,6 @@
 					<a href="index-2.html" class="menu-logo">
 						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
 					</a>
-					<a id="menu_close" class="menu-close" href="javascript:void(0);">
-						<i class="fas fa-times"></i>
-					</a> {% endcomment %}
 				</div>
 				<ul class="main-nav">
 					<li class="active">
@@ -68,7 +65,6 @@
 								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
 									<li><a href="{% url 'mypatients' %}">My Patients</a></li>
-                                    <li><a href="{% url 'patientprofile' %}">Patient profile</a></li>
 								</ul>
                                 
 							</li>
@@ -77,8 +73,8 @@
 								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
-									<li><a href="{% url 'patientappointment' %}">My Appointments</a></li>
-                                    <li><a href="{% url 'scheduletiming' %}">Schedule Timings</a></li>
+									
+                                    <li><a href="{% url 'scheduletiming' %}">Change Password</a></li>
 								</ul>
 							</li>
 					{% if user.is_authenticated %}
@@ -86,7 +82,6 @@
 						<a href="#"><i class="fa fa-user-circle"></i></a>
 						<ul class="submenu">
 							<li>{{ user.username }}</li>
-							<li><a href="{% url 'profile' %}">Profile</li></a>
 							<li><a href="{% url 'loggout' %}">Logout</li></a>
 						</ul>
 					</li>
@@ -169,17 +164,11 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>First Name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" name="fname" id="fname" value="{{ user.docprofile.fname }}">
+                                                        <input type="text" class="form-control" name="fname" id="fname" value="{{ user.docprofile.name }}">
                                                         <span id="fname-error" class="text-danger"></span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Last Name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" name="lname" id="lname" value="{{ user.docprofile.lname }}">
-                                                        <span id="lname-error" class="text-danger"></span>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Phone Number</label>
@@ -189,12 +178,13 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Gender</label>
-                                                        <select class="form-control select" name="gender" id="gender">
-                                                            <option>Select</option>
-                                                            <option>Male</option>
-                                                            <option>Female</option>
-                                                        </select>
+                                                        <label for="Gender">Gender</label>
+                                                        <select class="form-control" name="gender" id="gender">
+                                                            <option value="" disabled selected>-Select-</option>
+                                                            <option value="Male" {% if studentprofile.gender == 'Male' %}selected{% endif %}>Male</option>
+                                                            <option value="Female" {% if studentprofile.gender == 'Female' %}selected{% endif %}>Female</option>
+                                                            <option value="Others" {% if studentprofile.gender == 'Others' %}selected{% endif %}>Others</option>
+                                                        </select><br>
                                                         <span id="gender-error" class="text-danger"></span>
                                                     </div>
                                                 </div>

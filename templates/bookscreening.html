@@ -145,6 +145,7 @@
                         
                         <li class="login-link">
                             <a href="{% url 'login_page' %}">Login / Signup</a>
+
                         </li>
                     </ul>		 
                 </div>		 
@@ -164,43 +165,63 @@
                 </ul>
             </nav>
         </header>
-    <h1>Cancer Screening Appointment Request</h1>
-    <form action="process_form.php" method="post">
-        <label for="full_name">Full Name:</label>
-        <input type="text" id="full_name" name="full_name" required>
-
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required>
-
-        <div class="gender-container">
-            <span class="gender-label">Gender:</span>
-            <input type="radio" id="male" name="gender" value="Male">
-            <label for="male">Male</label>
-            <input type="radio" id="female" name="gender" value="Female">
-            <label for="female">Female</label>
-            <input type="radio" id="other" name="gender" value="Other">
-            <label for="other">Other</label>
+        <div class="container">
+            <h1 class="mt-4">Cancer Screening Appointment Request</h1>
+            <form action="process_form.php" method="post">
+                <div class="form-group">
+                    <label for="full_name">Full Name:</label>
+                    <input type="text" class="form-control" id="full_name" name="full_name" required>
+                </div>
+        
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" class="form-control" id="age" name="age" required>
+                </div>
+        
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="male" name="gender" value="Male">
+                        <label class="form-check-label" for="male">Male</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="female" name="gender" value="Female">
+                        <label class="form-check-label" for="female">Female</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="other" name="gender" value="Other">
+                        <label class="form-check-label" for="other">Other</label>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                </div>
+        
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+        
+                <div class="form-group">
+                    <label for="preferred_date">Preferred Appointment Date:</label>
+                    <input type="date" class="form-control" id="preferred_date" name="preferred_date">
+                </div>
+        
+                <div class="form-group">
+                    <label for="preferred_time">Preferred Appointment Time:</label>
+                    <input type="time" class="form-control" id="preferred_time" name="preferred_time">
+                </div>
+        
+                <div class="form-group">
+                    <label for="comments">Additional Comments:</label>
+                    <textarea class="form-control" id="comments" name="comments" rows="4"></textarea>
+                </div>
+        
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
-
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email">
-
-        <!-- Add more fields as needed, such as emergency contact, insurance, medical history, etc. -->
-
-        <label for="preferred_date">Preferred Appointment Date:</label>
-        <input type="date" id="preferred_date" name="preferred_date">
-
-        <label for="preferred_time">Preferred Appointment Time:</label>
-        <input type="time" id="preferred_time" name="preferred_time">
-
-        <label for="comments">Additional Comments:</label>
-        <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
-
-        <input type="submit" value="Submit">
-    </form>
 </body>
 
 <script src="{% static 'assets/js/jquery.min.js'%}" ></script>

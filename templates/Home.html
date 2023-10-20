@@ -63,16 +63,14 @@
 					<li class="main-nav">
 						<a href="{% url 'About' %}">About</a>
 					</li>
-					<li class="main-nav">
+					{% comment %} <li class="main-nav">
 						<a href="{% url 'bookscreening' %}">Book For screening</a>
-					</li>
+					</li> {% endcomment %}
 					<li class="main-nav">
 						<a href="{% url 'patient_bookappointment' %}">Book Appointment</a>
 					</li>
 					<li class="main-nav">
 						<a href="">Testimonials</a>
-					
-					
 					
 					<li class="login-link">
 						<a href="{% url 'login_page' %}">Login / Signup</a>
@@ -108,7 +106,7 @@
 						</div>	
 					</div>
 					<div class="button-container text-center">
-						<a href="your-link-here" class="btn btn-primary">Make Appointment</a>
+						<a href="{% url 'patient_bookappointment' %}" class="btn btn-primary">Make Appointment</a>
 					</div>
 				</div>
 			</section>
