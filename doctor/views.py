@@ -151,7 +151,8 @@ def login_page(request):
                 request.session['user_id'] = user.id
                 request.session['username'] = user.email
                 return redirect('basepatient')
-         
+        else:
+            messages.error(request, 'No user found with the provided credentials.')
     return render(request, 'Login.html')
 # 
 # def login_page(request):
@@ -227,7 +228,11 @@ def register(request):
                 user = User.objects.create_user(username=username,email = email,password=password)
                 user_profile=UserProfile(user=user, email=email, name=name)
                 user_profile.save()
+                patient_info=PatientInfo.objects.create(user=user)
                 messages.info(request, "Registered Succesfully")
+                print(user)
+                print(user_profile)
+                print(patient_info)
                 return redirect('login_page')
         else:
             messages.info(request, " ")
@@ -542,9 +547,9 @@ def reject_certification(request, certification_id):
     return redirect('admins_dashlegal')
 
 def submit_medical_history(request,patient_id):
-    print(patient_id)
-    patient = UserProfile.objects.get(pk=patient_id)
-    
+    user = User.objects.get(id=patient_id)
+    patient = UserProfile.objects.get(user=user)
+    patient_info = PatientInfo.objects.get(user=user)
     if request.method == 'POST':
         # Retrieve data from the form
         diagnosis_date = request.POST.get('diagnosis_date')
@@ -558,27 +563,28 @@ def submit_medical_history(request,patient_id):
         frequency = request.POST.get('frequency')
         start_date = request.POST.get('start_date')
         # Create a new instance of the PatientInfo model and save it
-        patient_info = PatientInfo(
            # Associate the data with the patient identified by patient_id
-            user =patient.user,
-            diagnosis_date=diagnosis_date,
-            cancer_stage=cancer_stage,
-            biopsy_results=biopsy_results,
-            oncologist_name=oncologist_name,
-            allergy_name=allergy_name,
-            allergy_severity=allergy_severity,
-            medication_name=medication_name,
-            dosage=dosage,
-            frequency=frequency,
-            start_date=start_date
-        )
+
+        patient_info.diagnosis_date = diagnosis_date
+        patient_info.cancer_stage = cancer_stage
+        patient_info.biopsy_results = biopsy_results
+        patient_info.oncologist_name = oncologist_name
+        patient_info.allergy_name = allergy_name
+        patient_info.allergy_severity = allergy_severity
+        patient_info.medication_name = medication_name
+        patient_info.dosage = dosage
+        patient_info.frequency = frequency
+        patient_info.start_date = start_date
+
+        
         patient_info.save()
         patient.save()
         # Redirect to the 'editrecords' URL after successful submission
         return redirect('mypatients')
+ 
 
     # Handle GET request or invalid submissions here
-    return render(request, 'doctors/editrecords.html')
+    return render(request, 'doctors/editrecords.html',{'patient':patient,'patient_info':patient_info})
 def doctor_list(request):
     # Retrieve a list of doctor objects from the database
     doctors = Docprofile.objects.all()

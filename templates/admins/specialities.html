@@ -54,12 +54,12 @@
 					<i class="fe fe-text-align-left"></i>
 				</a> {% endcomment %}
 				
-				<div class="top-nav-search">
+				{% comment %} <div class="top-nav-search">
 					<form>
 						<input type="text" class="form-control" placeholder="Search here">
 						<button class="btn" type="submit"><i class="fa fa-search"></i></button>
 					</form>
-				</div>
+				</div> {% endcomment %}
 				
 				<!-- Mobile Menu Toggle -->
 				<a class="mobile_btn" id="mobile_btn">
@@ -197,9 +197,7 @@
 							<li> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
-							<li> 
-								<a href="{% url 'admins_patientlist' %}"><i class="fe fe-users"></i> <span>Patients</span></a>
-							</li>
+							
 							
 						</div>		
                 </div>

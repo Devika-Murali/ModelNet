@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="form-group form-focus">
                                     <select id="select_category" name="select_category" class="form-control floating" required>
-                                        <option value="">Select Specialization</option>
+                                        <option value="" disabled selected>Select Specialization</option>
                                         {% for category in categories %}
                                             <option value="{{ category.id }}">{{ category.specialization_name }}</option>
                                         {% endfor %}

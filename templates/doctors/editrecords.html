@@ -175,12 +175,16 @@
                         <section class="medical-history">
                             <h2>Medical History</h2>
                             <div class="form-group">
+                                <label for="patient_name">Name :</label>
+                                <input type="text" id="patient_name" name="patient_name" class="form-control" value="{{ patient.name }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="diagnosis_date">Diagnosis Date:</label>
-                                <input type="date" id="diagnosis_date" name="diagnosis_date" class="form-control">
+                                <input type="date" id="diagnosis_date" name="diagnosis_date" class="form-control"  value="{{ patient_info.diagnosis_date }}">
                             </div>
                             <div class="form-group">
                                 <label for="cancer_stage">Cancer Stage:</label>
-                                <input type="text" id="cancer_stage" name="cancer_stage" class="form-control">
+                                <input type="text" id="cancer_stage" name="cancer_stage" class="form-control" value="{{ patient_info.cancer_stage }}" >
                             </div>
                             <div class="form-group">
                                 <label for="biopsy_results">Biopsy Results:</label>

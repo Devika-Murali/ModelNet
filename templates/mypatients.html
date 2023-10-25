@@ -34,7 +34,8 @@
 		
 	<!-- Header -->
 	<header class="header">
-		<nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">			<div class="navbar-header">
+		<nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">	
+					<div class="navbar-header">
 				<a id="mobile_btn" href="javascript:void(0);">
 					<span class="bar-icon">
 						<span></span>
@@ -57,7 +58,7 @@
 				</div>
 				<ul class="main-nav">
 					<li class="main-nav">
-						<a href="{% url 'doctors_basedoctor' %}">Home</a>
+						<a href="{% url 'doctors_basedoctor' %}" id="basedoctor">Home</a>
 					</li>
                     
                     <li class="main-nav">
@@ -76,7 +77,6 @@
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
 									
-                                    <li><a href="{% url 'scheduletiming' %}">Change Password</a></li>
 								</ul>
 							</li>
 					{% if user.is_authenticated %}
@@ -131,7 +131,7 @@
                                     <div class="pro-widget-content">
                                         <div class="profile-info-widget">
                                             <a href="patient-profile.html" class="booking-doc-img">
-                                                <img src="{{ user.userprofile.profile_pic }}" alt="User Image">
+                                                <img src="{{ user.userprofile.profile_pic.url }}" alt="User Image">
                                             </a>
                                             <div class="profile-det-info">
                                                 <h3><a href="patient-profile.html">{{ user.userprofile.name }}</a></h3>
@@ -152,11 +152,11 @@
                                         </ul>
                                     </div>
                                     <div>
+										
                                         {% comment %} <a href="{% url 'edit_records' user.id %}" class="btn btn-primary">Edit Medical Records</a> {% endcomment %}
-										{% comment %} <a href="{% url 'editrecords' user.userprofile.id %}"class="btn btn-primary">Edit Records</a><br><br> {% endcomment %}
-										<a href="{% url 'editrecords' patient_id=1 %}" class="btn btn-primary">Edit Records</a>
+										<a href="{% url 'editrecords' user.id %}"class="btn btn-primary">Edit Records</a><br><br>
+										{% comment %} <a href="{% url 'editrecords' user.id %}" class="btn btn-primary">Edit Records</a> {% endcomment %}
 
-										<a href="{% url 'doctors_testresult'  %}"class="btn btn-primary">Add Test Results</a>
                                     </div>
                                 </div>
                             </div>

@@ -74,7 +74,6 @@
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
 									
-                                    <li><a href="{% url 'scheduletiming' %}">Change Password</a></li>
 								</ul>
 							</li>
 					{% if user.is_authenticated %}
@@ -82,7 +81,7 @@
 						<a href="#"><i class="fa fa-user-circle"></i></a>
 						<ul class="submenu">
 							<li>{{ user.username }}</li>
-							<li><a href="{% url 'loggout' %}">Logout</li></a>
+							<li><a href="{% url 'loggout' %}" id="logout">Logout</li></a>
 						</ul>
 					</li>
 					{% else %}
@@ -134,7 +133,7 @@
                                     <!-- Profile Picture -->
                                     <div class="card">
                                         <div class="card-body text-center">
-                                            <h4 class="card-title">Profile</h4>
+                                            
                                             <div class="change-avatar">
                                                 <div class="profile-img">
                                                     {% if user.docprofile.profile_pic %}
@@ -148,7 +147,7 @@
                                                         <span><i class="fa fa-upload"></i> Upload Photo</span>
                                                         <input type="file" class="upload" name="profile_pic">
                                                     </div>
-                                                    <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
+                                                    <small class="form-text text-muted">Allowed JPG, GIF or PNG.</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -164,7 +163,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>First Name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" name="fname" id="fname" value="{{ user.docprofile.name }}">
+                                                        <input type="text" class="form-control" name="fname" id="fname" value="{{ user.docprofile.fname }}">
                                                         <span id="fname-error" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -176,18 +175,7 @@
                                                         <span id="phone-error" class="text-danger"></span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="Gender">Gender</label>
-                                                        <select class="form-control" name="gender" id="gender">
-                                                            <option value="" disabled selected>-Select-</option>
-                                                            <option value="Male" {% if studentprofile.gender == 'Male' %}selected{% endif %}>Male</option>
-                                                            <option value="Female" {% if studentprofile.gender == 'Female' %}selected{% endif %}>Female</option>
-                                                            <option value="Others" {% if studentprofile.gender == 'Others' %}selected{% endif %}>Others</option>
-                                                        </select><br>
-                                                        <span id="gender-error" class="text-danger"></span>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-0">
                                                         <label>Date of Birth</label>

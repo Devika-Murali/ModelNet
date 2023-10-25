@@ -82,8 +82,6 @@
 								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'patientprofileset' %}">Profile Settings</a></li>
-									<li><a href="{% url 'patientprofileset' %}">Change Password</a></li>
-									<li><a href="{% url 'patientbooking' %}">My Appointments</a></li>
                                     
 								</ul>
 							</li>
@@ -131,18 +129,7 @@
                 <!-- Profile Sidebar -->
                 <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                     <div class="profile-sidebar">
-                        <div class="widget-profile pro-widget-content">
-                            <div class="profile-info-widget">
-                                
-                                <div class="profile-det-info">
-                                    <h3>Richard Wilson</h3>
-                                    <div class="patient-details">
-                                        <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
-                                        <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         
 
                     </div>
@@ -248,13 +235,13 @@
                                 
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label for="medical_history">Medical History</label>
+                                        <label for="medical_history"></label>
                                         {% if user.userprofile.medical_history %}
                                             <a href="{{ user.userprofile.medical_history.url }}" target="_blank">View Medical History</a>
                                             <br>
                                             <small class="form-text text-muted">To update, you can upload a new file below:</small>
                                         {% else %}
-                                            No medical history uploaded.
+                                            
                                         {% endif %}
                                     </div>
                                 </div>
@@ -281,22 +268,67 @@
 
     </div>		
     <!-- /Page Content -->
-	  
-	
-<script src="{% static 'assets/js/jquery.min.js'%}" ></script>
+    <script>
+        function validateForm() {
+            // Clear previous error messages
+            clearErrors();
+    
+            // Perform validation for each field
+            const mobile = document.getElementById("mobile").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const city = document.getElementById("city").value.trim();
+            const state = document.getElementById("state").value.trim();
+            const country = document.getElementById("country").value.trim();
+    
+            // Validate Mobile (10 digits, no characters)
+            if (!/^\d{10}$/.test(mobile)) {
+                document.getElementById("mobile-error").textContent = "Mobile must be 10 digits with no characters.";
+            }
+    
+            // Validate Address (only characters)
+            if (!/^[A-Za-z\s]+$/.test(address)) {
+                document.getElementById("address-error").textContent = "Address can only contain characters.";
+            }
+    
+            // Validate City (only characters)
+            if (!/^[A-Za-z\s]+$/.test(city)) {
+                document.getElementById("city-error").textContent = "City can only contain characters.";
+            }
+    
+            // Validate State (only characters)
+            if (!/^[A-Za-z\s]+$/.test(state)) {
+                document.getElementById("state-error").textContent = "State can only contain characters.";
+            }
+    
+            // Validate Country (only characters)
+            if (!/^[A-Za-z\s]+$/.test(country)) {
+                document.getElementById("country-error").textContent = "Country can only contain characters.";
+            }
+    
+            // Check if any errors exist
+            if (
+                !/^\d{10}$/.test(mobile) ||
+                !/^[A-Za-z\s]+$/.test(address) ||
+                !/^[A-Za-z\s]+$/.test(city) ||
+                !/^[A-Za-z\s]+$/.test(state) ||
+                !/^[A-Za-z\s]+$/.test(country)
+            ) {
+                // If there are errors, prevent form submission
+                return false;
+            }
+    
+            // If no errors, submit the form
+            document.getElementById("user-profile-form").submit();
+        }
+    
+        function clearErrors() {
+            const errorElements = document.getElementsByClassName("text-danger");
+            for (const errorElement of errorElements) {
+                errorElement.textContent = "";
+            }
+        }
+    </script>
 
-<!-- Bootstrap Core JS -->
-<script src="{% static 'assets/js/popper.min.js'%}"></script>
-<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
-
-<!-- Slick JS -->
-<script src="{% static 'assets/js/slick.js'%}"></script>
-
-<!-- Custom JS -->
-<script src="{% static 'assets/js/script.js'%}"></script>
-
-</body>
-</html>
 	<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
 
 	<!-- Bootstrap Core JS -->

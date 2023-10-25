@@ -25,11 +25,54 @@
 		
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
 		
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+		<style>
+			i.fa.fa-user-circle {
+				color: black;
+			}
+			/* Style for the user menu */
+		.user-menu {
+    list-style: none;
+}
+
+/* Style for the user icon */
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+/* Style for the user welcome message */
+.user-welcome {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Style for the dropdown */
+.dropdown-menu {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+		</style>
+		
     </head>
     <body>
 	
@@ -54,12 +97,12 @@
 					<i class="fe fe-text-align-left"></i>
 				</a> {% endcomment %}
 				
-				<div class="top-nav-search">
+				{% comment %} <div class="top-nav-search">
 					<form>
 						<input type="text" class="form-control" placeholder="Search here">
 						<button class="btn" type="submit"><i class="fa fa-search"></i></button>
 					</form>
-				</div>
+				</div> {% endcomment %}
 				
 				<!-- Mobile Menu Toggle -->
 				<a class="mobile_btn" id="mobile_btn">
@@ -67,40 +110,27 @@
 				</a>
 				<!-- /Mobile Menu Toggle -->
 				
-				  <ul class="nav user-menu">
-					 <!-- User Menu -->
+				<ul class="nav user-menu">
+					<!-- User Menu -->
 					<li class="nav-item dropdown has-arrow">
-						
-						 <div class="dropdown-menu">
-							<div class="user-header">
-								<div class="user-text">
-									{% if user.is_authenticated %}
-  									<h6>{{ user.username }} {{ user.username }}</h6>
-									{% endif %}
-									
-								</div>
-							</div> 
-							
-						</div> 
-						{% if user.is_authenticated %}
-					<li class="has-submenu">
-						<a href="#"><i class="fa fa-user-circle"></i></a>
-						<ul class="submenu">
-							<li>{{ user.username }}</li></a>
-							<li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</li></a>
-						</ul>
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-user-circle"></i>
+						</a>
+						<div class="dropdown-menu">
+							{% if user.is_authenticated %}
+							<ul class="submenu">
+								<li>Welcome,{{ user.username }}</li>
+							<li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</a></li>
+							</ul>
+						</div>
 					</li>
-					{% else %}
-					<li><a href="{% url 'login_page' %}">Login</a></li>				
-					{% endif %}
-						</ul>
-					</li>
-					</li> 
-					 
-					 
 					
-					<!-- /User Menu --> 
-				</ul> 
+					
+					{% else %}
+					<li><a href=""></a></li>
+					{% endif %}
+				</ul>
+				
 				
 			<!-- Sidebar -->
             <div class="sidebar" id="sidebar">
@@ -125,12 +155,10 @@
 							<li> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
-							<li> 
-								<a href="{% url 'admins_patientlist' %}"><i class="fe fe-users"></i> <span>Patients</span></a>
-							</li>
-							 <li> 
+							
+							 {% comment %} <li> 
 								<a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>
-							</li> 
+							</li>  {% endcomment %}
 							
 						</div>		
                 </div>
@@ -164,7 +192,7 @@
 											<i class="fe fe-users"></i>
 										</span>
 										<div class="dash-count">
-											<h3>{{ doctors_count }}</h3>
+											<h3>{{ doctors_count }}2</h3>
 										</div>
 									</div>
 									<div class="dash-widget-info">
@@ -184,7 +212,7 @@
 											<i class="fe fe-credit-card"></i>
 										</span>
 										<div class="dash-count">
-											<h3>{{ patients_count }}</h3>
+											<h3>{{ patients_count }}3</h3>
 										</div>
 									</div>
 									<div class="dash-widget-info">
@@ -206,7 +234,7 @@
 											<i class="fe fe-money"></i>
 										</span>
 										<div class="dash-count">
-											<h3>485</h3>
+											<h3>4</h3>
 										</div>
 									</div>
 									<div class="dash-widget-info">
@@ -273,7 +301,19 @@
 		
 		<!-- Custom JS -->
 		<script  src="assets/js/script.js"></script>
-		
+		<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'assets/js/popper.min.js'%}">
+	</script>
+	<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+	
+	<!-- Slick JS -->
+	<script src="{% static 'assets/js/slick.js'%}"></script>
+	
+	<!-- Custom JS -->
+	<script src="{% static 'assets/js/script.js'%}"></script>
+
     </body>
 
 <!-- Mirrored from dreamguys.co.in/demo/doccure/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:34 GMT -->

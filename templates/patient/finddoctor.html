@@ -34,7 +34,7 @@
 		
 	<!-- Header -->
 	<header class="header">
-		<nav class="navbar navbar-expand-lg header-nav">
+		<nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">	
 			<div class="navbar-header">
 				<a id="mobile_btn" href="javascript:void(0);">
 					<span class="bar-icon">
@@ -70,10 +70,7 @@
 								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
 									<li><a href="{% url 'patient_medicalhistory' %}">Medical History</a></li>
-									<li><a href="{% url 'testresult' %}">Test Results</a></li>
-									<li><a href="{% url 'patientbooking' %}">Prescriptions</a></li>
-									<li><a href="{% url 'testresult' %}">Surgery Records</a></li>
-									<li><a href="{% url 'testresult' %}">My Health Summary</a></li>
+									
 								</ul>
 								
 							</li>	
@@ -82,8 +79,7 @@
 								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'patientprofileset' %}">Profile Settings</a></li>
-									<li><a href="{% url 'patientprofileset' %}">Change Password</a></li>
-									<li><a href="{% url 'patientbooking' %}">My Appointments</a></li>
+									
                                     
 								</ul>
 							</li>
@@ -125,6 +121,7 @@
 											
                                             <div class="profile-info-widget">
                                                 <a href="doctor-profile.html" class="booking-doc-img">
+													
 												{% if doctor.profile_pic %}
                                                     <img src="{{ doctor.profile_pic.url }}" alt="Doctor Image">
                                                
@@ -133,11 +130,11 @@
 												{% endif %}
 												</a>
                                                 <div class="profile-det-info">
-                                                    <h3><a href="doctor-profile.html">{{  doctor.name  }}</a></h3>
+													
+                                                    <h3><a href="doctor-profile.html">{{  doctor.fname  }}</a></h3>
                                                     <p>{{ doctor.specialist.specialization_name }}</p>
                                                     <div class="patient-details">
                                                         <h5><b>Email:</b> {{ doctor.email }}</h5>
-                                                        <h5 class="mb-0">Place: <i class="fas fa-map-marker-alt"></i> {{ doctor.city }}, {{ doctor.state }}, {{ doctor.country }}</h5>
                                                     </div>
                                                 </div>``
                                             </div>
@@ -145,8 +142,6 @@
                                         <div class="patient-info">
                                             <ul>
                                                 <li>Phone <span>{{ doctor.phone }}</span></li>
-                                                <li>Gender <span>{{ doctor.gender }}</span></li>
-                                                <li>DOB <span>{{ doctor.dob }}</span></li>
                                                 <!-- Add other doctor-specific fields here -->
                                             </ul>
                                         </div>
