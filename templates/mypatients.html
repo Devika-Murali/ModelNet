@@ -130,9 +130,18 @@
                                 <div class="card-body">
                                     <div class="pro-widget-content">
                                         <div class="profile-info-widget">
-                                            <a href="patient-profile.html" class="booking-doc-img">
+											{% if user.userprofile.profile_pic %}
+											<a href="patient-profile.html" class="booking-doc-img">
                                                 <img src="{{ user.userprofile.profile_pic.url }}" alt="User Image">
                                             </a>
+									   
+										{% else %}
+										<a href="patient-profile.html" class="booking-doc-img">
+											<img src="" alt="doctor Image">
+																				</a>
+										
+										{% endif %}
+                                           
                                             <div class="profile-det-info">
                                                 <h3><a href="patient-profile.html">{{ user.userprofile.name }}</a></h3>
                                                 

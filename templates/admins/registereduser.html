@@ -112,35 +112,30 @@
 				<!-- /Mobile Menu Toggle -->
 				
 				<!-- Header Right Menu -->
-				<ul class="nav user-menu">
-
-				
-					
-					<ul class="nav user-menu">
-						<!-- User Menu -->
-						<li class="nav-item dropdown has-arrow">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-								<i class="fa fa-user-circle"></i>
-							</a>
-							<div class="dropdown-menu">
-								{% if user.is_authenticated %}
-								<ul class="submenu">
-									<li>Welcome,{{ user.username }}</li>
-								<li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</a></li>
-								</ul>
-							</div>
-						</li>
-						
-						
-						{% else %}
-						<li><a href=""></a></li>
-						{% endif %}
-					</ul>
+				<!-- Header Right Menu -->
+<ul class="nav user-menu">
+    <!-- User Menu -->
+    <li class="nav-item dropdown has-arrow">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-user-circle"></i>
+        </a>
+        <div class="dropdown-menu">
+            {% if user.is_authenticated %}
+            <ul class="submenu">
+                <li>Welcome,{{ user.username }}</li>
+                <li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</a></li>
+            </ul>
+        </div>
+    </li>
+    {% else %}
+    <li><a href=""></a></li>
+    {% endif %}
+</ul>
+<!-- /Header Right Menu -->
+				<ul class="nav user-menu">					
 				<!-- /Header Right Menu -->
-				
             </div>
 			<!-- /Header -->
-			
 			<!-- Sidebar -->
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
@@ -156,10 +151,10 @@
 								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user"></i> <span>Registered Users</span></a>
 							</li>
 							<li> 
-								<a href="appointment-list.html"><i class="fe fe-layout"></i> <span>Appointments</span></a>
+								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
 							</li>
 							<li> 
-								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
+								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users" id="spec"></i> <span>Specialities</span></a>
 							</li>
 							<li> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
@@ -193,11 +188,11 @@
 						  <div id="filters" class="mb-4">
 							<div class="row">
 							  <div class="col-md-6">
-								<label for="role-filter" class="form-label">Filter by Role:</label>
-								<select id="role-filter" class="form-select">
+								<label for="role-filter" class="form-label" id="role">Filter by Role:</label>
+								<select id="role-filter" class="form-select" >
 								  <option value="all">All</option>
 								  <option value="admin">Admin</option>
-								  <option value="doctor">Doctor</option>
+								  <option value="doctor" id="doctor">Doctor</option>
 								  <option value="patient">Patient</option>
 								</select>
 							  </div>
@@ -215,26 +210,27 @@
 							<div class="card">
 								<div class="card-body">
 									<div class="table-responsive">
-										
-
-
-
                                         <table class="datatable table table-hover table-center mb-0">
 											<thead>
 												<tr>
 													<th>Name</th>
 													<th>Email</th>
 													<th>Role</th>
-													
 													<th class="text-center">Status</th>
 													<th class="text-right">Actions</th>
 												</tr>
 											</thead>
-
                                             <tbody>
                                                 {% for user in users %}
                                                 <tr>
-                                                    <td>{{ user.username }}</td>
+													{% if user.is_superuser %}
+													<td>{{ user.username }}</td>
+                                                        {% elif user.is_staff %}
+														<td>{{ user.docprofile.name }}</td>
+                                                        {% else %}
+                                                        <td>{{ user.userprofile.name }}</td>
+                                                    {% endif %}
+                                                    
                                                     <td>{{ user.email }}</td>
                                                     <td>
                                                         {% if user.is_superuser %}
@@ -297,7 +293,9 @@
 							$(this).hide();
 						}
 					});
-			
+					$(".dropdown-toggle").on("click", function () {
+						$(this).parent().find(".dropdown-menu").toggle();
+					});
 					const visibleRows = $(".datatable tbody tr:visible").length;
 					if (visibleRows === 0) {
 						$("#no-user-message").show();
@@ -346,6 +344,9 @@
 		<!-- Custom JS -->
 		<script  src="assets/js/script.js"></script>
 		<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+		<!-- Bootstrap JS -->
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
     </body>
 
 <!-- Mirrored from dreamguys.co.in/demo/doccure/admin/doctor-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:51 GMT -->

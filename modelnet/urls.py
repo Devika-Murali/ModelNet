@@ -39,7 +39,7 @@ urlpatterns = [
     path('admins_registereduser', views.admins_registereduser, name='admins_registereduser'), 
     path('admins_dashlegal', views.dashlegal, name='admins_dashlegal'),
     path('admins_bookscreening', views.admins_bookscreening, name='admins_bookscreening'), 
-
+    path('admins_blogs/', views.admins_blogs, name='admins_blogs'),
 
     path('patientappointment/',views.patientappointment,name='patientappointment'),
     path('patientbooking/',views.patientbooking,name='patientbooking'),

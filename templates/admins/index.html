@@ -109,7 +109,6 @@
 					<i class="fa fa-bars"></i>
 				</a>
 				<!-- /Mobile Menu Toggle -->
-				
 				<ul class="nav user-menu">
 					<!-- User Menu -->
 					<li class="nav-item dropdown has-arrow">
@@ -124,8 +123,6 @@
 							</ul>
 						</div>
 					</li>
-					
-					
 					{% else %}
 					<li><a href=""></a></li>
 					{% endif %}
@@ -144,7 +141,7 @@
 								<a href="{% url 'admins_index' %}"><i class="fe fe-home"></i> <span>Dashboard</span></a>
 							</li>
 							<li> 
-								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user"></i> <span>Registered Users</span></a>
+								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user" id="user"></i> <span>Registered Users</span></a>
 							</li>
 							<li> 
 								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
@@ -154,6 +151,9 @@
 							</li>
 							<li> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
+							</li>
+							<li> 
+								<a href="{% url 'admins_blogs' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
 							</li>
 							
 							 {% comment %} <li> 

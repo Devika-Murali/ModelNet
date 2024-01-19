@@ -72,7 +72,7 @@
             <div class="confirmation-details">
                 <!-- Add your confirmation details here -->
                 <p>Patient's Name: <span id="patientName"></span></p>
-                <p>Doctor's Name: <span id="doctorname"></span></p>
+                {% comment %} <p>Doctor's Name: Dr.{{appointment.doctor.name }} <span id="doctorname"></span></p> {% endcomment %}
                 <p>Appointment Date and Time: {{ appointment.app_date|date:"F j, Y" }}, {{ appointment.app_time|time:"P" }}</p>
                 <p>Payment Amount: ₹200</p>
                 <!-- You can include more details here -->

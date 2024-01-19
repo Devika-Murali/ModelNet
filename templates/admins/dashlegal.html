@@ -1,151 +1,133 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+    
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:20 GMT -->
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Admin - Dashboard</title>
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
-    <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.png' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/css/feathericon.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/plugins/morris/morris.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
-    <!--[if lt IE 9]>
-        <script src="assets/js/html5shiv.min.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <div class="main-wrapper">
-        <div class="header">
-            <div class="header-left">
-                <a href="index.html" class="logo">
-                    <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
-                </a>
-                <a href="index.html" class="logo logo-small">
-                    <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" width="30" height="100">
-                </a>
-            </div>
-			{% comment %} <div class="top-nav-search">
-				<form>
-					<input type="text" class="form-control" placeholder="Search here">
-					<button class="btn" type="submit"><i class="fa fa-search"></i></button>
-				</form>
-			</div> {% endcomment %}
-			
-			<!-- Mobile Menu Toggle -->
-			<a class="mobile_btn" id="mobile_btn">
-				<i class="fa fa-bars"></i>
-			</a>
-			<!-- /Mobile Menu Toggle -->
-			
-			<!-- Header Right Menu -->
-			<ul class="nav user-menu">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Admin - Dashboard</title>
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
 
-				<!-- Notifications -->
-				<li class="nav-item dropdown noti-dropdown">
-					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.png' %}">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/bootstrap.min.css' %}">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/font-awesome.min.css' %}">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/feathericon.min.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'admin/assets/plugins/morris/morris.css' %}">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+		
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+		<style>
+			i.fa.fa-user-circle {
+				color: black;
+			}
+			/* Style for the user menu */
+		.user-menu {
+    list-style: none;
+}
+
+/* Style for the user icon */
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+/* Style for the user welcome message */
+.user-welcome {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Style for the dropdown */
+.dropdown-menu {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+		</style>
+		
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+			
+				<!-- Logo -->
+                <div class="header-left">
+                    <a href="index.html" class="logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
 					</a>
-					<div class="dropdown-menu notifications">
-						<div class="topnav-dropdown-header">
-							<span class="notification-title">Notifications</span>
-							<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-						</div>
-						<div class="noti-content">
-							<ul class="notification-list">
-								<li class="notification-message">
-									<a href="#">
-										<div class="media">
-											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/doctors/doctor-thumb-01.jpg">
-											</span>
-											<div class="media-body">
-												<p class="noti-details"><span class="noti-title">Dr. Ruby Perrin</span> Schedule <span class="noti-title">her appointment</span></p>
-												<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-											</div>
-										</div>
-									</a>
-								</li>
-								<li class="notification-message">
-									<a href="#">
-										<div class="media">
-											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient1.jpg">
-											</span>
-											<div class="media-body">
-												<p class="noti-details"><span class="noti-title">Charlene Reed</span> has booked her appointment to <span class="noti-title">Dr. Ruby Perrin</span></p>
-												<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-											</div>
-										</div>
-									</a>
-								</li>
-								<li class="notification-message">
-									<a href="#">
-										<div class="media">
-											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient2.jpg">
-											</span>
-											<div class="media-body">
-											<p class="noti-details"><span class="noti-title">Travis Trimble</span> sent a amount of $210 for his <span class="noti-title">appointment</span></p>
-											<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-											</div>
-										</div>
-									</a>
-								</li>
-								<li class="notification-message">
-									<a href="#">
-										<div class="media">
-											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient3.jpg">
-											</span>
-											<div class="media-body">
-												<p class="noti-details"><span class="noti-title">Carl Kelly</span> send a message <span class="noti-title"> to his doctor</span></p>
-												<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-											</div>
-										</div>
-									</a>
-								</li>
+					<a href="index.html" class="logo logo-small">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" width="30" height="100">
+					</a>
+                </div>
+				<!-- /Logo -->
+				
+				{% comment %} <a href="javascript:void(0);" id="toggle_btn">
+					<i class="fe fe-text-align-left"></i>
+				</a> {% endcomment %}
+				
+				{% comment %} <div class="top-nav-search">
+					<form>
+						<input type="text" class="form-control" placeholder="Search here">
+						<button class="btn" type="submit"><i class="fa fa-search"></i></button>
+					</form>
+				</div> {% endcomment %}
+				
+				<!-- Mobile Menu Toggle -->
+				<a class="mobile_btn" id="mobile_btn">
+					<i class="fa fa-bars"></i>
+				</a>
+				<!-- /Mobile Menu Toggle -->
+				
+				<ul class="nav user-menu">
+					<!-- User Menu -->
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-user-circle"></i>
+						</a>
+						<div class="dropdown-menu">
+							{% if user.is_authenticated %}
+							<ul class="submenu">
+								<li>Welcome,{{ user.username }}</li>
+							<li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</a></li>
 							</ul>
 						</div>
-						<div class="topnav-dropdown-footer">
-							<a href="#">View all Notifications</a>
-						</div>
-					</div>
-				</li>
-				<!-- /Notifications -->
-				
-				<!-- User Menu -->
-				<li class="nav-item dropdown has-arrow">
-					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						<span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="Ryan Taylor"></span>
-					</a>
-					<div class="dropdown-menu">
-						<div class="user-header">
-							<div class="avatar avatar-sm">
-								<img src="assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
-							</div>
-							<div class="user-text">
-								{% if user.is_authenticated %}
-								  <h6>{{ user.username }} {{ user.username }}</h6>
-								{% endif %}
-								{% comment %} <h6>Ryan Taylor</h6> {% endcomment %}
-								<p class="text-muted mb-0">Administrator</p>
-							</div>
-						</div>
-						<a class="dropdown-item" href="profile.html">My Profile</a>
-						<a class="dropdown-item" href="settings.html">Settings</a>
-						<a class="dropdown-item" href="login.html">Logout</a>
-					</div>
-				</li>
-				<!-- /User Menu -->
-				
-			</ul>
-			<!-- /Header Right Menu -->
-			
-		
+					</li>
+					{% else %}
+					<li><a href=""></a></li>
+					{% endif %}
+				</ul>
         </div>
         <div class="sidebar" id="sidebar">
             <!-- Sidebar -->
@@ -162,8 +144,8 @@
 							<li> 
 								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user"></i> <span>Registered Users</span></a>
 							</li>
-							<li> 
-								<a href="appointment-list.html"><i class="fe fe-layout"></i> <span>Appointments</span></a>
+							<li > 
+								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
 							</li>
 							<li > 
 								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
@@ -171,7 +153,9 @@
 							<li class="active"> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
-							
+							<li> 
+								<a href="{% url 'admins_blogs' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
+							</li>
 							
 						</div>		
                 </div>
@@ -278,12 +262,36 @@
             </div>			
         </div>
     </div>
+    <!-- jQuery -->
     <script src="assets/js/jquery-3.2.1.min.js"></script>
+		
+    <!-- Bootstrap Core JS -->
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    
+    <!-- Slimscroll JS -->
     <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="assets/plugins/datatables/datatables.min.js"></script>
-    <script src="assets/js/script.js"></script>
+    
+    <script src="assets/plugins/raphael/raphael.min.js"></script>    
+    <script src="assets/plugins/morris/morris.min.js"></script>  
+    <script src="assets/js/chart.morris.js"></script>
+    
+    <!-- Custom JS -->
+    <script  src="assets/js/script.js"></script>
+    <script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+
+<!-- Bootstrap Core JS -->
+<script src="{% static 'assets/js/popper.min.js'%}">
+</script>
+<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+
+<!-- Slick JS -->
+<script src="{% static 'assets/js/slick.js'%}"></script>
+
+<!-- Custom JS -->
+<script src="{% static 'assets/js/script.js'%}"></script>
+
 </body>
+
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:34 GMT -->
 </html>

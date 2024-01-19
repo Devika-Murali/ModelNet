@@ -87,6 +87,8 @@ def admins_index(request):
     return render(request, 'admins/index.html')
 def admins_registereduser(request):
     return render(request, 'admins/registereduser.html')
+def admins_blogs(request):
+    return render(request, 'admins/blog.html')
 def admins_patientlist(request):
     # Retrieve the list of patients (users) from the database
     patients = User.objects.filter(is_superuser=False, is_staff=False)
@@ -95,7 +97,8 @@ def admins_patientlist(request):
     return render(request, 'admins/patientlist.html', {'users': patients})
 
 def admins_appointmentlist(request):
-    return render(request, 'admins/appointmentlist.html')
+    appointments = Appointment.objects.all()
+    return render(request, 'admins/appointmentlist.html',{'appointments':appointments})
 
 
 def patient_medicalhistory(request):
@@ -248,6 +251,9 @@ def DoctorReg(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         select_category_id = request.POST.get('select_category')
+        category = Specialization.objects.get(id=select_category_id)
+
+        print(select_category_id)
         if password == confirm_password:
             if User.objects.filter(username=username).exists():
                 messages.info(request, 'Username already exists')
@@ -256,7 +262,6 @@ def DoctorReg(request):
                 messages.info(request, "Email already taken")
                 return redirect('register')
             else:
-                category = Specialization.objects.get(id=select_category_id)
                 user = User.objects.create_user(username=username, email=email, password=password)   
                 doc_profile = Docprofile.objects.create(user=user, name=name, email=email, specialist=category)
                 doc_profile.save()

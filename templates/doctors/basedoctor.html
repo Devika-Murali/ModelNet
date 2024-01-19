@@ -67,12 +67,41 @@
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
 					</li> {% endcomment %}
                     <li class="main-nav">
+						{% if existing_certification %}
+				
+						
+			
+						{% if existing_certification.is_approved == 'approved' %}
 						<a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+						
+						{% else %}
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>                
+						{% endif %}
+					  {% else %}
+					  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>
+					  {% endif %}
+						
 					</li>
 					<li class="has-submenu"class="nav-link">
 								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
-									<li><a href="{% url 'mypatients' %}"class="nav-link" id="patient">My Patients</a></li>
+
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+						{% if existing_certification.is_approved == 'approved' %}
+						<a href="{% url 'mypatients' %}"class="nav-link" id="patient">My Patients</a>
+						{% else %}
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>               
+						{% endif %}
+					  {% else %}
+					  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>   
+					  {% endif %}
+						
+										
+									</li>
                                     
 								</ul>
                                 
@@ -81,7 +110,23 @@
 							<li class="has-submenu"class="nav-link">
 								<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
-                                    <li><a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a></li>
+                                    <li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a>
+										{% else %}
+										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Profile Settings</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
                                     
 									
 								</ul>
@@ -109,6 +154,7 @@
 			<div class="banner-wrapper">
 				<div class="banner-header text-center">
 					<h1>ColonCare Medical Center</h1>
+					
 					<p>Your partner in comprehensive colon health and cancer care.</p>`
 					<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -124,7 +170,7 @@
 							<p class="certification-message">Thank you for submitting your license details. Your access to the website is pending approval.</p>
 				
 							{% elif existing_certification.is_approved == 'approved' %}
-							<p class="certification-message">Your Application is approved.</p>
+							<p class="certification-message">Welcome</p>
 							{% elif existing_certification.is_approved == 'rejected' %}
 							<p class="certification-message">Your Application is rejected.</p>
 							{% else %}
