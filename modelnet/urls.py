@@ -40,6 +40,9 @@ urlpatterns = [
     path('admins_dashlegal', views.dashlegal, name='admins_dashlegal'),
     path('admins_bookscreening', views.admins_bookscreening, name='admins_bookscreening'), 
     path('admins_blogs/', views.admins_blogs, name='admins_blogs'),
+    path('admins_leave/', views.admins_leave, name='admins_leave'),
+    path('admin_view_leave_applications', views.admin_view_leave_applications, name='admin_view_leave_applications'),
+
 
     path('patientappointment/',views.patientappointment,name='patientappointment'),
     path('patientbooking/',views.patientbooking,name='patientbooking'),
@@ -48,6 +51,9 @@ urlpatterns = [
     path('admins_doctorlist/',views.admins_doctorlist,name='admins_doctorlist'), 
     path('patient_medicalhistory/', views.patient_medicalhistory, name='patient_medicalhistory'),  
     path('doctors_appointments/',views.doctors_appointments,name='doctors_appointments'),
+    path('doctors_leave/',views.doctors_leave,name='doctors_leave'),
+    path('doctors_leavesubmit/',views.doctors_leavesubmit,name='doctors_leavesubmit'),
+
     path('doctors_testresult/',views.doctors_testresult,name='doctors_testresult'),
     path('Doctor_patienthistory/',views.Doctor_patienthistory,name='Doctor_patienthistory'),
     path('delete_specialization/', views.delete_specialization, name='delete_specialization'),

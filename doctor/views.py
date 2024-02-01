@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
 from .models import PatientInfo 
-from .models import Specialization,Payment
+from .models import Specialization,Payment,LeaveApplication
 from torchvision import transforms
 from django.http import JsonResponse
 
@@ -63,12 +63,14 @@ def doctors_basedoctor(request):
 #     return render(request,'doctors/timeslot.html')
 def doctors_testresult(request):
     return render(request,'doctors/testresult.html')  
+
 # def doctors_timeslotdisplay(request):
 #     return render(request,'doctors/timeslotdisplay.html') 
 def testresult(request):
     return render(request,'testresult.html') 
+     
 def doctors_appointments(request):
-    doctor = Docprofile.objects.filter(user=request.user).first()
+    doctor = Docprofile.objects.filter(user=request.user).first()           
     #   doctor = Docprofile.objects.all()
     
     appointments = Appointment.objects.filter(doctor=doctor)
@@ -89,6 +91,8 @@ def admins_registereduser(request):
     return render(request, 'admins/registereduser.html')
 def admins_blogs(request):
     return render(request, 'admins/blog.html')
+def admins_leave(request):
+    return render(request,'admins/leaveapprove.html')  
 def admins_patientlist(request):
     # Retrieve the list of patients (users) from the database
     patients = User.objects.filter(is_superuser=False, is_staff=False)
@@ -1046,3 +1050,54 @@ def display_booked_appointments(request):
     }
 
     return render(request, 'doctors/appointments.html', context)
+from .models import LeaveApplication
+
+@login_required
+def doctors_leave(request):
+    # Fetch all leave applications
+    leave_applications = LeaveApplication.objects.all()
+
+    if request.method == 'POST':
+        leave_type = request.POST.get('leave_type')
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        reason = request.POST.get('reason')
+        
+        # Create a new LeaveApplication instance
+        leave_application = LeaveApplication.objects.create(
+            doctor=request.user,
+            leave_type=leave_type,
+            from_date=from_date,
+            to_date=to_date,
+            reason=reason
+        )
+        
+        # Send notification or perform any other actions here
+        
+        messages.success(request, 'Leave application submitted successfully.')
+        return redirect('doctors_leavesubmit')  # Redirect to the leavesubmit page after submission
+        
+    else:
+        # Check if the user has submitted a leave application
+        leave_application_exists = LeaveApplication.objects.filter(doctor=request.user).exists()
+        if leave_application_exists:
+            return redirect('doctors_leavesubmit')
+        else:
+            return render(request, 'doctors/leave.html', {'leave_applications': leave_applications})
+
+
+
+def doctors_leavesubmit(request):
+    # Check if the user has submitted a leave application
+    leave_application_exists = LeaveApplication.objects.filter(doctor=request.user).exists()
+    print("Leave Application Exists:", leave_application_exists)  # Add this line for debugging
+    if leave_application_exists:
+        return render(request, 'doctors/leavesubmit.html')
+    else:
+        print("Redirecting to doctors_leave")  # Add this line for debugging
+        # Redirect to the leave application page if no application exists
+        return redirect('doctors_leave')
+def admin_view_leave_applications(request):
+    # Fetch pending leave applications
+    pending_leave_applications = LeaveApplication.objects.filter(status='pending')
+    return render(request, 'admins/leaveapprove.html', {'leave_applications': pending_leave_applications})

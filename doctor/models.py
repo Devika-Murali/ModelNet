@@ -196,4 +196,21 @@ class Payment(models.Model):
     def _str_(self):
         return f"Payment ID: {self.id}, Status: {self.payment_status}"
 
+class LeaveApplication(models.Model):
+    LEAVE_TYPES = [
+        ('sick', 'Sick Leave'),
+        ('casual', 'Casual Leave'),
+        ('emergency', 'Emergency Leave'),
+    ]
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    leave_type = models.CharField(max_length=20, choices=LEAVE_TYPES)
+    from_date = models.DateField()
+    to_date = models.DateField()
+    reason = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 

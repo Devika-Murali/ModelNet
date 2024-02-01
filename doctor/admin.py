@@ -22,3 +22,5 @@ admin.site.register(Appointment)
 from .models import Payment  
 admin.site.register(Payment)
 
+from .models import LeaveApplication  
+admin.site.register(LeaveApplication)

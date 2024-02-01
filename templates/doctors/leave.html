@@ -1,0 +1,245 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>PATIENT-PAGE</title>
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+	<style>
+	.container {
+		max-width: 600px; 
+		margin: 0 auto;
+	  }
+	</style>
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+        <nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<ul class="main-nav">
+					<li class=" main-nav">
+						<a href="{% url 'doctors_basedoctor' %}" id="home">Home</a>
+					</li>
+                   
+                    <li >
+						<a href="{% url 'doctors_appointments' %}">Appointments</a>
+					</li>
+                    <li class="active">
+						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+					</li>
+					<li class="has-submenu">
+                        <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'mypatients' %}">My Patients</a></li>
+                        </ul>
+                        
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
+                            <li><a href="{% url 'patientappointment' %}">Change Password</a></li>
+                            
+                        </ul>
+                    </li>
+					{% if user.is_authenticated %}
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<ul class="submenu">
+                            <li><a>{{ user.username }}</li></a>
+							<li><a href="{% url 'loggout' %}">Logout</li></a>
+						</ul>
+					</li>
+					{% else %}
+					<li><a href="{% url 'login_page' %}">Login</a></li>				
+					{% endif %}
+						</ul>
+					</li>
+
+				</ul>		 
+			</div>		 
+		</nav>
+	</header>
+    <!-- Breadcrumb -->
+			<div class="breadcrumb-bar">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-md-12 col-12">
+							<nav aria-label="breadcrumb" class="page-breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Apply Leave</li>
+								</ol>
+							</nav>
+							<h2 class="breadcrumb-title">Apply Leave</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Breadcrumb -->
+            <div class="appointment-form-container">
+				<div class="container">
+            <form method="post" class="appointment-form">
+
+                {% csrf_token %}
+              
+                <div class="form-group col-md-6">
+					<label>Leave Type</label>
+					<select class="form-control" id="leave_type" name="leave_type">
+						<option value="sick">Sick Leave</option>
+						<option value="casual">Casual Leave</option>
+						<option value="emergency">Emergency Leave</option>
+					</select>
+				</div>
+				
+				<div class="form-group col-md-6">
+					<label>From Date</label>
+					<input type="date" class="form-control datetimepicker" name="from_date" id="from_date"> 
+				</div>
+				<div class="form-group col-md-6">
+					<label>To Date</label>
+					<input type="date" class="form-control datetimepicker" name="to_date" id="to_date">
+				</div>
+				<div class="form-group col-md-12">
+					<label>Reason for Leave</label>
+					<textarea class="form-control" name="leave_reason" id="leave_reason" rows="3"></textarea>
+				</div>
+                
+              </form>
+            </div>
+		</div>
+                {% comment %} <div class="col-md-7 col-lg-8 col-xl-9">
+                    <div class="appointments">
+                        {% for appointment in appointments %} {% endcomment %}
+                        <!-- Appointment List -->
+                        {% comment %} <div class="appointment-list">
+                            <div class="profile-info-widget">
+                                <a href="patient-profile.html" class="booking-doc-img">
+                                    {% if appointment.user.userprofile.profile_pic %}
+                                    <img src="{{ appointment.user.userprofile.profile_pic.url }}" alt="User Image">
+
+                                    {% else %}
+                                    <img src="" alt="User Image">
+                                    {% endif %}
+                                </a>
+                                <div class="profile-det-info">
+                                    <h3><a href="patient-profile.html">{{ appointment.user.userprofile.name }}</a></h3>
+                                    <div class="patient-details">
+                                        <h5><i class="far fa-clock"></i>{{ appointment.app_date }} {{ appointment.app_time }}</h5>
+                                        <h5><i class="fas fa-map-marker-alt"></i> {{ appointment.user.userprofile.age }}</h5>
+                                        <h5><i class="fas fa-envelope"></i> {{ appointment.user.userprofile.email }}</h5>
+                                        <h5 class="mb-0"><i class="fas fa-phone"></i>{{ appointment.user.userprofile.phone_number }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div> {% endcomment %}
+                        {% comment %} {% empty %}
+                        {% comment %} No Appointments {% endcomment %}
+                        {% comment %} {% endfor %} {% endcomment %} 
+                        <!-- /Appointment List -->
+                    
+                       
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>		
+    <!-- /Page Content -->
+	  
+	<!-- Your HTML code -->
+
+	<script>
+		document.getElementById('leave_type').addEventListener('change', function() {
+			var leaveType = this.value;
+			var fromDateInput = document.getElementById('from_date');
+			var toDateInput = document.getElementById('to_date');
+			
+			// Set default values for the From Date and To Date inputs
+			fromDateInput.value = '';
+			toDateInput.value = '';
+	
+			// Logic for setting the To Date based on the selected leave type
+			if (leaveType === 'sick') {
+				// For Sick Leave, set the To Date to be the same as the From Date by default
+				fromDateInput.addEventListener('change', function() {
+					toDateInput.value = this.value;
+				});
+			} else {
+				// For Casual Leave and Emergency Leave, set the To Date to be one day after the From Date by default
+				fromDateInput.addEventListener('change', function() {
+					var fromDate = new Date(this.value);
+					fromDate.setDate(fromDate.getDate() + 1); // Add one day to the From Date
+					toDateInput.value = fromDate.toISOString().slice(0, 10); // Set the To Date
+				});
+			}
+		});
+	</script>
+	
+
+<!-- Your remaining HTML code -->
+
+
+	<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'assets/js/popper.min.js'%}">
+	</script>
+	<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+	
+	<!-- Slick JS -->
+	<script src="{% static 'assets/js/slick.js'%}"></script>
+	
+	<!-- Custom JS -->
+	<script src="{% static 'assets/js/script.js'%}"></script>
+
+
+</body>
+</html>
