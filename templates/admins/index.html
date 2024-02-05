@@ -30,7 +30,8 @@
 	<!-- Fontawesome CSS -->
 	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
 	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
-	
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
 		
@@ -152,11 +153,17 @@
 							<li> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
-							<li> 
-								<a href="{% url 'admins_blogs' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
+							<li class="submenu">
+								<a href="#"><i class="fe fe-layout"></i> <span>Blogs</span> <span class="menu-arrow"></span></a>
+								<ul>
+									<li><a href="{% url 'admins_addblog' %}">Add Blogs</a></li>
+									<li><a href="{% url 'admins_viewblog' %}">View Blogs</a></li>
+								</ul>
 							</li>
+							
+							
 							<li> 
-								<a href="{% url 'admins_blogs' %}"><i class="fe fe-layout"></i> <span>Payment Details</span></a>
+								<a href=""><i class="fe fe-layout"></i> <span>Payment Details</span></a>
 							</li>
 							<li> 
 								<a href="{% url 'admins_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
@@ -318,7 +325,14 @@
 	
 	<!-- Custom JS -->
 	<script src="{% static 'assets/js/script.js'%}"></script>
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".submenu .menu-arrow").click(function(){
+            $(this).parent().next().toggle();
+        });
+    });
+</script>
     </body>
 
 <!-- Mirrored from dreamguys.co.in/demo/doccure/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:34 GMT -->

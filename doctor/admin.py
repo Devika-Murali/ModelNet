@@ -24,3 +24,6 @@ admin.site.register(Payment)
 
 from .models import LeaveApplication  
 admin.site.register(LeaveApplication)
+
+from .models import Blog  
+admin.site.register(Blog)

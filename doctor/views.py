@@ -91,8 +91,7 @@ def admins_registereduser(request):
     return render(request, 'admins/registereduser.html')
 def admins_blogs(request):
     return render(request, 'admins/blog.html')
-def admins_leave(request):
-    return render(request,'admins/leaveapprove.html')  
+
 def admins_patientlist(request):
     # Retrieve the list of patients (users) from the database
     patients = User.objects.filter(is_superuser=False, is_staff=False)
@@ -1097,7 +1096,74 @@ def doctors_leavesubmit(request):
         print("Redirecting to doctors_leave")  # Add this line for debugging
         # Redirect to the leave application page if no application exists
         return redirect('doctors_leave')
+
+def admins_leave(request):
+    
+    pending_leave_applications = LeaveApplication.objects.filter(status='pending')
+    print(pending_leave_applications)
+    return render(request, 'admins/leaveapprove.html', {'leave_applications': pending_leave_applications})
+    
 def admin_view_leave_applications(request):
     # Fetch pending leave applications
     pending_leave_applications = LeaveApplication.objects.filter(status='pending')
+    print(pending_leave_applications)
     return render(request, 'admins/leaveapprove.html', {'leave_applications': pending_leave_applications})
+
+def approve_leave(request, leave_id):
+    # Retrieve the leave application object
+    leave_application = LeaveApplication.objects.get(id=leave_id)
+    
+    # Update the status to 'approved'
+    leave_application.status = 'approved'
+    leave_application.save()
+    
+    # Redirect back to the leave approval page
+    return redirect('admins_leave')
+
+def reject_leave(request, leave_id):
+    # Retrieve the leave application object
+    leave_application = LeaveApplication.objects.get(id=leave_id)
+    
+    # Update the status to 'rejected'
+    leave_application.status = 'rejected'
+    leave_application.save()
+    
+    # Redirect back to the leave approval page
+    return redirect('admins_leave')
+from .models import Blog
+def admins_addblog(request):
+
+    if request.method == 'POST':
+    
+        title = request.POST['title']
+        content = request.POST['content']
+        blog_date = request.POST['blog_date']
+        images = request.FILES.get('images')
+        
+        print(images)
+        # Handle image upload if needed
+        
+        # Create a new Blog instance
+        new_blog = Blog(
+            title=title,
+            content=content,
+            blog_date=blog_date,
+            images=images
+        )
+        
+        # Save the new blog entry
+        new_blog.save()
+        
+        return redirect('admins_viewblog')  # Redirect to a list view of all blogs
+
+    return render(request, 'admins/addblog.html')
+def admins_viewblog(request):
+    
+    blogs = Blog.objects.all()
+    return render(request, 'admins/viewblog.html', {'blogs': blogs})
+
+def doctor_profile_details(request):
+    # Assuming the user is authenticated and associated with a doctor profile
+    doctor_profile = request.user.docprofile
+    
+    return render(request, 'showmore.html', {'doctor_profile': doctor_profile})

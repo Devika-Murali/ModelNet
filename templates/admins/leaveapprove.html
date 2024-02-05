@@ -118,7 +118,7 @@
                             <a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
                         </li>
                         <li > 
-                            <a href="{% url 'admins_blogs' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
+                            <a href="{% url 'admins_viewblog' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
                         </li>
                         <li class="active"> 
                             <a href="{% url 'admins_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
@@ -162,32 +162,44 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% if leave_applications %}
+                                            
         <!-- Debug statement -->
-        <p>Leave applications exist: {{ leave_applications }}</p>
+        
                                             {% for leave_application in leave_applications %}
                                             <tr>
-                                                <td>{{ leave_application.doctor.docprofile.name }}</td>
+                                                <td> Dr.{{ leave_application.doctor.docprofile.name }}</td>
                                                 <td>{{ leave_application.leave_type }}</td>
                                                 <td>{{ leave_application.from_date }}</td>
                                                 <td>{{ leave_application.to_date }}</td>
-                                                <td>
-                                                    <span class="badge badge-pill bg-warning inv-badge">{{ leave_application.status }}</span>
+                                                <td id="status-cell-1">
+                                                    {% if application.is_approved == 'pending' %}
+                                                        <span class="badge badge-pill bg-warning inv-badge">Pending</span>
+                                                    {% elif application.is_approved == 'approved' %}
+                                                        <span class="badge badge-pill bg-success inv-badge">Approved</span>                                                  
+                                                    {% elif application.is_approved == 'rejected' %}
+                                                        <span class="badge badge-pill bg-danger inv-badge">Rejected</span>
+                                                    {% else %}
+                                                        <p>Not working</p>
+                                                    {% endif %}
                                                 </td>
                                                 <td>
+                                                    {% if leave_application.status == 'pending' %}
+                                                    <span class="badge badge-pill bg-warning inv-badge">Pending</span>
+                                                    {% elif leave_application.status == 'approved' %}
+                                                    <span class="badge badge-pill bg-success inv-badge">Approved</span>
+                                                    {% elif leave_application.status == 'rejected' %}
+                                                    <span class="badge badge-pill bg-danger inv-badge">Rejected</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-right">
                                                     <div class="approval-status">
-                                                        <button class="btn btn-block btn-outline-success">Approve</button>
-                                                        <button class="btn btn-block btn-outline-danger">Reject</button>
+                                                        <button class="btn btn-success">Approve</button>
+                                                        <button class="btn btn-danger">Reject</button>
                                                         <div class="approval-message"></div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             {% endfor %}
-                                            {% else %}
-        <tr>
-            <td colspan="6">No leave applications found.</td>
-        </tr>
-    {% endif %}
                                         </tbody>
                                         
                                     </table>

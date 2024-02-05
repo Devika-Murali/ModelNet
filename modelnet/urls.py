@@ -39,7 +39,9 @@ urlpatterns = [
     path('admins_registereduser', views.admins_registereduser, name='admins_registereduser'), 
     path('admins_dashlegal', views.dashlegal, name='admins_dashlegal'),
     path('admins_bookscreening', views.admins_bookscreening, name='admins_bookscreening'), 
-    path('admins_blogs/', views.admins_blogs, name='admins_blogs'),
+    path('admins_addblog/', views.admins_addblog, name='admins_addblog'),
+    path('admins_viewblog/', views.admins_viewblog, name='admins_viewblog'),
+
     path('admins_leave/', views.admins_leave, name='admins_leave'),
     path('admin_view_leave_applications', views.admin_view_leave_applications, name='admin_view_leave_applications'),
 
@@ -90,9 +92,10 @@ urlpatterns = [
     path('get_times/<int:doctor_id>/<str:selected_date>/', views.get_times, name='get_times'),
     path('patient_bookappointment/', views.patient_bookappointment, name='patient_bookappointment'),
     path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
-     path('appointments/', views.display_booked_appointments, name='appointments'),
+    path('appointments/', views.display_booked_appointments, name='appointments'),
     path('payment_confirm/', views.payment_confirm, name='payment_confirm'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    path('doctor-profile/', views.doctor_profile_details, name='doctor_profile_details'),
 
 ]
 if settings.DEBUG:
