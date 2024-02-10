@@ -103,12 +103,15 @@
                 <li> 
                     <a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
                 </li>
-                <li class="active"> 
-                    <a href="{% url 'admins_addblog' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
+                <li class="submenu">
+                    <a href="#"><i class="fe fe-layout"></i> <span>Blogs</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{% url 'admins_addblog' %}">Add Blogs</a></li>
+                        <li><a href="{% url 'admins_viewblog' %}">View Blogs</a></li>
+                    </ul>
                 </li>
                 <li> 
-                    <a href="{% url 'admins_viewblog' %}"><i class="fe fe-layout"></i> <span>View Blogs</span></a>
-                    
+                    <a href="{% url 'admins_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
                 </li>
                  {% comment %} <li> 
                     <a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>

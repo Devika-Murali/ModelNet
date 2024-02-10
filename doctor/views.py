@@ -20,7 +20,9 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from django.contrib.auth.decorators import login_required
 def Home(request):
-    return render(request,'Home.html')
+    doctors= Docprofile.objects.all()
+    print(doctors)
+    return render(request,'Home.html',{'doctors':doctors})
 def About(request):
     return render(request,'About.html')  
 def basepatient(request):
@@ -255,7 +257,7 @@ def DoctorReg(request):
         confirm_password = request.POST['confirm_password']
         select_category_id = request.POST.get('select_category')
         category = Specialization.objects.get(id=select_category_id)
-
+                                                     
         print(select_category_id)
         if password == confirm_password:
             if User.objects.filter(username=username).exists():
@@ -289,7 +291,7 @@ def loggout(request):
 
 
 def profile(request):
-    print("jy")
+    print("jd")
     user_profile = UserProfile.objects.get(user=request.user)
     print(request.user)
     if request.method == 'POST':
@@ -382,6 +384,10 @@ def DoctorProfileView(request):
         postalcode= request.POST.get('postalcode')
         services= request.POST.get('services')
         specialist= request.POST.get('specialist')
+        about=request.POST.get('about')
+        degree=request.POST.get('degree')
+        college=request.POST.get('college')
+        cyear=request.POST.get('cyear')
         reset_password = request.POST.get('reset_password')
         old_password = request.POST.get('old_password')
         
@@ -403,7 +409,10 @@ def DoctorProfileView(request):
         doc_profile.postalcode = postalcode
         doc_profile.services = services
         doc_profile.specialist = specialist
-        
+        doc_profile.about = about
+        doc_profile.degree = degree
+        doc_profile.college = college
+        doc_profile.cyear = cyear
         if request.user.check_password(old_password):
             #  the old password is correct, set the new password
                 request.user.set_password(reset_password)
@@ -1162,8 +1171,127 @@ def admins_viewblog(request):
     blogs = Blog.objects.all()
     return render(request, 'admins/viewblog.html', {'blogs': blogs})
 
-def doctor_profile_details(request):
-    # Assuming the user is authenticated and associated with a doctor profile
-    doctor_profile = request.user.docprofile
+
+
+
+def showmore_view(request):
+    doctors = Docprofile.objects.all()
     
-    return render(request, 'showmore.html', {'doctor_profile': doctor_profile})
+    
+    return render(request, 'patient/showmore.html', {'doctors': doctors})
+
+
+from .models import ReferPatient
+def refer_patient(request):
+    doctors= Docprofile.objects.all()
+
+    if request.method == 'POST':
+        # Extract data from the POST request
+        hospital_name = request.POST.get('hospital_name')
+        patient_name = request.POST.get('patient_name')
+        referring_doctor_id = request.POST.get('referring_doctor')
+        referring_doctor_name= request.POST.get('referring_doctor_name')
+        referring_doctor_email= request.POST.get('referring_doctor_email')
+        case_sheet= request.FILES.get('case_sheet')
+        comments= request.POST.get('comments')
+
+        print(referring_doctor_id)
+        medical_details = request.FILES.get('medical_details')
+        
+        # Assuming 'referring_doctor_id' is the ID of the selected doctor
+        if hospital_name and patient_name and referring_doctor_id:
+            try:
+                referring_doctor = Docprofile.objects.get(id=referring_doctor_id)
+                print("Hello",referring_doctor)
+                # Create a new ReferPatient object and save it
+                refer_patient = ReferPatient.objects.create(
+                    hospital_name=hospital_name,
+                    patient_name=patient_name,
+                    referring_doctor=referring_doctor,
+                    referring_doctor_name=referring_doctor_name,
+                    referring_doctor_email=referring_doctor_email,
+                    case_sheet=case_sheet,
+                    comments=comments,
+                    medical_details=medical_details
+                )
+                return redirect('refer_patient')  # Redirect after saving
+            except (ValueError, Docprofile.DoesNotExist):
+                # Handle invalid doctor ID or other errors
+                pass
+    
+    return render(request, 'referpatient.html',{'doctors' : doctors})
+
+
+
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseNotFound
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+# def patientreferences(request):
+#     if request.method == 'POST':
+#         patient_id = request.POST.get('patient_id')
+#         patient = get_object_or_404(ReferPatient, id=patient_id)
+        
+#         # Set accept status to True
+#         patient.accept = True
+#         patient.save()
+
+#         # Get referral doctor's email and other details from ReferPatient
+#         referring_doctor_email = patient.referring_doctor_email
+#         referring_doctor_name = patient.referring_doctor.name
+        
+#         # Send email to the referring doctor
+#         subject = 'Patient Accepted'
+#         message = f'Hi {referring_doctor_name},\n\nThis is to inform you that the patient has been accepted.'
+#         from_email = settings.EMAIL_HOST_USER
+#         recipient_list = [referring_doctor_email]
+#         send_mail(subject, message, from_email, recipient_list)
+        
+#         return redirect('patientreferences')  # Redirect to some URL after accepting patient
+    
+#     referring_doctor = request.user.docprofile
+#     referred_patients = ReferPatient.objects.filter(referring_doctor=referring_doctor)
+#     return render(request, 'doctors/patientreferences.html', {'referred_patients': referred_patients})
+
+
+logger = logging.getLogger(__name__)
+
+def patientreferences(request):
+    if request.method == 'POST':
+        patient_id = request.POST.get('patient_id')
+        patient = get_object_or_404(ReferPatient, id=patient_id)
+        
+        # Set accept status to True
+        patient.accept = True
+        patient.save()
+
+        # Get referral doctor's email and other details from ReferPatient
+        referring_doctor_email = patient.referring_doctor_email
+        referring_doctor_name = patient.referring_doctor.name
+        
+        # Send email to the referring doctor
+        subject = 'Patient Accepted'
+        message = f'Hi {referring_doctor_name},\n\nThis is to inform you that the patient has been accepted.'
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = [referring_doctor_email]
+        
+        try:
+            # Attempt to send the email
+            num_emails_sent = send_mail(subject, message, from_email, recipient_list)
+            if num_emails_sent == 1:
+                # Print confirmation that the email has been sent successfully to the console
+                print(f"Email sent successfully to {referring_doctor_email}")
+            else:
+                # Print an error message to the console if the email sending fails
+                print(f"Failed to send email to {referring_doctor_email}")
+        except Exception as e:
+            # Print any exceptions that occur during the email sending process to the console
+            print(f"An error occurred while sending email to {referring_doctor_email}: {e}")
+        
+        return redirect('patientreferences')  # Redirect to some URL after accepting patient
+    
+    referring_doctor = request.user.docprofile
+    referred_patients = ReferPatient.objects.filter(referring_doctor=referring_doctor)
+    return render(request, 'doctors/patientreferences.html', {'referred_patients': referred_patients})

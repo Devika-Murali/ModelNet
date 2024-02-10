@@ -27,3 +27,6 @@ admin.site.register(LeaveApplication)
 
 from .models import Blog  
 admin.site.register(Blog)
+
+from .models import ReferPatient  
+admin.site.register(ReferPatient)

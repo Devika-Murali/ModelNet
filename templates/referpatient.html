@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>REFER_PATIENT-PAGE</title>
+    
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .custom-select select {
+            display: none;
+        }
+        
+        .select-selected {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .select-selected:focus {
+            outline: none;
+        }
+        
+        .select-selected:after {
+            position: absolute;
+            content: '';
+            top: 14px;
+            right: 10px;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: white transparent transparent transparent;
+        }
+        
+        .select-selected.select-arrow-active:after {
+            border-color: transparent transparent white transparent;
+            top: 7px;
+        }
+        
+        .select-items {
+            position: absolute;
+            background-color: #f9f9f9;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+        
+        .select-hide {
+            display: none;
+        }
+        
+        .select-items div {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .select-items div:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">	
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				
+	</header>
+	<!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Refer a Patient</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Refer a Patient</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+    
+    <div class="container">
+        <h1>Refer a Patient</h1>
+        <form action="{% url 'refer_patient' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="hospital_name">Hospital Name:</label>
+            <input type="text" id="hospital_name" name="hospital_name">
+            <label for="referring_doctor_name">Referring Doctor's Name:</label>
+        <input type="text" id="referring_doctor_name" name="referring_doctor_name">
+
+        <label for="referring_doctor_email">Referring Doctor's Email:</label>
+        <input type="email" id="referring_doctor_email" name="referring_doctor_email">
+
+            <label for="patient_name">Patient Name:</label>
+            <input type="text" id="patient_name" name="patient_name">
+
+            <label for="referring_doctor">Referring Doctor:</label>
+        <div >
+            <select id="referring_doctor" name="referring_doctor">
+                <option value="">Select Doctor</option>
+                {% for doctor in doctors %}
+                <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <label for="case_sheet">Patient's Case Sheet (Upload File):</label>
+        <input type="file" id="case_sheet" name="case_sheet">
+            <label for="medical_details">Patient's Medical Details (Upload File):</label>
+            <input type="file" id="medical_details" name="medical_details">
+            <label for="comments">Comments from Doctor:</label>
+            <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+
+            <input type="submit" value="Refer Patient">
+
+        </form>
+    </div>
+    <script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
+    
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+    
+    </body>
+</html>

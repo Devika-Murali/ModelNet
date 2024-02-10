@@ -172,7 +172,7 @@
                                     <select class="form-select" id="doctor" name="doctor" required>
                                         <option value="" disabled>Select a Doctor</option>
                                         {% for doctor in doctors %}
-                                            <option  value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}- {{ doctor.specialist.specialization_name }}</option>
+                                            <option  value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}- {{ doctor.specialist }}</option>
                                         {% endfor %}
                                     </select>
                                     <div class="invalid-feedback">

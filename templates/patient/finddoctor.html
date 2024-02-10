@@ -101,6 +101,23 @@
 			</div>		 
 		</nav>
 	</header>
+	<!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Find Doctor</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Find Doctor</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
 	<!-- Page Content -->
     <div class="content">
         <div class="container-fluid">
@@ -131,10 +148,15 @@
 												</a>
                                                 <div class="profile-det-info">
 													
-                                                    <h3><a href="doctor-profile.html">{{  doctor.user.name  }}</a></h3>
-                                                    <p>{{ doctor.specialist.specialization_name }}</p>
+                                                    <h3><a href="doctor-profile.html">{{  doctor.name  }}</a></h3>
+													
+                                                    
                                                     <div class="patient-details">
+														<p>{{ doctor.services }}</p>
+
+													
                                                         <h5><b>Email:</b> {{ doctor.email }}</h5>
+														
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,7 +168,8 @@
                                             </ul>
                                         </div>
 										<div>
-											<a href="showmore.html">Show More <span>&rarr;</span></a>
+											{% comment %} <a href="{% url 'showmore' %}" >Show More <span>&rarr;</a> {% endcomment %}
+												<a href="{% url 'patient_bookappointment' %}" >Book Appointment  <span>&rarr;</a> 
 										</div>
                                         <div>
                                             

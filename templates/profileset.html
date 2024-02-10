@@ -23,6 +23,13 @@
 	
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+    <!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI library -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 	
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -163,7 +170,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>First Name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" name="fname" id="fname" value="{{ user.docprofile.name }}">
+                                                        <input type="text" class="form-control" name="name" id="fname" value="{{ user.docprofile.name }}">
                                                         <span id="fname-error" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -237,7 +244,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                    <!-- About Me -->
+<div class="card about-me-card">
+    <div class="card-body">
+        <h4 class="card-title">About Me</h4>
+        <div class="form-group">
+            <textarea class="form-control" rows="5" name="about_me" id="about_me">{{ user.docprofile.about }}</textarea>
+        </div>
+    </div>
+</div>
                                     <!-- Services and Specialization -->
                                     <div class="card services-card">
                                         <div class="card-body">
@@ -245,11 +260,87 @@
                                             <div class="form-group">
                                                 <label>Services</label>
                                                 <input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services" name="services" id="services" value="{{ user.docprofile.services }}">
-                                                <small class="form-text text-muted">Note : Type & Press enter to add new services</small>
                                             </div> 
                                         </div>              
                                     </div>
-                                    
+                                    <!-- Education -->
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Education</h4>
+									<div class="education-info">
+										<div class="row form-row education-cont">
+											<div class="col-12 col-md-10 col-lg-11">
+												<div class="row form-row">
+													<div class="col-12 col-md-6 col-lg-4">
+														<div class="form-group">
+															<label>Degree</label>
+															<input type="text" class="form-control">
+														</div> 
+													</div>
+													<div class="col-12 col-md-6 col-lg-4">
+														<div class="form-group">
+															<label>College/Institute</label>
+															<input type="text" class="form-control">
+														</div> 
+													</div>
+													<div class="col-12 col-md-6 col-lg-4">
+														<div class="form-group">
+															<label>Year of Completion</label>
+															<input type="text" class="form-control">
+														</div> 
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% comment %} <div class="add-more">
+										<a href="javascript:void(0);" class="add-education"><i class="fa fa-plus-circle"></i> Add More</a>
+									</div> {% endcomment %}
+								</div>
+							</div>
+							<!-- /Education -->
+                            <!-- Experience -->
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Experience</h4>
+									<div class="experience-info">
+										<div class="row form-row experience-cont">
+											<div class="col-12 col-md-10 col-lg-11">
+												<div class="row form-row">
+													<div class="col-12 col-md-6 col-lg-4">
+														<div class="form-group">
+															<label>Hospital Name</label>
+															<input type="text" class="form-control">
+														</div> 
+													</div>
+													<div class="col-12 col-md-6 col-lg-4">
+														<div class="form-group">
+															<label>From</label>
+															<input type="text" class="form-control">
+														</div> 
+													</div>
+													<div class="col-12 col-md-6 col-lg-4">
+														<div class="form-group">
+															<label>To</label>
+															<input type="text" class="form-control">
+														</div> 
+													</div>
+													<div class="col-12 col-md-6 col-lg-4">
+														<div class="form-group">
+															<label>Designation</label>
+															<input type="text" class="form-control">
+														</div> 
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="add-more">
+										<a href="javascript:void(0);" class="add-experience"><i class="fa fa-plus-circle"></i> Add More</a>
+									</div>
+								</div>
+							</div>
+							<!-- /Experience -->
                                     <!-- Change Password -->
                                     <div class="card services-card">
                                         <div class="card-body">

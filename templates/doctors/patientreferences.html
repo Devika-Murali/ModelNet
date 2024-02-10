@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>REFER_PATIENT-PAGE</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .custom-select select {
+            display: none;
+        }
+        
+        .select-selected {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .select-selected:focus {
+            outline: none;
+        }
+        
+        .select-selected:after {
+            position: absolute;
+            content: '';
+            top: 14px;
+            right: 10px;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: white transparent transparent transparent;
+        }
+        
+        .select-selected.select-arrow-active:after {
+            border-color: transparent transparent white transparent;
+            top: 7px;
+        }
+        
+        .select-items {
+            position: absolute;
+            background-color: #f9f9f9;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+        
+        .select-hide {
+            display: none;
+        }
+        
+        .select-items div {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .select-items div:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<div class="main-wrapper">
+		
+	<!-- Header -->
+	<header class="header">
+		<nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">	
+			<div class="navbar-header">
+				<a id="mobile_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				<a href="index-2.html" class="navbar-brand logo">
+					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+				</a>
+			</div>
+			<div class="main-menu-wrapper">
+				<div class="menu-header">
+					<a href="index-2.html" class="menu-logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+					</a>
+					<a id="menu_close" class="menu-close" href="javascript:void(0);">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				
+	</header>
+	<!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Refer a Patient</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Refer a Patient</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+    
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Hospital Name</th>
+                                    <th>Patient Name</th>
+                                    <th>Referring Doctor Name</th>
+                                    <th>Referring Doctor Email</th>
+                                    <th>Case Sheet</th>
+                                    <th>Medical Details</th>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for patient in referred_patients %}
+                                <tr>
+                                    <td>{{ patient.hospital_name }}</td>
+                                    <td>{{ patient.patient_name }}</td>
+                                    <td>{{ patient.referring_doctor_name }}</td>
+                                <td>{{ patient.referring_doctor_email }}</td>
+                                <td>
+                                    {% if patient.case_sheet %}
+                                    <a href="{{ patient.case_sheet.url }}" target="_blank">View Case Sheet</a>
+                                    {% else %}
+                                    No case sheet uploaded
+                                    {% endif %}
+                                </td>
+                                    <td>
+                                        {% if patient.medical_details %}
+                                        <a href="{{ patient.medical_details.url }}" target="_blank">View Medical Details</a>
+                                        {% else %}
+                                        No medical details uploaded
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ patient.comments }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal{{ patient.id }}">Accept</button>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal{{ patient.id }}">Decline</button>
+                                    
+                                        <!-- Accept Modal -->
+                                        <div class="modal fade" id="acceptModal{{ patient.id }}" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true" data-backdrop="false">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="acceptModalLabel">Accept Patient</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to accept this patient?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <form action="{% url 'patientreferences' %}" method="post" style="display: inline;">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="patient_id" value="{{ patient.id }}">
+                                                            <button type="submit" class="btn btn-primary">Accept</button>
+                                                        </form>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Decline Modal -->
+                                        <div class="modal fade" id="declineModal{{ patient.id }}" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true" data-backdrop="false">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="declineModalLabel">Decline Patient</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to decline this patient?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <form action="" method="post" style="display: inline;">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-danger">Decline</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4">No referred patients</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
+    
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+    
+    </body>
+</html>

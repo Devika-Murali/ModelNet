@@ -21,14 +21,15 @@ from doctor import views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from doctor.views import patientreferences
 urlpatterns = [
     path('',views.Home, name='Home5'),
     path('admin/', admin.site.urls),
-    path('Home/',views.Home,name='Home'),
+    # path('Home/',views.Home,name='Home'),
     path('About/',views.About,name='About'),
     path('basepatient/',views.basepatient,name='basepatient'),
     path('bookscreening/',views.bookscreening,name='bookscreening'),
-
+    path('patientreferences/', views.patientreferences, name='patientreferences'),
     path('doctors_basedoctor/',views.doctors_basedoctor,name='doctors_basedoctor'),
     path('mypatients/',views.mypatients,name='mypatients'),
     path('profileset/',views.profileset,name='profileset'),
@@ -95,8 +96,8 @@ urlpatterns = [
     path('appointments/', views.display_booked_appointments, name='appointments'),
     path('payment_confirm/', views.payment_confirm, name='payment_confirm'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
-    path('doctor-profile/', views.doctor_profile_details, name='doctor_profile_details'),
-
+    path('showmore/', views.showmore_view, name='showmore'),
+    path('referpatient/', views.refer_patient, name='refer_patient'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

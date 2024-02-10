@@ -50,6 +50,10 @@ class Docprofile(models.Model):
     country = models.CharField(max_length=100, null=True, blank=True)
     postalcode = models.CharField(max_length=100, null=True, blank=True)
     services = models.TextField( null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
+    degree= models.CharField(max_length=100, null=True, blank=True)
+    college=models.CharField(max_length=100, null=True, blank=True)
+    cyear=models.CharField(max_length=100, null=True, blank=True)
     specialist = models.ForeignKey(Specialization, on_delete=models.CASCADE,  null=True, blank=True)  # Reference to the category
     reset_password=models.CharField(max_length=128,null=True,blank=True)
 
@@ -222,3 +226,15 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+
+class ReferPatient(models.Model):
+    hospital_name = models.CharField(max_length=100,null=True,blank=True)
+    patient_name = models.CharField(max_length=100,null=True,blank=True)
+    referring_doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE,null=True,blank=True) 
+    referring_doctor_name = models.CharField(max_length=100,null=True,blank=True)
+    referring_doctor_email = models.EmailField(max_length=100,null=True,blank=True)
+    medical_details = models.FileField(upload_to='medical_details/%Y/%m/%d/')
+    case_sheet = models.FileField(upload_to='case_sheets/%Y/%m/%d/',null=True,blank=True)
+    comments = models.TextField(null=True,blank=True)
+    referred_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+    accept = models.BooleanField(default=False)
