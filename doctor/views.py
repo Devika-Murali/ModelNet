@@ -287,7 +287,7 @@ def loggout(request):
     if 'username' in request.session:
         del request.session['username']
         request.session.clear()
-    return redirect('Home')
+    return redirect('Home5')
 
 
 def profile(request):
@@ -428,10 +428,11 @@ def DoctorProfileView(request):
         
         return redirect('profileset') 
 
-
     context = {
-        'doc_profile': doc_profile
+        'doc_profile': doc_profile,
+        'profile_pic_url': doc_profile.profile_pic.url if doc_profile.profile_pic else None
     }
+    
     return render(request, 'profileset.html', context)
 def admin_adddoctor(request):
     if request.method == 'POST':
@@ -1181,47 +1182,25 @@ def showmore_view(request):
     return render(request, 'patient/showmore.html', {'doctors': doctors})
 
 
-from .models import ReferPatient
-def refer_patient(request):
-    doctors= Docprofile.objects.all()
-
-    if request.method == 'POST':
-        # Extract data from the POST request
-        hospital_name = request.POST.get('hospital_name')
-        patient_name = request.POST.get('patient_name')
-        referring_doctor_id = request.POST.get('referring_doctor')
-        referring_doctor_name= request.POST.get('referring_doctor_name')
-        referring_doctor_email= request.POST.get('referring_doctor_email')
-        case_sheet= request.FILES.get('case_sheet')
-        comments= request.POST.get('comments')
-
-        print(referring_doctor_id)
-        medical_details = request.FILES.get('medical_details')
-        
-        # Assuming 'referring_doctor_id' is the ID of the selected doctor
-        if hospital_name and patient_name and referring_doctor_id:
-            try:
-                referring_doctor = Docprofile.objects.get(id=referring_doctor_id)
-                print("Hello",referring_doctor)
-                # Create a new ReferPatient object and save it
-                refer_patient = ReferPatient.objects.create(
-                    hospital_name=hospital_name,
-                    patient_name=patient_name,
-                    referring_doctor=referring_doctor,
-                    referring_doctor_name=referring_doctor_name,
-                    referring_doctor_email=referring_doctor_email,
-                    case_sheet=case_sheet,
-                    comments=comments,
-                    medical_details=medical_details
-                )
-                return redirect('refer_patient')  # Redirect after saving
-            except (ValueError, Docprofile.DoesNotExist):
-                # Handle invalid doctor ID or other errors
-                pass
-    
-    return render(request, 'referpatient.html',{'doctors' : doctors})
 
 
+# def get_new_references_count(request):
+#     new_references_count = ReferPatient.objects.filter(is_new=True).count()
+#     return JsonResponse({'count': new_references_count})
+
+def accept_patient(request, patient_id):
+    refer_patient = ReferPatient.objects.get(id=patient_id)
+    refer_patient.accept = True
+    refer_patient.is_new = False  # Mark as not new after accept action
+    refer_patient.save()
+    return redirect('refer_patient')
+
+def decline_patient(request, patient_id):
+    refer_patient = ReferPatient.objects.get(id=patient_id)
+    refer_patient.decline = True
+    refer_patient.is_new = False  # Mark as not new after decline action
+    refer_patient.save()
+    return redirect('refer_patient')
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseNotFound
@@ -1258,40 +1237,125 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
+# def patientreferences(request):
+#     if request.method == 'POST':
+#         patient_id = request.POST.get('patient_id')
+#         patient = get_object_or_404(ReferPatient, id=patient_id)
+        
+#         # Set accept status to True
+#         patient.accept = True
+#         patient.save()
+
+#         # Get referral doctor's email and other details from ReferPatient
+#         referring_doctor_email = patient.referring_doctor_email
+#         referring_doctor_name = patient.referring_doctor.name
+        
+#         # Send email to the referring doctor
+#         subject = 'Patient Accepted'
+#         message = f'Hi {referring_doctor_name},\n\nThis is to inform you that the patient has been accepted.'
+#         from_email = settings.EMAIL_HOST_USER
+#         recipient_list = [referring_doctor_email]
+        
+#         try:
+#             # Attempt to send the email
+#             num_emails_sent = send_mail(subject, message, from_email, recipient_list)
+#             if num_emails_sent == 1:
+#                 # Print confirmation that the email has been sent successfully to the console
+#                 print(f"Email sent successfully to {referring_doctor_email}")
+#             else:
+#                 # Print an error message to the console if the email sending fails
+#                 print(f"Failed to send email to {referring_doctor_email}")
+#         except Exception as e:
+#             # Print any exceptions that occur during the email sending process to the console
+#             print(f"An error occurred while sending email to {referring_doctor_email}: {e}")
+        
+#         return redirect('patientreferences')  # Redirect to some URL after accepting patient
+    
+#     referring_doctor = request.user.docprofile
+#     referred_patients = ReferPatient.objects.filter(referring_doctor=referring_doctor)
+#     return render(request, 'doctors/patientreferences.html', {'referred_patients': referred_patients})
+from .models import ReferPatient
+def refer_patient(request):
+    doctors= Docprofile.objects.all()
+
+    if request.method == 'POST':
+        # Extract data from the POST request
+        hospital_name = request.POST.get('hospital_name')
+        patient_name = request.POST.get('patient_name')
+        referring_doctor_id = request.POST.get('referring_doctor')
+        referring_doctor_name= request.POST.get('referring_doctor_name')
+        referring_doctor_email= request.POST.get('referring_doctor_email')
+        case_sheet= request.FILES.get('case_sheet')
+        comments= request.POST.get('comments')
+
+        # print(referring_doctor_id)
+        medical_details = request.FILES.get('medical_details')
+        
+        # Assuming 'referring_doctor_id' is the ID of the selected doctor
+        if hospital_name and patient_name and referring_doctor_id:
+            try:
+                referring_doctor = Docprofile.objects.get(id=referring_doctor_id)
+                print("Hello",referring_doctor)
+                # Create a new ReferPatient object and save it
+                refer_patient = ReferPatient.objects.create(
+                    hospital_name=hospital_name,
+                    patient_name=patient_name,
+                    referring_doctor=referring_doctor,
+                    referring_doctor_name=referring_doctor_name,
+                    referring_doctor_email=referring_doctor_email,
+                    case_sheet=case_sheet,
+                    comments=comments,
+                    medical_details=medical_details
+                )
+                return redirect('refer_patient')  # Redirect after saving
+            except (ValueError, Docprofile.DoesNotExist):
+                # Handle invalid doctor ID or other errors
+                pass
+    
+    return render(request, 'referpatient.html',{'doctors' : doctors})
+    
+   
+
 def patientreferences(request):
     if request.method == 'POST':
         patient_id = request.POST.get('patient_id')
+        action = request.POST.get('action')  # Accept or Decline
+        
         patient = get_object_or_404(ReferPatient, id=patient_id)
         
-        # Set accept status to True
-        patient.accept = True
+        # Set accept or decline status
+        if action == 'accept':
+            patient.accept = True
+            patient.decline = False  # Ensure that the opposite action is reset
+            message = 'Hi {},\n\nThis is to inform you that the patient has been accepted.'.format(patient.referring_doctor_name)
+        elif action == 'decline':
+            patient.accept = False
+            patient.decline = True  # Ensure that the opposite action is reset
+            message = 'Hi {},\n\nThis is to inform you that the patient has been declined.'.format(patient.referring_doctor_name)
+        else:
+            return redirect('patientreferences')  # or handle invalid action
+        
         patient.save()
-
-        # Get referral doctor's email and other details from ReferPatient
-        referring_doctor_email = patient.referring_doctor_email
-        referring_doctor_name = patient.referring_doctor.name
         
         # Send email to the referring doctor
-        subject = 'Patient Accepted'
-        message = f'Hi {referring_doctor_name},\n\nThis is to inform you that the patient has been accepted.'
+        subject = 'Patient Status Update'
         from_email = settings.EMAIL_HOST_USER
-        recipient_list = [referring_doctor_email]
-        
-        try:
-            # Attempt to send the email
-            num_emails_sent = send_mail(subject, message, from_email, recipient_list)
-            if num_emails_sent == 1:
-                # Print confirmation that the email has been sent successfully to the console
-                print(f"Email sent successfully to {referring_doctor_email}")
-            else:
-                # Print an error message to the console if the email sending fails
-                print(f"Failed to send email to {referring_doctor_email}")
-        except Exception as e:
-            # Print any exceptions that occur during the email sending process to the console
-            print(f"An error occurred while sending email to {referring_doctor_email}: {e}")
-        
-        return redirect('patientreferences')  # Redirect to some URL after accepting patient
+        recipient_list = [patient.referring_doctor_email]
+        send_mail(subject, message, from_email, recipient_list)
+
+        # Context for rendering the template
+        referring_doctor = request.user.docprofile
+        referred_patients = ReferPatient.objects.filter(referring_doctor=referring_doctor)
+        context = {'referred_patients': referred_patients}
+
+        # Adding email sent flag to the context
+        context['email_sent'] = True
+
+        return render(request, 'doctors/patientreferences.html', context)
     
     referring_doctor = request.user.docprofile
     referred_patients = ReferPatient.objects.filter(referring_doctor=referring_doctor)
     return render(request, 'doctors/patientreferences.html', {'referred_patients': referred_patients})
+
+def confirm_appointment(request):
+    return render(request, 'confirmapp.html')

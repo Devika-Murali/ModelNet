@@ -140,6 +140,48 @@
         .select-items div:hover {
             background-color: #0056b3;
         }
+        .popup-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 9999;
+        }
+        
+        .popup-card {
+            text-align: center;
+        }
+        
+        .popup-card h2 {
+            color: #333333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .popup-card p {
+            color: #666666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .popup-card button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .popup-card button:hover {
+            background-color: #0056b3;
+        }
         
     </style>
 </head>
@@ -169,8 +211,49 @@
 						<i class="fas fa-times"></i>
 					</a>
 				</div>
-				
+				<ul class="main-nav">
+					<li class="active">
+						<a href="{% url 'Home5' %}">Home</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'About' %}">About</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'About' %}">Blogs</a>
+					</li>
+					{% comment %} <li class="main-nav">
+						<a href="{% url 'bookscreening' %}">Book For screening</a>
+					</li> {% endcomment %}
+					<li class="main-nav">
+						<a href="{% url 'login_page' %}">Book Appointment</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'refer_patient' %}">Refer A Patient</a>
+					</li>
+					<li class="main-nav">
+						<a href="{% url 'refer_patient' %}">Make Donations</a>
+					</li>
+					<li class="login-link">
+						<a href="{% url 'login_page' %}">Login / Signup</a>
+					</li>
+				</ul>		 
+			</div>		 
+			<ul class="nav header-navbar-rht">
+				<li class="nav-item contact-item">
+					<div class="header-contact-img">
+						<i class="far fa-hospital"></i>							
+					</div>
+					<div class="header-contact-detail">
+						<p class="contact-header">Contact</p>
+						<p class="contact-info-header"> +1 315 369 5943</p>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link header-login" href="{% url 'login_page' %}">login / Signup </a>
+				</li>
+			</ul>
 	</header>
+    
 	<!-- Breadcrumb -->
     <div class="breadcrumb-bar">
         <div class="container-fluid">
@@ -191,39 +274,198 @@
     
     <div class="container">
         <h1>Refer a Patient</h1>
-        <form action="{% url 'refer_patient' %}" method="post" enctype="multipart/form-data">
+        <form id="refer_form" action="{% url 'refer_patient' %}" method="post" enctype="multipart/form-data" class="card" onsubmit="return validateForm()">
             {% csrf_token %}
-            <label for="hospital_name">Hospital Name:</label>
-            <input type="text" id="hospital_name" name="hospital_name">
-            <label for="referring_doctor_name">Referring Doctor's Name:</label>
-        <input type="text" id="referring_doctor_name" name="referring_doctor_name">
-
-        <label for="referring_doctor_email">Referring Doctor's Email:</label>
-        <input type="email" id="referring_doctor_email" name="referring_doctor_email">
-
-            <label for="patient_name">Patient Name:</label>
-            <input type="text" id="patient_name" name="patient_name">
-
-            <label for="referring_doctor">Referring Doctor:</label>
-        <div >
-            <select id="referring_doctor" name="referring_doctor">
-                <option value="">Select Doctor</option>
-                {% for doctor in doctors %}
-                <option value="{{ doctor.id }}">{{ doctor.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <label for="case_sheet">Patient's Case Sheet (Upload File):</label>
-        <input type="file" id="case_sheet" name="case_sheet">
-            <label for="medical_details">Patient's Medical Details (Upload File):</label>
-            <input type="file" id="medical_details" name="medical_details">
-            <label for="comments">Comments from Doctor:</label>
-            <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
-
-            <input type="submit" value="Refer Patient">
-
+            <div class="card-body">
+                <div class="form-group card-label">
+                    <label for="hospital_name">Hospital Name:</label>
+                    <input type="text" id="hospital_name" name="hospital_name" class="form-control" required>
+                    <div class="invalid-feedback">Please enter the hospital name in the format "Hospital Name,Place".</div>
+                </div>
+                
+                <div class="form-group card-label">
+                    <label for="referring_doctor_name">Referring Doctor's Name:</label>
+                    <input type="text" id="referring_doctor_name" name="referring_doctor_name" class="form-control" required>
+                    <div class="invalid-feedback">Please enter the doctor's name starting with a capital letter.</div>
+                </div>
+                
+                <div class="form-group card-label">
+                    <label for="referring_doctor_email">Referring Doctor's Email:</label>
+                    <input type="email" id="referring_doctor_email" name="referring_doctor_email" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a valid email address (e.g., name@gmail.com).</div>
+                </div>
+                
+                <div class="form-group card-label">
+                    <label for="patient_name">Patient Name:</label>
+                    <input type="text" id="patient_name" name="patient_name" class="form-control" required>
+                    <div class="invalid-feedback">Please enter the patient's name starting with a capital letter.</div>
+                </div>
+                
+                <div class="form-group card-label">
+                    <label for="referring_doctor">Referring Doctor:</label>
+                    <select id="referring_doctor" name="referring_doctor" class="form-control" required>
+                        <option value="">Select Doctor</option>
+                        {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}">Dr.{{ doctor.name }}, {{ doctor.specialist }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">Please select a referring doctor.</div>
+                </div>
+                
+                <div class="form-group card-label">
+                    <label for="case_sheet">Patient's Case Sheet (Upload File):</label>
+                    <input type="file" id="case_sheet" name="case_sheet" class="form-control-file" required>
+                    <div class="invalid-feedback">Please upload the patient's case sheet.</div>
+                </div>
+                
+                <div class="form-group card-label">
+                    <label for="medical_details">Patient's Medical Details (Upload File):</label>
+                    <input type="file" id="medical_details" name="medical_details" class="form-control-file" required>
+                    <div class="invalid-feedback">Please upload the patient's medical details.</div>
+                </div>
+                
+                <div class="form-group card-label">
+                    <label for="comments">Comments from Doctor:</label>
+                    <textarea id="comments" name="comments" rows="4" cols="50" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Please provide comments from the doctor.</div>
+                </div>
+                
+                <div class="text-center">
+                    <input type="submit" value="Refer Patient" class="btn btn-primary">
+                </div>
+            </div>
         </form>
+        <div id="popup_message" class="popup-message">
+            <div class="popup-card">
+                <h2>Patient Referred</h2>
+                <p>The patient has been referred. You will receive an email regarding the acceptance status.</p>
+                <button onclick="closePopup()">Close</button>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function validateForm() {
+            // Your validation logic here
+        
+            // Assuming form is valid
+            if (/* Your validation checks pass */) {
+                // Allow default form submission action
+                return true;
+            } else {
+                // If validation fails, prevent form submission
+                return false;
+            }
+        }
+        
+        function showPopup() {
+            document.getElementById('popup_message').style.display = 'block';
+        }
+       
+    
+        
+    
+        function closePopup() {
+            document.getElementById('popup_message').style.display = 'none';
+            // Optionally, you can redirect the user or perform other actions here
+        }
+        // Add an event listener for the form submission
+       
+        // Function to close the popup message
+        function closePopup() {
+            document.getElementById('popup_message').style.display = 'none';
+            // Optionally, you can redirect the user or perform other actions here
+        }
+
+        function validateHospitalName() {
+            var hospitalName = document.getElementById('hospital_name').value;
+            var hospitalNamePattern = /^[A-Z][a-zA-Z\s,]+$/;
+    
+            if (!hospitalNamePattern.test(hospitalName)) {
+                document.getElementById('hospital_name').classList.add('is-invalid');
+                document.getElementById('hospital_name_error').innerText = "Please enter the hospital name in the format 'Hospital Name, Place'.";
+            } else {
+                document.getElementById('hospital_name').classList.remove('is-invalid');
+                document.getElementById('hospital_name_error').innerText = "";
+            }
+        }
+    
+        function validateDoctorName() {
+            var referringDoctorName = document.getElementById('referring_doctor_name').value;
+            var referringDoctorNamePattern = /^[A-Z][a-zA-Z\s]+$/;
+    
+            if (!referringDoctorNamePattern.test(referringDoctorName)) {
+                document.getElementById('referring_doctor_name').classList.add('is-invalid');
+                document.getElementById('referring_doctor_name_error').innerText = "Please enter the doctor's name starting with a capital letter.";
+            } else {
+                document.getElementById('referring_doctor_name').classList.remove('is-invalid');
+                document.getElementById('referring_doctor_name_error').innerText = "";
+            }
+        }
+    
+        function validateDoctorEmail() {
+            var referringDoctorEmail = document.getElementById('referring_doctor_email').value;
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+            if (!emailPattern.test(referringDoctorEmail)) {
+                document.getElementById('referring_doctor_email').classList.add('is-invalid');
+                document.getElementById('referring_doctor_email_error').innerText = "Please enter a valid email address (e.g., user@gmail.com).";
+            } else {
+                document.getElementById('referring_doctor_email').classList.remove('is-invalid');
+                document.getElementById('referring_doctor_email_error').innerText = "";
+            }
+        }
+    
+        function validatePatientName() {
+            var patientName = document.getElementById('patient_name').value;
+            var patientNamePattern = /^[A-Z][a-zA-Z\s]+$/;
+    
+            if (!patientNamePattern.test(patientName)) {
+                document.getElementById('patient_name').classList.add('is-invalid');
+                document.getElementById('patient_name_error').innerText = "Please enter the patient's name starting with a capital letter.";
+            } else {
+                document.getElementById('patient_name').classList.remove('is-invalid');
+                document.getElementById('patient_name_error').innerText = "";
+            }
+        }
+    
+        // Add event listeners to input fields
+        document.getElementById('hospital_name').addEventListener('input', validateHospitalName);
+        document.getElementById('referring_doctor_name').addEventListener('input', validateDoctorName);
+        document.getElementById('referring_doctor_email').addEventListener('input', validateDoctorEmail);
+        document.getElementById('patient_name').addEventListener('input', validatePatientName);
+       
+        // Add event listeners to other input fields similarly for real-time validation
+        document.getElementById('refer_form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            // Show the popup message
+            document.getElementById('popup_message').style.display = 'block';
+        });
+        document.getElementById('refer_form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission action
+        
+            // Validate the form
+            var isValid = validateForm();
+        
+            // If the form is valid, submit the form and show the popup message
+            if (isValid) {
+                // Submit the form
+                this.submit();
+                
+                // Show the popup message after a brief delay (adjust as needed)
+                setTimeout(showPopup, 500); // Show the popup after 500 milliseconds (0.5 seconds)
+            }
+        });
+    
+        function closePopup() {
+            // Hide the popup message
+            document.getElementById('popup_message').style.display = 'none';
+            // Redirect to the home page
+            window.location.href = '/';
+        }
+        
+    </script>
+    
     <script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
     
     <!-- Bootstrap Core JS -->
@@ -231,6 +473,7 @@
     
     <!-- Custom JS -->
     <script src="{% static 'assets/js/script.js' %}"></script>
-    
-    </body>
+
+</body>
+   
 </html>

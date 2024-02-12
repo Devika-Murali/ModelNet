@@ -144,6 +144,7 @@
                                             <div class="change-avatar">
                                                 <div class="profile-img">
                                                     {% if user.docprofile.profile_pic %}
+                                               
                                                     <img src="{{ user.docprofile.profile_pic.url }}" alt="User Image">
                                                     {% else %}
                                                     <img src="{% static 'assets/img/12.png' %}" alt="User Image">

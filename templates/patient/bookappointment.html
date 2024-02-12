@@ -44,9 +44,50 @@
             font-weight: bold;
         }
 
-        
-    
-</style>
+        .appointment-form {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 30px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .invalid-feedback {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <div class="main-wrapper">
 		
@@ -125,86 +166,104 @@
 	</header>
 <body>
     <div class="container">
-        
-        <div class="container">
-            <div class="container">
-                <div class="container">
-                    <div class="container">
-                        <form method="POST" class="needs-validation p-4 border rounded shadow-lg bg-light" novalidate>
-                            {% csrf_token %}
-                            <h2 class="mb-4 text-center">Book an Appointment</h2>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="name" class="form-label">Name:</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="{{ user.userprofile.name }}" required>
-                                    <div class="invalid-feedback">
-                                        Please enter your name.
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label for="email" class="form-label">Email:</label>
-                                    <input type="text" class="form-control" id="email" name="email" value="{{ user.email }}" required>
-                                    <div class="invalid-feedback">
-                                        Please enter your email.
-                                    </div>
-                                </div>
-                                
-                               
-                                {% comment %} <div class="col-md-6">
-                                    <label for="gender" class="form-label">Gender:</label>
-                                    <input type="text" class="form-control" id="gender" name="gender" value="{{ user.userprofile.gender }}" required>
-                                    <div class="invalid-feedback">
-                                        Please enter your gender.
-                                    </div>
-                                </div> {% endcomment %}
-                                
-                               
-                                <div class="col-12">
-                                    <label for="reason" class="form-label">Reason for Consultation:</label>
-                                    <textarea class="form-control" id="reason" name="reason" required></textarea>
-                                    <div class="invalid-feedback">
-                                        Please enter your reason for consultation.
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="doctor" class="form-label">Select a Doctor:</label>
-                                    <select class="form-select" id="doctor" name="doctor" required>
-                                        <option value="" disabled>Select a Doctor</option>
-                                        {% for doctor in doctors %}
-                                            <option  value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }}- {{ doctor.specialist }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a doctor.
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="date" class="form-label">Select a Date:</label>
-                                    <input type="date" class="form-control" name="appdate" id="appdate">
-                                    <div class="invalid-feedback">
-                                        Please select a date.
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label for="time" class="form-label">Select a Time Slot:</label>
-                                    <select class="form-select" name="apptime" id="apptime" required>
-                                        <!-- JavaScript will populate the options here -->
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a time slot.
-                                    </div>
-                                </div>
-                                <div id="error-message" style="color: red;"></div>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary mt-4">Book Appointment</button>
-                            </div>
-                        </form>
+        <form method="POST" class="needs-validation p-4 border rounded shadow-lg bg-light" novalidate>
+            {% csrf_token %}
+            <h2 class="mb-4 text-center">Book an Appointment</h2>
+            <div class="row g-3">
+                <!-- Patient Name -->
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ user.userprofile.name }}" required>
+                    <div class="invalid-feedback">
+                        Please enter your name.
                     </div>
-        <!-- Display error messages if needed -->
+                </div>
+                <div class="col-md-6">
+                    <label for="age" class="form-label">Age:</label>
+                    <input type="number" class="form-control" id="age" name="age" required>
+                    <div class="invalid-feedback">
+                        Please enter your age.
+                    </div>
+                </div>
+                <!-- Patient Email -->
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid email.
+                    </div>
+                </div>
+                
+                <!-- Appointment Type -->
+                <div class="col-md-6">
+                    <label class="form-check-label">Appointment Type:</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="monthlyCheckup" name="appointmentType" value="monthlyCheckup">
+                        <label class="form-check-label" for="monthlyCheckup">Monthly Check-up</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="consultation" name="appointmentType" value="consultation">
+                        <label class="form-check-label" for="consultation">Consultation</label>
+                    </div>
+                </div>
+                
+                <!-- Reason for Consultation (Conditional) -->
+                <div id="consultationReason" class="col-12" style="display: none;">
+                    <label for="reason" class="form-label">Reason for Consultation:</label>
+                    <textarea class="form-control" id="reason" name="reason"></textarea>
+                </div>
+                
+               <!-- Select Doctor -->
+<div class="col-md-6">
+    <label for="doctor" class="form-label">Select a Doctor:</label>
+    <div class="input-group">
+        <select class="form-select form-select-lg" id="doctor" name="doctor" required>
+            <option value="" disabled selected>Select a Doctor</option>
+            {% for doctor in doctors %}
+                <option value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }} - {{ doctor.specialist }}</option>
+            {% endfor %}
+        </select>
+        <label class="input-group-text" for="doctor"><i class="fas fa-user-md"></i></label>
+    </div>
+    <div class="invalid-feedback">
+        Please select a doctor.
+    </div>
+</div>
 
+<!-- Select Time -->
+<div class="col-md-6">
+    <label for="time" class="form-label">Select a Time Slot:</label>
+    <div class="input-group">
+        <select class="form-select form-select-lg" name="apptime" id="apptime" required>
+            <option value="" disabled selected>Select a Time Slot</option>
+            <!-- JavaScript will populate the options here -->
+        </select>
+        <label class="input-group-text" for="time"><i class="fas fa-clock"></i></label>
+    </div>
+    <div class="invalid-feedback">
+        Please select a time slot.
+    </div>
+</div>
+
+                
+                <!-- Select Date -->
+                <div class="col-md-6">
+                    <label for="date" class="form-label">Select a Date:</label>
+                    <input type="date" class="form-control" name="appdate" id="appdate" required>
+                    <div class="invalid-feedback">
+                        Please select a date.
+                    </div>
+                </div>
+                
+                
+                
+                <div id="error-message" style="color: red;"></div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mt-4">Book Appointment</button>
+            </div>
+        </form>
+    </div>
     </div>
 
     <!-- Include Bootstrap JS (if needed) -->
@@ -230,6 +289,36 @@
 </script>
 
 <script>
+    const consultationCheckbox = document.getElementById("consultation");
+    const monthlyCheckupCheckbox = document.getElementById("monthlyCheckup");
+    const consultationReasonField = document.getElementById("consultationReason");
+
+    consultationCheckbox.addEventListener("change", function() {
+        if (consultationCheckbox.checked) {
+            consultationReasonField.style.display = "block";
+            document.getElementById("reason").setAttribute("required", "true");
+            uncheckOtherCheckboxes("consultation");
+        } else {
+            consultationReasonField.style.display = "none";
+            document.getElementById("reason").removeAttribute("required");
+        }
+    });
+
+    monthlyCheckupCheckbox.addEventListener("change", function() {
+        if (monthlyCheckupCheckbox.checked) {
+            uncheckOtherCheckboxes("monthlyCheckup");
+        }
+    });
+
+    function uncheckOtherCheckboxes(checkboxId) {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.id !== checkboxId) {
+                checkbox.checked = false;
+            }
+        });
+    }
+
     function validateDate() {
         var selectedDate = new Date(document.getElementById('appdate').value);
         var currentDate = new Date();
@@ -252,6 +341,7 @@
     var dateInput = document.getElementById('appdate');
     dateInput.min = currentDate.toISOString().split('T')[0]; // Set min date
     dateInput.max = oneWeekLater.toISOString().split('T')[0]; // Set max date
+
     function generateTimeSlots() {
         var select = document.getElementById('apptime');
         var startTime = 9 * 60; // 9:00 AM in minutes since midnight
@@ -278,8 +368,8 @@
     
     // Call the function to generate time slots when the page loads
     generateTimeSlots();
-    
-    </script>
+</script>
+
 
         
         

@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Request</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .content {
+            max-width: 600px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .appointments {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .appointment-option {
+            background-color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .appointment-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .appointment-option h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        
+        .appointment-option p {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        /* Arrow styling */
+        .arrow {
+            position: absolute;
+            bottom: -20px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .line {
+            width: calc(100% - 20px);
+            height: 2px;
+            background-color: #007bff;
+            margin-right: 20px;
+        }
+        
+        .arrow::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            right: 0;
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #007bff;
+        }
+    </style>        
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Start Your Appointment Request</h1>
+            <p>This is the easiest way to reach us.</p>
+            <div class="appointments">
+                <div class="appointment-option" onclick="window.location.href='{% url 'register' %}'">
+                    <h2>New Patients</h2>
+                    <p>Provide your information and set a follow-up time.</p>
+                </div>
+                <div class="appointment-option" onclick="window.location.href='{% url 'login_page' %}'">
+                    <h2>Returning Patients</h2>
+                    <p>Request using your patient account.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -30,6 +30,8 @@ urlpatterns = [
     path('basepatient/',views.basepatient,name='basepatient'),
     path('bookscreening/',views.bookscreening,name='bookscreening'),
     path('patientreferences/', views.patientreferences, name='patientreferences'),
+    path('accept-patient/<int:patient_id>/',views.accept_patient, name='accept_patient'),
+    path('decline-patient/<int:patient_id>/', views.decline_patient, name='decline_patient'),
     path('doctors_basedoctor/',views.doctors_basedoctor,name='doctors_basedoctor'),
     path('mypatients/',views.mypatients,name='mypatients'),
     path('profileset/',views.profileset,name='profileset'),
@@ -98,6 +100,7 @@ urlpatterns = [
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('showmore/', views.showmore_view, name='showmore'),
     path('referpatient/', views.refer_patient, name='refer_patient'),
+    path('confirm-appointment/', views.confirm_appointment, name='confirm_appointment'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

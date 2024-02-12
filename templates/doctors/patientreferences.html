@@ -171,8 +171,104 @@
 						<i class="fas fa-times"></i>
 					</a>
 				</div>
+                <ul class="main-nav">
+					<li class="active">
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="home">Home</a>
+					</li>
+				 <li>
+						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+					</li> 
+					<li>
+						<a href="{% url 'patientreferences' %}">Patient References</a>
+					</li>
+					{% comment %} <li class="main-nav">
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
+					</li> {% endcomment %}
+                    <li class="main-nav">
+						{% if existing_certification %}
+				
+						
+			
+						{% if existing_certification.is_approved == 'approved' %}
+						<a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+						
+						{% else %}
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>                
+						{% endif %}
+					  {% else %}
+					  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>
+					  {% endif %}
+						
+					</li>
+					<li class="has-submenu"class="nav-link">
+								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+						{% if existing_certification.is_approved == 'approved' %}
+						<a href="{% url 'mypatients' %}"class="nav-link" id="patient">My Patients</a>
+						{% else %}
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>               
+						{% endif %}
+					  {% else %}
+					  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>   
+					  {% endif %}
+						
+										
+									</li>
+                                    
+								</ul>
+                                
+							</li>
+						
+							<li class="has-submenu"class="nav-link">
+								<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+                                    <li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a>
+										{% else %}
+										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Profile Settings</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
+                                    
+									
+								</ul>
+							</li>
+					{% if user.is_authenticated %}
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<ul class="submenu">
+							<li>{{ user.username }}</li>
+							<li><a href="{% url 'loggout' %}" id="logout">Logout</li></a>
+						</ul>
+					</li>
+					{% else %}
+					<li><a href="{% url 'login_page' %}">Login</a></li>				
+					{% endif %}
+						</ul>
+					</li>
+
+				</ul>		 
 				
 	</header>
+    <div id="popup-message" class="alert alert-success" style="display: none;">
+        Email has been sent successfully.
+    </div>
 	<!-- Breadcrumb -->
     <div class="breadcrumb-bar">
         <div class="container-fluid">
@@ -206,6 +302,7 @@
                                     <th>Case Sheet</th>
                                     <th>Medical Details</th>
                                     <th>Comments</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -231,58 +328,74 @@
                                     </td>
                                     <td>{{ patient.comments }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal{{ patient.id }}">Accept</button>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal{{ patient.id }}">Decline</button>
+                                        {% if patient.accept %}
+                                            Accepted
+                                        {% elif patient.decline %}
+                                            Declined
+                                        {% else %}
+                                        <button type="button" class="btn btn-sm bg-success-light" data-toggle="modal" data-target="#acceptModal{{ patient.id }}">
+                                            <i class="fas fa-check"></i> Accept
+                                        </button>
+                                        
+                                        <button type="button" class="btn btn-sm bg-danger-light" data-toggle="modal" data-target="#declineModal{{ patient.id }}">
+                                            <i class="fas fa-times"></i> Decline
+                                        </button>
+                                        
+                                        {% endif %}
+                                    </td>
                                     
                                         <!-- Accept Modal -->
-                                        <div class="modal fade" id="acceptModal{{ patient.id }}" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true" data-backdrop="false">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="acceptModalLabel">Accept Patient</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to accept this patient?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <form action="{% url 'patientreferences' %}" method="post" style="display: inline;">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" name="patient_id" value="{{ patient.id }}">
-                                                            <button type="submit" class="btn btn-primary">Accept</button>
-                                                        </form>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    
-                                        <!-- Decline Modal -->
-                                        <div class="modal fade" id="declineModal{{ patient.id }}" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true" data-backdrop="false">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="declineModalLabel">Decline Patient</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to decline this patient?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <form action="" method="post" style="display: inline;">
-                                                            {% csrf_token %}
-                                                            <button type="submit" class="btn btn-danger">Decline</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+<div class="modal fade" id="acceptModal{{ patient.id }}" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acceptModalLabel">Accept Patient</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to accept this patient?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{% url 'patientreferences' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="patient_id" value="{{ patient.id }}">
+                    <input type="hidden" name="action" value="accept"> <!-- Add hidden input field for action -->
+                    <button type="submit" class="btn btn-primary">Accept</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Decline Modal -->
+<div class="modal fade" id="declineModal{{ patient.id }}" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="declineModalLabel">Decline Patient</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to decline this patient?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{% url 'patientreferences' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="patient_id" value="{{ patient.id }}">
+                    <input type="hidden" name="action" value="decline"> <!-- Add hidden input field for action -->
+                    <button type="submit" class="btn btn-danger">Decline</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
                                     </td>
                                     
                                 </tr>
@@ -308,6 +421,25 @@
     
     <!-- Custom JS -->
     <script src="{% static 'assets/js/script.js' %}"></script>
-    
+    {% if email_sent %}
+    <div id="popup-message" class="alert alert-success" style="display: none;">
+        Email has been sent successfully.
+    </div>
+
+    <script>
+        // Function to show the pop-up message
+        function showPopupMessage() {
+            var popup = document.getElementById('popup-message');
+            popup.style.display = 'block';
+            setTimeout(function() {
+                popup.style.display = 'none';
+            }, 5000); // Hide the pop-up message after 3 seconds
+        }
+
+        // Call JavaScript function to show the pop-up message
+        showPopupMessage();
+    </script>
+{% endif %}
+
     </body>
 </html>

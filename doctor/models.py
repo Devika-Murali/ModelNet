@@ -163,25 +163,33 @@ class Slots(models.Model):
     def __str__(self):
         return f"Slot for Dr. {self.doctor.name} on {self.date} at {self.start_time}-{self.end_time}"
 
+# class Appointment(models.Model):
+#     fullName = models.CharField(max_length=100,null=True, blank=True)
+
+#     age = models.IntegerField(null=True, blank=True)
+#     GENDER_CHOICES = [
+#         ('Male', 'Male'),
+#         ('Female', 'Female'),
+#         ('Other', 'Other'),
+#     ]
+#     gender = models.CharField(max_length=10, choices=GENDER_CHOICES,null=True, blank=True)
+#     phone = models.CharField(max_length=15,null=True, blank=True)
+#     email = models.EmailField(null=True, blank=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+#     doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, related_name='appointments') 
+#     symptoms = models.TextField(null=True, blank=True)
+#     timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+#     app_date = models.DateField(null=True, blank=True)
+#     app_time = models.TimeField(null=True, blank=True)
 class Appointment(models.Model):
-    fullName = models.CharField(max_length=100,null=True, blank=True)
-
-    age = models.IntegerField(null=True, blank=True)
-    GENDER_CHOICES = [
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-        ('Other', 'Other'),
-    ]
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES,null=True, blank=True)
-    phone = models.CharField(max_length=15,null=True, blank=True)
+    patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     email = models.EmailField(null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    age = models.IntegerField(null=True, blank=True)
     doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, related_name='appointments') 
-    symptoms = models.TextField(null=True, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    app_date = models.DateField(null=True, blank=True)
-    app_time = models.TimeField(null=True, blank=True)
-
+    appointment_type = models.CharField(max_length=100,null=True, blank=True)
+    appointment_date = models.DateField(null=True, blank=True)
+    appointment_time = models.TimeField(null=True, blank=True)
+    reason_for_consultation = models.TextField(blank=True, null=True)
  
 
 
@@ -238,3 +246,4 @@ class ReferPatient(models.Model):
     comments = models.TextField(null=True,blank=True)
     referred_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
     accept = models.BooleanField(default=False)
+    

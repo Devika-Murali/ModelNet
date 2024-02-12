@@ -135,11 +135,27 @@
 								</ul>
 							</li>
 					{% if user.is_authenticated %}
-					<li class="has-submenu">
-						<a href="#"><i class="fa fa-user-circle"></i></a>
+					{% comment %} <li class="has-submenu">
+						{% if profile_pic_url %}
+					
+    <img src="{{ profile_pic_url }}" alt="Profile Picture">
+{% else %}
+    <a href="#"><i class="fa fa-user-circle"></i></a>
+{% endif %}
 						<ul class="submenu">
 							<li>{{ user.username }}</li>
 							<li><a href="{% url 'loggout' %}" id="logout">Logout</li></a>
+						</ul>
+					</li> {% endcomment %}
+					<li class="has-submenu">
+						{% if profile_pic_url %}
+							<img src="{{ profile_pic_url }}" alt="Profile Picture">
+						{% else %}
+							<a href="#"><i class="fa fa-user-circle"></i></a>
+						{% endif %}
+						<ul class="submenu">
+							<li>{{ user.username }}</li>
+							<li><a href="{% url 'loggout' %}" id="logout">Logout</a></li>
 						</ul>
 					</li>
 					{% else %}
@@ -216,6 +232,8 @@
 					</div>
 				  </div>
 				  <script>
+					
+
 					
 					$(document).ready(function () {
 					  $("#certification_image").change(function () {
@@ -316,6 +334,7 @@
 					
 				  
 				  </script>`
+				  
 				</div>
 
 			</div>
