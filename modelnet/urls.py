@@ -55,7 +55,6 @@ urlpatterns = [
     path('profileset',views.DoctorProfileView,name='profileset'),
     path('admins_doctorlist/',views.admins_doctorlist,name='admins_doctorlist'), 
     path('patient_medicalhistory/', views.patient_medicalhistory, name='patient_medicalhistory'),  
-    path('doctors_appointments/',views.doctors_appointments,name='doctors_appointments'),
     path('doctors_leave/',views.doctors_leave,name='doctors_leave'),
     path('doctors_leavesubmit/',views.doctors_leavesubmit,name='doctors_leavesubmit'),
 
@@ -89,11 +88,7 @@ urlpatterns = [
     path('deactivate_user/<int:user_id>/', views.deactivate_user, name='deactivate_user'),
     path('activate_user/<int:user_id>/', views.activate_user, name='activate_user'),
     path('count/', views.count_view, name='count_view'),
-    path('dr_timeslots',views.dr_timeslots,name="dr_timeslots"),
-    path('dr_timeslots_shows',views.dr_timeslots_shows, name= 'dr_timeslots_shows'),
-    path('get_dates/<int:doctor_id>/', views.get_dates, name='get_dates'),
-    path('get_times/<int:doctor_id>/<str:selected_date>/', views.get_times, name='get_times'),
-    path('patient_bookappointment/', views.patient_bookappointment, name='patient_bookappointment'),
+    
     path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
     path('appointments/', views.display_booked_appointments, name='appointments'),
     path('payment_confirm/', views.payment_confirm, name='payment_confirm'),
@@ -101,6 +96,8 @@ urlpatterns = [
     path('showmore/', views.showmore_view, name='showmore'),
     path('referpatient/', views.refer_patient, name='refer_patient'),
     path('confirm-appointment/', views.confirm_appointment, name='confirm_appointment'),
+    path('book-appointment/', views.book_appointment, name='book_appointment'),
+    path('appointments/', views.Appointments, name='appointments'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

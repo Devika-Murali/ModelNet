@@ -72,8 +72,8 @@
             <div class="confirmation-details">
                 <!-- Add your confirmation details here -->
                 <p>Patient's Name: <span id="patientName"></span></p>
-                {% comment %} <p>Doctor's Name: Dr.{{appointment.doctor.name }} <span id="doctorname"></span></p> {% endcomment %}
-                <p>Appointment Date and Time: {{ appointment.app_date|date:"F j, Y" }}, {{ appointment.app_time|time:"P" }}</p>
+                <p>Doctor's Name: Dr.{{appointments.doctor.name  }} <span id="doctorname"></span></p>
+                <p>Appointment Date and Time: {{ appointments.app_date|date:"F j, Y" }}, {{ appointments.app_time|time:"P" }}</p>
                 <p>Payment Amount: ₹200</p>
                 <!-- You can include more details here -->
             </div>
@@ -118,5 +118,29 @@
         document.getElementById('doctorname').textContent = "{{ user.Docprofile.name }}";
 
     </script>
+    <script>
+        // Function to update confirmation details
+        function updateConfirmationDetails() {
+            // Get selected doctor's name
+            var doctorSelect = document.getElementById("doctor");
+            var selectedDoctorName = doctorSelect.options[doctorSelect.selectedIndex].text;
+    
+            // Get selected date
+            var selectedDate = document.getElementById("appdate").value;
+    
+            // Get selected time
+            var selectedTimeSelect = document.getElementById("apptime");
+            var selectedTime = selectedTimeSelect.options[selectedTimeSelect.selectedIndex].text;
+    
+            // Update HTML elements with the selected details
+            document.getElementById("doctorName").innerText = selectedDoctorName;
+            document.getElementById("appointmentDateTime").innerText = selectedDate + ", " + selectedTime;
+        }
+    
+        // Call the function when the page loads to initialize confirmation details
+        window.onload = updateConfirmationDetails;
+    </script>
+    
+    
 </body>
 </html>

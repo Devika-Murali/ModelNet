@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login as auth_login,logout,get_user_model
-from .models import UserProfile,Docprofile,Specialization,Certification
+from .models import UserProfile,Docprofile,Specialization,Certification,Appointments
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
@@ -29,11 +29,28 @@ def basepatient(request):
     return render(request,'basepatient.html')
 
 def doctors_basedoctor(request):
+    user_id = request.user.id
 
+    # Filter the Docprofile instance associated with the current user
+    me = Docprofile.objects.filter(user_id=user_id).first()  # Use first() to get a single instance or None
+
+    # If the Docprofile instance exists for the current user
+    if me:
+        # Count the number of ReferPatient instances where the referring_doctor matches the Docprofile instance
+        count = ReferPatient.objects.filter(referring_doctor=me).count()
+    
+        
+        # Render the template with the count
+        # return render(request, 'doctors_basedoctor.html', {'count': count})
+    else:
+        # Handle the case where Docprofile does not exist for the current user
+        # You can render an appropriate error message or redirect to a page
+        pass
+    
     existing_certification = Certification.objects.filter(user=request.user).first()
 
     if existing_certification:
-        return render(request, 'doctors/basedoctor.html', {'existing_certification': existing_certification})
+        return render(request, 'doctors/basedoctor.html', {'existing_certification': existing_certification, 'count': count})
 
     if request.method == 'POST':
         # Handle form submission
@@ -60,7 +77,10 @@ def doctors_basedoctor(request):
         'existing_certification': existing_certification,
     })
 
-    return render(request,'doctors_basedoctor.html') 
+    return render(request,'doctors_basedoctor.html' ,{'count': count}) 
+
+
+    
 # def doctors_timeslot(request):
 #     return render(request,'doctors/timeslot.html')
 def doctors_testresult(request):
@@ -71,13 +91,8 @@ def doctors_testresult(request):
 def testresult(request):
     return render(request,'testresult.html') 
      
-def doctors_appointments(request):
-    doctor = Docprofile.objects.filter(user=request.user).first()           
-    #   doctor = Docprofile.objects.all()
-    
-    appointments = Appointment.objects.filter(doctor=doctor)
-    print(appointments)
-    return render(request,'doctors/appointments.html',{'appointments': appointments,})  
+
+
 def mypatients(request):
     users = User.objects.all()
     return render(request,'mypatients.html', {'users': users})  
@@ -754,141 +769,90 @@ def count_view(request):
     return render(request, 'admins_index.html', context)
 
 from django.shortcuts import render
-from .models import Slots, Docprofile,Appointment
+from .models import Slots, Docprofile,Appointments
+
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def patient_bookappointment(request):
-    # userprofile = request.user.UserProfile
-    doctors = Docprofile.objects.all()
+# 
 
-    print(doctors)
-    if request.method == 'POST':
-        name = request.POST.get('fullName')
-        age = request.POST.get('age')
-        gender = request.POST.get('gender')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone')
-        doctor_id = request.POST.get('doctor')
-        symptoms = request.POST.get('symptoms')
-        appdate = request.POST.get('appdate')
-        apptime = request.POST.get('apptime')
+# def get_dates(request, doctor_id):
+#     try:
+#         # Fetch dates for the selected doctor (doctor_id) from your database
+#         # Replace the following line with your actual database query logic
         
-        try:
-            doctor = Docprofile.objects.get(id=doctor_id)
-            user = User.objects.get(id=request.user.id)
-
-            existing_appointment = Appointment.objects.filter(
-                doctor=doctor,
-                app_date=appdate,
-                app_time=apptime
-            ).first()
-
-            if existing_appointment:
-                error_message = 'Appointment slot is already booked'
-                return render(request, 'patient/bookappointment.html', {'error_message': error_message, 'doctors': doctors})
-
-            appointment = Appointment(
-                fullName=name,
-                age=age,
-                gender=gender,
-                phone=phone,
-                email=email,
-                doctor=doctor,
-                user=user,
-                app_date=appdate,
-                app_time=apptime,
-            )
-            appointment.save()
-            return redirect('payment_confirm')  # Redirect to a success page
-
-        except ValueError:
-            # Handle the case where the selected_time_slot is in an invalid format
-            return render(request, 'patient/bookappointment.html', {'error_message': 'Invalid time format'})
-
-    return render(request, 'patient/bookappointment.html', {'doctors': doctors})
-
-
-
-
-def get_dates(request, doctor_id):
-    try:
-        # Fetch dates for the selected doctor (doctor_id) from your database
-        # Replace the following line with your actual database query logic
+#         dates = Slots.objects.filter(doctor_id=doctor_id).values_list('date', flat=True).distinct()
         
-        dates = Slots.objects.filter(doctor_id=doctor_id).values_list('date', flat=True).distinct()
-        
-        # Construct a list of date options in HTML format
-        date_options = ["<option value='{0}'>{0}</option>".format(date.strftime('%Y-%m-%d')) for date in dates]
-    except Slots.DoesNotExist:
-        # Handle the case where no slots are found for the selected doctor
-        date_options = []
+#         # Construct a list of date options in HTML format
+#         date_options = ["<option value='{0}'>{0}</option>".format(date.strftime('%Y-%m-%d')) for date in dates]
+#     except Slots.DoesNotExist:
+#         # Handle the case where no slots are found for the selected doctor
+#         date_options = []
 
-    return JsonResponse({"date_options": date_options})
+#     return JsonResponse({"date_options": date_options})
 
 
-def get_times(request, doctor_id, selected_date):
-    # Your view logic here
+# def get_times(request, doctor_id, selected_date):
+#     # Your view logic here
 
-    try:
-        # Fetch all time slots for the selected doctor (doctor_id) and date (selected_date) from your database
-        all_time_slots = Slots.objects.filter(doctor_id=doctor_id, date=selected_date)
+#     try:
+#         # Fetch all time slots for the selected doctor (doctor_id) and date (selected_date) from your database
+#         all_time_slots = Slots.objects.filter(doctor_id=doctor_id, date=selected_date)
 
-        # Fetch the time slots that are already booked as appointments
-        booked_time_slots = Appointment.objects.filter(doctor_id=doctor_id, date=selected_date).values_list('slot__id', flat=True)
+#         # Fetch the time slots that are already booked as appointments
+#         booked_time_slots = Appointment.objects.filter(doctor_id=doctor_id, date=selected_date).values_list('slot__id', flat=True)
 
-        # Filter out the free time slots by excluding the booked ones
-        free_time_slots = all_time_slots.exclude(id__in=booked_time_slots)
+#         # Filter out the free time slots by excluding the booked ones
+#         free_time_slots = all_time_slots.exclude(id__in=booked_time_slots)
 
-        # Construct a list of free time slot options in HTML format
-        time_options = [
-            {
-                "id": slot.id,
-                "text": f"{slot.start_time.strftime('%I:%M %p')} - {slot.end_time.strftime('%I:%M %p')}"
-            }
-            for slot in free_time_slots
-        ]
-    except Slots.DoesNotExist:
-        # Handle the case where no slots are found for the selected doctor and date
-        time_options = []
+#         # Construct a list of free time slot options in HTML format
+#         time_options = [
+#             {
+#                 "id": slot.id,
+#                 "text": f"{slot.start_time.strftime('%I:%M %p')} - {slot.end_time.strftime('%I:%M %p')}"
+#             }
+#             for slot in free_time_slots
+#         ]
+#     except Slots.DoesNotExist:
+#         # Handle the case where no slots are found for the selected doctor and date
+#         time_options = []
 
-    return JsonResponse({"time_options": time_options})
+#     return JsonResponse({"time_options": time_options})
 
-def dr_timeslots(request):
-    # Check if a 'Docs' object exists for the logged-in user
-    try:
-        logged_in_doctor = Docprofile.objects.get(user=request.user)
-    except Docs.DoesNotExist:
-        # Handle the case where a 'Docs' object does not exist for the logged-in user
-        # You can redirect or display an error message as needed
-        # return render(request, 'error_template.html', {'error_message': 'Doctor profile not found'})
-        print("Doctor Profile Doesnt exist")
-    # Extract the doctor's name from the 'Name' attribute of the 'Docs' object
-    doctor_name = logged_in_doctor.name
+# def dr_timeslots(request):
+#     # Check if a 'Docs' object exists for the logged-in user
+#     try:
+#         logged_in_doctor = Docprofile.objects.get(user=request.user)
+#     except Docs.DoesNotExist:
+#         # Handle the case where a 'Docs' object does not exist for the logged-in user
+#         # You can redirect or display an error message as needed
+#         # return render(request, 'error_template.html', {'error_message': 'Doctor profile not found'})
+#         print("Doctor Profile Doesnt exist")
+#     # Extract the doctor's name from the 'Name' attribute of the 'Docs' object
+#     doctor_name = logged_in_doctor.name
 
-    if request.method == 'POST':
-        # Retrieve form data from POST request
-        date = request.POST.get('date')
-        start_time = request.POST.get('start_time')
-        end_time = request.POST.get('end_time')
+#     if request.method == 'POST':
+#         # Retrieve form data from POST request
+#         date = request.POST.get('date')
+#         start_time = request.POST.get('start_time')
+#         end_time = request.POST.get('end_time')
 
-        if start_time:
-            doctor = logged_in_doctor  # Use the 'logged_in_doctor' from your previous code
-            slot = Slots(doctor=doctor, date=date, start_time=start_time, end_time=end_time)
-            slot.save()
+#         if start_time:
+#             doctor = logged_in_doctor  # Use the 'logged_in_doctor' from your previous code
+#             slot = Slots(doctor=doctor, date=date, start_time=start_time, end_time=end_time)
+#             slot.save()
 
-            # Optionally, you can add a success message or redirect to another page
-            return redirect('dr_timeslots_shows')  
-        else:
-            # Handle the case where 'start_time' is not provided
-            # You can render an error message or take appropriate action
-            return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name, 'error_message': 'Please provide a valid start time'})
+#             # Optionally, you can add a success message or redirect to another page
+#             return redirect('dr_timeslots_shows')  
+#         else:
+#             # Handle the case where 'start_time' is not provided
+#             # You can render an error message or take appropriate action
+#             return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name, 'error_message': 'Please provide a valid start time'})
 
-    # Render the template for both GET and POST requests
-    return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name})
+#     # Render the template for both GET and POST requests
+#     return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name})
 
-from django.shortcuts import render
+
 
 def admins_bookscreening(request):
  
@@ -947,7 +911,7 @@ razorpay_client = razorpay.Client(
 from django.shortcuts import render
 from django.conf import settings
 from razorpay import Client as RazorpayClient
-from .models import Appointment, Payment
+from .models import Appointments, Payment
 
 
 def payment_confirm(request):
@@ -1327,11 +1291,13 @@ def patientreferences(request):
         if action == 'accept':
             patient.accept = True
             patient.decline = False  # Ensure that the opposite action is reset
-            message = 'Hi {},\n\nThis is to inform you that the patient has been accepted.'.format(patient.referring_doctor_name)
+            message = 'Hi Dr.{},\n\nThis is to inform you that the patient has been accepted.'.format(patient.referring_doctor_name)
         elif action == 'decline':
             patient.accept = False
-            patient.decline = True  # Ensure that the opposite action is reset
-            message = 'Hi {},\n\nThis is to inform you that the patient has been declined.'.format(patient.referring_doctor_name)
+            patient.decline = True
+       
+             # Ensure that the opposite action is reset
+            message = 'Hii{},\n\nThis is to inform you that the patient has been declined.'.format(patient.referring_doctor_name)
         else:
             return redirect('patientreferences')  # or handle invalid action
         
@@ -1359,3 +1325,99 @@ def patientreferences(request):
 
 def confirm_appointment(request):
     return render(request, 'confirmapp.html')
+
+def book_appointment(request):
+    doctors = Docprofile.objects.all()
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        email = request.POST.get('email')
+        appointment_type = request.POST.get('appointmentType')
+        reason = request.POST.get('reason')
+        doctor_id = request.POST.get('doctor')
+        appointment_time = request.POST.get('apptime')
+        appointment_date = request.POST.get('appdate')
+        
+        # Check if all required fields are provided
+        if name and age and email and appointment_type and doctor_id and appointment_time and appointment_date:
+            try:
+                # Retrieve the UserProfile instance by name
+                user_profile = UserProfile.objects.get(name=name)
+            except UserProfile.DoesNotExist:
+                # If the user does not exist, display an error message and redirect back to the form
+                messages.error(request, 'User with provided name does not exist!')
+                return redirect('book_appointment')            # Create a new DoctorAppointment object and save it to the database
+            appointment = Appointments(
+                name=user_profile,
+                age=age,
+                email=email,
+                appointment_type=appointment_type,
+                reason=reason,
+                doctor_id=doctor_id,
+                appointment_time=appointment_time,
+                appointment_date=appointment_date
+            )
+            appointment.save()
+            
+            messages.success(request, 'Appointment booked successfully!')
+            return redirect('payment_confirm')  # Redirect to a success page
+            
+        else:
+            messages.error(request, 'Please fill out all required fields!')
+            return redirect('book_appointment')  # Redirect back to the appointment booking form
+    
+    # If the request method is not POST, render the form template
+    return render(request, 'patient/bookappointment.html',{'doctors': doctors})
+
+# def patient_bookappointment(request):
+#     # userprofile = request.user.UserProfile
+#     doctors = Docprofile.objects.all()
+
+#     print(doctors)
+#     if request.method == 'POST':
+#         name = request.POST.get('fullName')
+#         age = request.POST.get('age')
+#         gender = request.POST.get('gender')
+#         phone = request.POST.get('phone')
+#         email = request.POST.get('email')
+#         phone_number = request.POST.get('phone')
+#         doctor_id = request.POST.get('doctor')
+#         symptoms = request.POST.get('symptoms')
+#         appdate = request.POST.get('appdate')
+#         apptime = request.POST.get('apptime')
+        
+#         try:
+#             doctor = Docprofile.objects.get(id=doctor_id)
+#             user = User.objects.get(id=request.user.id)
+
+#             existing_appointment = Appointment.objects.filter(
+#                 doctor=doctor,
+#                 app_date=appdate,
+#                 app_time=apptime
+#             ).first()
+
+#             if existing_appointment:
+#                 error_message = 'Appointment slot is already booked'
+#                 return render(request, 'patient/bookappointment.html', {'error_message': error_message, 'doctors': doctors})
+
+#             appointment = Appointment(
+#                 fullName=name,
+#                 age=age,
+#                 gender=gender,
+#                 phone=phone,
+#                 email=email,
+#                 doctor=doctor,
+#                 user=user,
+#                 app_date=appdate,
+#                 app_time=apptime,
+#             )
+#             appointment.save()
+#             return redirect('payment_confirm')  # Redirect to a success page
+
+#         except ValueError:
+#             # Handle the case where the selected_time_slot is in an invalid format
+#             return render(request, 'patient/bookappointment.html', {'error_message': 'Invalid time format'})
+
+#     return render(request, 'patient/bookappointment.html', {'doctors': doctors})
+
+

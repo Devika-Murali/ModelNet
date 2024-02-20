@@ -185,6 +185,7 @@
         
     </style>
 </head>
+<body >
 <div class="main-wrapper">
 		
 	<!-- Header -->
@@ -344,39 +345,34 @@
         </div>
     </div>
 
+     
+     
+        
     <script>
         function validateForm() {
             // Your validation logic here
-        
             // Assuming form is valid
-            if (/* Your validation checks pass */) {
-                // Allow default form submission action
-                return true;
-            } else {
-                // If validation fails, prevent form submission
-                return false;
-            }
+            return true; // Change this to your validation logic
         }
-        
+    
+        function showPopupAndSubmitForm() {
+            showPopup();
+            setTimeout(submitForm, 1000); // Adjust the delay time as needed (in milliseconds)
+        }
+    
+        function submitForm() {
+            document.getElementById('refer_form').submit();
+        }
+    
         function showPopup() {
             document.getElementById('popup_message').style.display = 'block';
         }
-       
-    
-        
     
         function closePopup() {
             document.getElementById('popup_message').style.display = 'none';
-            // Optionally, you can redirect the user or perform other actions here
+            // Redirect to the home page or perform other actions here if needed
+            window.location.href = '/';
         }
-        // Add an event listener for the form submission
-       
-        // Function to close the popup message
-        function closePopup() {
-            document.getElementById('popup_message').style.display = 'none';
-            // Optionally, you can redirect the user or perform other actions here
-        }
-
         function validateHospitalName() {
             var hospitalName = document.getElementById('hospital_name').value;
             var hospitalNamePattern = /^[A-Z][a-zA-Z\s,]+$/;
@@ -384,9 +380,11 @@
             if (!hospitalNamePattern.test(hospitalName)) {
                 document.getElementById('hospital_name').classList.add('is-invalid');
                 document.getElementById('hospital_name_error').innerText = "Please enter the hospital name in the format 'Hospital Name, Place'.";
+                return false;
             } else {
                 document.getElementById('hospital_name').classList.remove('is-invalid');
                 document.getElementById('hospital_name_error').innerText = "";
+                return true;
             }
         }
     
@@ -397,9 +395,11 @@
             if (!referringDoctorNamePattern.test(referringDoctorName)) {
                 document.getElementById('referring_doctor_name').classList.add('is-invalid');
                 document.getElementById('referring_doctor_name_error').innerText = "Please enter the doctor's name starting with a capital letter.";
+                return false;
             } else {
                 document.getElementById('referring_doctor_name').classList.remove('is-invalid');
                 document.getElementById('referring_doctor_name_error').innerText = "";
+                return true;
             }
         }
     
@@ -410,9 +410,11 @@
             if (!emailPattern.test(referringDoctorEmail)) {
                 document.getElementById('referring_doctor_email').classList.add('is-invalid');
                 document.getElementById('referring_doctor_email_error').innerText = "Please enter a valid email address (e.g., user@gmail.com).";
+                return false;
             } else {
                 document.getElementById('referring_doctor_email').classList.remove('is-invalid');
                 document.getElementById('referring_doctor_email_error').innerText = "";
+                return true;
             }
         }
     
@@ -423,9 +425,11 @@
             if (!patientNamePattern.test(patientName)) {
                 document.getElementById('patient_name').classList.add('is-invalid');
                 document.getElementById('patient_name_error').innerText = "Please enter the patient's name starting with a capital letter.";
+                return false;
             } else {
                 document.getElementById('patient_name').classList.remove('is-invalid');
                 document.getElementById('patient_name_error').innerText = "";
+                return true;
             }
         }
     
@@ -434,37 +438,60 @@
         document.getElementById('referring_doctor_name').addEventListener('input', validateDoctorName);
         document.getElementById('referring_doctor_email').addEventListener('input', validateDoctorEmail);
         document.getElementById('patient_name').addEventListener('input', validatePatientName);
-       
-        // Add event listeners to other input fields similarly for real-time validation
+    
+        // Add event listener for form submission
         document.getElementById('refer_form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-            // Show the popup message
-            document.getElementById('popup_message').style.display = 'block';
-        });
-        document.getElementById('refer_form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission action
-        
-            // Validate the form
-            var isValid = validateForm();
-        
-            // If the form is valid, submit the form and show the popup message
-            if (isValid) {
-                // Submit the form
-                this.submit();
-                
-                // Show the popup message after a brief delay (adjust as needed)
-                setTimeout(showPopup, 500); // Show the popup after 500 milliseconds (0.5 seconds)
+            // Validate all fields
+            var isHospitalNameValid = validateHospitalName();
+            var isDoctorNameValid = validateDoctorName();
+            var isDoctorEmailValid = validateDoctorEmail();
+            var isPatientNameValid = validatePatientName();
+    
+            // If any validation fails, prevent form submission
+            
+            if (!isHospitalNameValid || !isDoctorNameValid || !isDoctorEmailValid || !isPatientNameValid) {
+                event.preventDefault();
+            } else {
+                // Display the popup after successful form submission
+                showPopup();
+                // Delay form submission by 3 seconds (adjust as needed)
+                setTimeout(function() {
+                    document.getElementById('refer_form').submit();
+                }, 3000);
+                // Prevent the default form submission behavior
+                event.preventDefault();
             }
         });
     
+        function showPopup() {
+            document.getElementById('popup_message').style.display = 'block';
+        }
+    
+        // Function to close the popup
         function closePopup() {
-            // Hide the popup message
             document.getElementById('popup_message').style.display = 'none';
-            // Redirect to the home page
+            // Redirect to the home page or perform other actions here if needed
             window.location.href = '/';
         }
-        
+    
+        // Add event listener for form submission
+        document.getElementById('refer_form').addEventListener('submit', function(event) {
+            // Validate form
+            if (!validateForm()) {
+                event.preventDefault(); // Prevent form submission if validation fails
+                return;
+            }
+            
+            // Show popup and submit form after a delay
+            showPopupAndSubmitForm();
+    
+            // Prevent default form submission behavior
+            event.preventDefault();
+        });
     </script>
+    
+    
+    
     
     <script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
     

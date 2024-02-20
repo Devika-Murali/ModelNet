@@ -16,8 +16,8 @@ admin.site.register(PatientInfo)
 from .models import Slots  
 admin.site.register(Slots)
 
-from .models import Appointment  
-admin.site.register(Appointment)
+from .models import Appointments  
+admin.site.register(Appointments)
 
 from .models import Payment  
 admin.site.register(Payment)

@@ -181,15 +181,15 @@ class Slots(models.Model):
 #     timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 #     app_date = models.DateField(null=True, blank=True)
 #     app_time = models.TimeField(null=True, blank=True)
-class Appointment(models.Model):
-    patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+class Appointments(models.Model):
+    name = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     email = models.EmailField(null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     doctor = models.ForeignKey(Docprofile, on_delete=models.CASCADE, related_name='appointments') 
     appointment_type = models.CharField(max_length=100,null=True, blank=True)
     appointment_date = models.DateField(null=True, blank=True)
     appointment_time = models.TimeField(null=True, blank=True)
-    reason_for_consultation = models.TextField(blank=True, null=True)
+    reason = models.TextField(blank=True, null=True)
  
 
 

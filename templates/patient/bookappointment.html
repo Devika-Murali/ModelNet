@@ -123,7 +123,7 @@
 						<a href="{% url 'finddoctor' %}">Find a Doctor</a>
 					</li>
 					<li class="main-nav">
-						<a href="{% url 'patient_bookappointment' %}">Book Appointment</a>
+						<a href="{% url 'book_appointment' %}">Book Appointment</a>
 					</li>
 					<li class="has-submenu">
 								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
@@ -214,21 +214,23 @@
                 </div>
                 
                <!-- Select Doctor -->
-<div class="col-md-6">
-    <label for="doctor" class="form-label">Select a Doctor:</label>
-    <div class="input-group">
-        <select class="form-select form-select-lg" id="doctor" name="doctor" required>
-            <option value="" disabled selected>Select a Doctor</option>
-            {% for doctor in doctors %}
-                <option value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>{{ doctor.name }} - {{ doctor.specialist }}</option>
-            {% endfor %}
-        </select>
-        <label class="input-group-text" for="doctor"><i class="fas fa-user-md"></i></label>
-    </div>
-    <div class="invalid-feedback">
-        Please select a doctor.
-    </div>
-</div>
+               <div class="col-md-6">
+                <label for="doctor" class="form-label">Select a Doctor:</label>
+                <div class="input-group">
+                    <select class="form-select form-select-lg" id="doctor" name="doctor" required>
+                        <option value="" disabled selected>Select a Doctor</option>
+                        {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>
+                                {{ doctor.name }} - {{ doctor.specialist }}  <!-- Display doctor's name and specialty -->
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <label class="input-group-text" for="doctor"><i class="fas fa-user-md"></i></label>
+                </div>
+                <div class="invalid-feedback">
+                    Please select a doctor.
+                </div>
+            </div>
 
 <!-- Select Time -->
 <div class="col-md-6">
@@ -306,6 +308,8 @@
 
     monthlyCheckupCheckbox.addEventListener("change", function() {
         if (monthlyCheckupCheckbox.checked) {
+            consultationReasonField.style.display = "none"; // Hide the field
+            document.getElementById("reason").removeAttribute("required"); // Remove the required attribute
             uncheckOtherCheckboxes("monthlyCheckup");
         }
     });
