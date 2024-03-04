@@ -8,7 +8,7 @@
 	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
 	<!-- title -->
-	<title>BASE-DOCTOR-PAGE</title>
+	<title>CHANGE-PASSWORD-PAGE</title>
 
 	<!-- Favicons -->
 	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
@@ -28,6 +28,51 @@
 		<script src="assets/js/html5shiv.min.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
+	<style>
+		/* Style for the form */
+		.container {
+			padding-top: 50px;
+		}
+		.card {
+			border-radius: 10px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		.card-title {
+			color: #333;
+			font-size: 24px;
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 30px;
+		}
+		.form-group {
+			margin-bottom: 20px;
+		}
+		label {
+			font-weight: bold;
+		}
+		.form-control {
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			height: 40px;
+		}
+		.submit-section {
+			margin-top: 30px;
+		}
+		.btn-primary {
+			background-color: #007bff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			font-size: 16px;
+			color: #fff;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		.btn-primary:hover {
+			background-color: #0056b3;
+		}
+	</style>
+	
 
 </head>
 <div class="main-wrapper">
@@ -66,9 +111,7 @@
 					{% comment %} <li class="main-nav">
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
 					</li> {% endcomment %}
-                    <li class="main-nav">
-						<a href="{% url 'doctors_appointments' %}"class="nav-link">Appointments</a>
-					</li>
+                   
 					<li class="has-submenu"class="nav-link">
 								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -105,26 +148,35 @@
 			</div>		 
 		</nav>
 	</header>
-
-
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
 <!-- Change Password -->
 <div class="card services-card">
-    <div class="card-body">
-        <h4 class="card-title">Change Password</h4>
-        <div class="form-group">
-            <label>Old Password</label>
-            <input type="password" class="form-control" name="old_password">
-        </div>
-        <div class="form-group">
-            <label>New Password</label>
-            <input type="password" class="form-control" name="reset_password">
-        </div>
-        <div class="form-group">
-            <label>Confirm New Password</label>
-            <input type="password" class="form-control" name="confirm_reset_password">
-        </div>
-    </div>
+	<div class="card-body">
+		<h4 class="card-title">Change Password</h4>
+		<div class="form-group">
+			<label>Old Password</label>
+			<input type="password" class="form-control" name="old_password">
+		</div>
+		<div class="form-group">
+			<label>New Password</label>
+			<input type="password" class="form-control" name="reset_password">
+		</div>
+		<div class="form-group">
+			<label>Confirm New Password</label>
+			<input type="password" class="form-control" name="confirm_reset_password">
+		</div>
+	</div>
 </div>
+
+<div class="submit-section submit-btn-bottom">
+	<button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+</div>
+</div>
+</div>
+</div>
+        </form>
+    </div>
 </div>
 
 </div>

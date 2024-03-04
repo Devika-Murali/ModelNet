@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate to ColonCare</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+    <style>
+        /* Define animation keyframes */
+        @keyframes slideInLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    
+        /* Apply animation to form fields */
+        .card-label {
+            animation: slideInLeft 0.5s ease-in-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper" style="background-color: #f8f9fa";>
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg header-nav" style="padding-right: 200px;">
+                <div class="navbar-header">
+                    <a id="mobile_btn" href="javascript:void(0);">
+                        <span class="bar-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </a>
+                    <!-- Logo container -->
+                    <div class="logo-container">
+                        <a href="index-2.html" class="navbar-brand logo">
+                            <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="main-menu-wrapper">
+                    <div class="menu-header">
+                        <a href="index-2.html" class="menu-logo">
+                            <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+                        </a>
+                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                    <div style="text-align: center;">
+                        <h2 style="font-family: 'Arial', sans-serif; color: #007bff; font-size: 36px; font-weight: bold; padding: 10px; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">Donate to <span style="color: #dc3545;">ColonCare</span></h2>
+                        <p style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px; line-height: 1.6; margin-bottom: 30px;">Together, we can make a meaningful impact and bring hope to individuals and families.</p>
+                    </div>
+                   <!-- Add your menu items here -->
+                   
+                </div>
+            </nav>
+        </header>
+        <!-- Content goes here -->
+  
+    
+    <div class="container">
+        
+        <body class="account-page">
+
+            <div class="main-wrapper">
+            
+                <!-- Header -->
+                <header class="header">
+                </header>
+                <!-- /Header -->
+            
+                <!-- Page Content -->
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <!-- Form -->
+                            <div class="col-md-6">
+                                <div class="account-content">
+                                    <div class="login-header">
+                                        <h3>Make a Donation</h3>
+                                    </div>
+                                    <form action="" method="POST" class="card donation-form" onsubmit="return validateForm()">
+                                        {% csrf_token %}
+                                        <div class="card-body">
+                                            <div class="form-group card-label">
+                                                <label for="full_name">Full Name:</label>
+                                                <input type="text" id="full_name" name="full_name" class="form-control" required>
+                                                <div class="invalid-feedback">Please enter your full name.</div>
+                                            </div>
+                                    
+                                            <div class="form-group card-label">
+                                                <label for="email">Email:</label>
+                                                <input type="email" id="email" name="email" class="form-control" required>
+                                                <div class="invalid-feedback">Please enter a valid email address (e.g., name@gmail.com).</div>
+                                            </div>
+                                            <div class="form-group card-label">
+                                                <label for="place">Place:</label>
+                                                <input type="text" id="place" name="place" class="form-control" required>
+                                                <div class="invalid-feedback">Please enter the place.</div>
+                                            </div>
+                                            <div class="form-group card-label">
+                                                <label for="amount">Donation Amount :</label>
+                                                <input type="number" id="amount" name="amount" class="form-control" min="1" required>
+                                                <div class="invalid-feedback">Please enter the donation amount.</div>
+                                            </div>
+                                    
+                                            <div class="text-center">
+                                                <button type="submit" id="pay-btn" class="btn btn-primary">Make My Gift</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  {% comment %} <script>
+    var options = {
+       
+      // Enter the Key ID generated from the Dashboard
+      key: "{{ razorpay_merchant_key }}", 
+       
+      // Amount is in currency subunits.
+      // Default currency is INR. Hence, 
+      // 50000 refers to 50000 paise
+      amount: "{{ amount }}", 
+      currency: "{{ currency }}",
+       
+      // Your/store name.
+      name: "Dj Razorpay", 
+       
+      // Pass the `id` obtained in the response of Step 1
+      order_id: "{{ razorpay_order_id }}", 
+      callback_url: "{{ callback_url }}",
+    };
+     
+    // initialise razorpay with the options.
+    var rzp1 = new Razorpay(options);
+     
+    // add event listener to the payment button.
+    document.getElementById("pay-btn").onclick = function (e) {
+      rzp1.open();
+      e.preventDefault();
+    };
+  </script> {% endcomment %}
+  <!-- Razorpay's Javascript code. -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+	var options = {
+	
+	// Enter the Key ID generated from the Dashboard
+	key: "{{ razorpay_merchant_key }}",
+	
+	// Amount is in currency subunits.
+	// Default currency is INR. Hence,
+	// 50000 refers to 50000 paise
+	amount: "{{ razorpay_amount }}",
+	currency: "{{ currency }}",
+	
+	// Your/store name.
+	name: "Dj Razorpay",
+	
+	// Pass the id obtained in the response of Step 1
+	order_id: "{{ razorpay_order_id }}",
+	callback_url: "{{ callback_url }}",
+	};
+	
+	// initialise razorpay with the options.
+	var rzp1 = new Razorpay(options);
+	
+	// add event listener to the payment button.
+	document.getElementById("pay-btn").onclick = function (e) {
+	rzp1.open();
+	e.preventDefault();
+	};
+</script>
+                            <!-- /Form -->
+            
+                            <!-- Image -->
+                            <div class="col-md-6" style="margin-bottom: 100px;">
+                                <img src="{% static 'assets/img/donation.jpg' %}" class="img-fluid" alt="Donation Image">
+                            </div>
+                            
+                            <!-- /Image -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /Page Content -->
+            
+            </div>
+            <!-- /Main Wrapper -->
+</div>
+</div>
+</div>
+</body>
+</html>

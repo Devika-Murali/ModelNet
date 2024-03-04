@@ -22,11 +22,14 @@ admin.site.register(Appointments)
 from .models import Payment  
 admin.site.register(Payment)
 
-from .models import LeaveApplication  
-admin.site.register(LeaveApplication)
+from .models import LeaveRequest  
+admin.site.register(LeaveRequest)
 
 from .models import Blog  
 admin.site.register(Blog)
 
 from .models import ReferPatient  
 admin.site.register(ReferPatient)
+
+from .models import Donation  
+admin.site.register(Donation)

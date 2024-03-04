@@ -29,6 +29,7 @@ urlpatterns = [
     path('About/',views.About,name='About'),
     path('basepatient/',views.basepatient,name='basepatient'),
     path('bookscreening/',views.bookscreening,name='bookscreening'),
+    path('donation/', views.donation, name='donation'),
     path('patientreferences/', views.patientreferences, name='patientreferences'),
     path('accept-patient/<int:patient_id>/',views.accept_patient, name='accept_patient'),
     path('decline-patient/<int:patient_id>/', views.decline_patient, name='decline_patient'),
@@ -44,11 +45,7 @@ urlpatterns = [
     path('admins_bookscreening', views.admins_bookscreening, name='admins_bookscreening'), 
     path('admins_addblog/', views.admins_addblog, name='admins_addblog'),
     path('admins_viewblog/', views.admins_viewblog, name='admins_viewblog'),
-
-    path('admins_leave/', views.admins_leave, name='admins_leave'),
-    path('admin_view_leave_applications', views.admin_view_leave_applications, name='admin_view_leave_applications'),
-
-
+    path('admins_leave/', views.admins_leave, name='admins_leave'), 
     path('patientappointment/',views.patientappointment,name='patientappointment'),
     path('patientbooking/',views.patientbooking,name='patientbooking'),
     path('patientprofileset/',views.profile,name='patientprofileset'),
@@ -56,8 +53,8 @@ urlpatterns = [
     path('admins_doctorlist/',views.admins_doctorlist,name='admins_doctorlist'), 
     path('patient_medicalhistory/', views.patient_medicalhistory, name='patient_medicalhistory'),  
     path('doctors_leave/',views.doctors_leave,name='doctors_leave'),
-    path('doctors_leavesubmit/',views.doctors_leavesubmit,name='doctors_leavesubmit'),
-
+    # path('doctors_leavesubmit/',views.doctors_leavesubmit,name='doctors_leavesubmit'),
+    path('view_leave_requests/', views.view_leave_requests, name='view_leave_requests'),
     path('doctors_testresult/',views.doctors_testresult,name='doctors_testresult'),
     path('Doctor_patienthistory/',views.Doctor_patienthistory,name='Doctor_patienthistory'),
     path('delete_specialization/', views.delete_specialization, name='delete_specialization'),
@@ -88,16 +85,21 @@ urlpatterns = [
     path('deactivate_user/<int:user_id>/', views.deactivate_user, name='deactivate_user'),
     path('activate_user/<int:user_id>/', views.activate_user, name='activate_user'),
     path('count/', views.count_view, name='count_view'),
-    
+    # path('payment/', views.payment, name='payment'),
     path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
-    path('appointments/', views.display_booked_appointments, name='appointments'),
     path('payment_confirm/', views.payment_confirm, name='payment_confirm'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
-    path('showmore/', views.showmore_view, name='showmore'),
+    path('paymenthandler_donation/', views.paymenthandler_donation, name='paymenthandler_donation'),
+
+    path('showmore/<int:doctor_id>/', views.showmore_view, name='showmore'), 
     path('referpatient/', views.refer_patient, name='refer_patient'),
     path('confirm-appointment/', views.confirm_appointment, name='confirm_appointment'),
-    path('book-appointment/', views.book_appointment, name='book_appointment'),
+    path('book-appointment/<int:doc_id>/', views.book_appointment, name='book_appointment'),
     path('appointments/', views.Appointments, name='appointments'),
+    path('changepass/', views.changepass, name='changepass'),
+    path('approve-leave/', views.approve_leave, name='approve_leave'),
+    path('reject-leave/', views.reject_leave, name='reject_leave'), 
+    path('doctors/appointments/', views.doctors_appointments, name='doctors_appointments'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

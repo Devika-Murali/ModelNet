@@ -57,15 +57,16 @@
 					</a>
 				</div>
 				<ul class="main-nav">
-					<li class="active">
+					<li >
 						<a href="{% url 'basepatient' %}">Home</a>
+					</li>
+                    <li class="main-nav">
+						<a href="{% url 'finddoctor' %}">Blogs</a>
 					</li>
 					<li class="main-nav">
 						<a href="{% url 'finddoctor' %}">Find a Doctor</a>
 					</li>
-					<li class="main-nav">
-						<a href="{% url 'patient_bookappointment' %}">Book Appointment</a>
-					</li>
+					
 					<li class="has-submenu">
 								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -78,7 +79,7 @@
 								
 							</li>	
 					
-							<li class="has-submenu">
+							<li class="has-submenu" class="active">
 								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'patientprofileset' %}">Profile Settings</a></li>
@@ -233,26 +234,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label for="medical_history"></label>
-                                        {% if user.userprofile.medical_history %}
-                                            <a href="{{ user.userprofile.medical_history.url }}" target="_blank">View Medical History</a>
-                                            <br>
-                                            <small class="form-text text-muted">To update, you can upload a new file below:</small>
-                                        {% else %}
-                                            
-                                        {% endif %}
-                                    </div>
-                                </div>
                                 
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label for="new_medical_history">Upload Past Medical History</label>
-                                        <input type="file" name="new_medical_history" id="new_medical_history" accept=".pdf, .doc, .docx, .txt">
-                                        <small class="form-text text-muted">Allowed file types: .pdf, .doc, .docx, .txt</small>
-                                    </div>
-                                </div>
                                 
                                 <div class="submit-section">
                                     <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>

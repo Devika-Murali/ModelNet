@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -17,51 +16,42 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
     <style>
         /* Include your existing styles here */
-
         /* Additional styles for leave approval page */
         .leave-request {
             margin: 20px 0;
         }
-
         .leave-request table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-
         .leave-request table th,
         .leave-request table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #f2f2f2;
         }
-
         .leave-request table th {
             background-color: #f8f8f8;
         }
-
         .leave-request .approval-status {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
         }
-
         .leave-request .approval-status button {
             width: 48%;
         }
-
         .leave-request .approval-message {
             margin-top: 10px;
         }
     </style>
 </head>
-
 <body>
     <div class="main-wrapper">
         <!-- Header -->
         <div class="header">
-			
             <!-- Logo -->
             <div class="header-left">
                 <a href="index.html" class="logo">
@@ -83,17 +73,17 @@
                     </a>
                     <div class="dropdown-menu">
                         {% if user.is_authenticated %}
-                        <ul class="submenu">
-                            <li>Welcome,{{ user.username }}</li>
-                        <li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</a></li>
-                        </ul>
+                            <ul class="submenu">
+                                <li>Welcome, {{ user.username }}</li>
+                                <li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <li><a href=""></a></li>
+                        {% endif %}
                     </div>
                 </li>
-                {% else %}
-                <li><a href=""></a></li>
-                {% endif %}
             </ul>
-            
+        </div>
         <!-- Include your existing header code here -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
@@ -102,7 +92,7 @@
                         <li class="menu-title"> 
                             <span>Main</span>
                         </li>
-                        <li > 
+                        <li> 
                             <a href="{% url 'admins_index' %}"><i class="fe fe-home"></i> <span>Dashboard</span></a>
                         </li>
                         <li> 
@@ -121,17 +111,13 @@
                             <a href="{% url 'admins_viewblog' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
                         </li>
                         <li class="active"> 
-                            <a href="{% url 'admins_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
-                        </li>
-                         {% comment %} <li> 
-                            <a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>
-                        </li>  {% endcomment %}
-                        
-                    </div>		
+                            <a href="{% url 'approve_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
+                        </li>                        
+                    </ul>
+                </div>		
             </div>
         </div>
         <!-- /Sidebar -->
-        
         <div class="page-wrapper">
             <div class="content container-fluid">
                 <div class="page-header">
@@ -162,43 +148,24 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
-        <!-- Debug statement -->
-        
-                                            {% for leave_application in leave_applications %}
-                                            <tr>
-                                                <td> Dr.{{ leave_application.doctor.docprofile.name }}</td>
-                                                <td>{{ leave_application.leave_type }}</td>
-                                                <td>{{ leave_application.from_date }}</td>
-                                                <td>{{ leave_application.to_date }}</td>
-                                                <td id="status-cell-1">
-                                                    {% if application.is_approved == 'pending' %}
-                                                        <span class="badge badge-pill bg-warning inv-badge">Pending</span>
-                                                    {% elif application.is_approved == 'approved' %}
-                                                        <span class="badge badge-pill bg-success inv-badge">Approved</span>                                                  
-                                                    {% elif application.is_approved == 'rejected' %}
-                                                        <span class="badge badge-pill bg-danger inv-badge">Rejected</span>
-                                                    {% else %}
-                                                        <p>Not working</p>
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    {% if leave_application.status == 'pending' %}
-                                                    <span class="badge badge-pill bg-warning inv-badge">Pending</span>
-                                                    {% elif leave_application.status == 'approved' %}
-                                                    <span class="badge badge-pill bg-success inv-badge">Approved</span>
-                                                    {% elif leave_application.status == 'rejected' %}
-                                                    <span class="badge badge-pill bg-danger inv-badge">Rejected</span>
-                                                    {% endif %}
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="approval-status">
-                                                        <button class="btn btn-success">Approve</button>
-                                                        <button class="btn btn-danger">Reject</button>
-                                                        <div class="approval-message"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            {% for request in pending_requests %}
+                                                <tr id="leave-request-{{ request.id }}">
+                                                    <td>{{ request.doctor_name }}</td>
+                                                    <td>{{ request.leave_type }}</td>
+                                                    <td>{{ request.start_date }}</td>
+                                                    <td>{{ request.end_date }}</td>
+                                                    <td class="text-center" id="status-{{ request.id }}">
+                                                        {% if request.status %}
+                                                            {{ request.status }}
+                                                        {% else %}
+                                                            Pending
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <button class="btn btn-success approve-btn" data-leave-request-id="{{ request.id }}">Approve</button>
+                                                        <button class="btn btn-danger reject-btn" data-leave-request-id="{{ request.id }}">Reject</button>
+                                                    </td>
+                                                </tr>
                                             {% endfor %}
                                         </tbody>
                                         
@@ -207,43 +174,66 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Include your existing script tags here -->
-    <script src="{% static 'assets/js/jquery-3.2.1.min.js'%}"></script>
-    <!-- Bootstrap JS -->
-    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-		
-    <!-- Bootstrap Core JS -->
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+     
+    <script src="{% static 'assets/js/jquery.min.js'%}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Approve Button Click Event
+            $('.approve-btn').click(function() {
+                var leaveRequestId = $(this).data('leave-request-id');
+                $.ajax({
+                    url: "{% url 'approve_leave' %}",
+                    method: "POST",
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        leave_request_id: leaveRequestId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#status-' + leaveRequestId).text('Approved');
+                            alert(response.message); // You can show a success message
+                        } else {
+                            alert(response.message); // Show error message if request failed
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
     
-    <!-- Slimscroll JS -->
-    <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+            // Reject Button Click Event
+            $('.reject-btn').click(function() {
+                var leaveRequestId = $(this).data('leave-request-id');
+                $.ajax({
+                    url: "{% url 'reject_leave' %}",
+                    method: "POST",
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        leave_request_id: leaveRequestId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#status-' + leaveRequestId).text('Rejected');
+                            alert(response.message); // You can show a success message
+                        } else {
+                            alert(response.message); // Show error message if request failed
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
     
-    <script src="assets/plugins/raphael/raphael.min.js"></script>    
-    <script src="assets/plugins/morris/morris.min.js"></script>  
-    <script src="assets/js/chart.morris.js"></script>
-    
-    <!-- Custom JS -->
-    <script  src="assets/js/script.js"></script>
-    <script src="{% static 'assets/js/jquery.min.js'%} " ></script>
-
-<!-- Bootstrap Core JS -->
-<script src="{% static 'assets/js/popper.min.js'%}">
-</script>
-<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
-
-<!-- Slick JS -->
-<script src="{% static 'assets/js/slick.js'%}"></script>
-
-<!-- Custom JS -->
-<script src="{% static 'assets/js/script.js'%}"></script>
-
 </body>
-
 </html>

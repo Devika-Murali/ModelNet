@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor - View Leave</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+    <!-- Include your other CSS files -->
+    <style>
+        /* Your custom styles here */
+        /* Adjust table styles as needed */
+        .leave-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .leave-table th,
+        .leave-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #f2f2f2;
+        }
+        .leave-table th {
+            background-color: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+     <!-- Breadcrumb -->
+			<div class="breadcrumb-bar">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-md-12 col-12">
+							<nav aria-label="breadcrumb" class="page-breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">View Leave</li>
+								</ol>
+							</nav>
+							<h2 class="breadcrumb-title">View Leave</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive leave-request">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Leave Type</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th class="text-center">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for request in pending_requests %}
+                                        <tr>
+                                            <td>{{ request.doctor_name }}</td>
+                                            <td>{{ request.leave_type }}</td>
+                                            <td>{{ request.start_date }}</td>
+                                            <td>{{ request.end_date }}</td>
+                                            <td class="text-center">
+                                                {% if request.status %}
+                                                {{ request.status }}
+                                                {% else %}
+                                                Pending
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% for request in approved_requests %}
+                                        <tr>
+                                            <td>{{ request.doctor_name }}</td>
+                                            <td>{{ request.leave_type }}</td>
+                                            <td>{{ request.start_date }}</td>
+                                            <td>{{ request.end_date }}</td>
+                                            <td class="text-center">{{ request.status }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'assets/js/popper.min.js'%}">
+	</script>
+	<script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+	
+	<!-- Slick JS -->
+	<script src="{% static 'assets/js/slick.js'%}"></script>
+	
+	<!-- Custom JS -->
+	<script src="{% static 'assets/js/script.js'%}"></script>
+</body>
+</html>

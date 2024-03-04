@@ -157,8 +157,12 @@
 							<li> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
-							<li> 
-								<a href="{% url 'admins_viewblog' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
+							<li class="submenu">
+								<a href="#"><i class="fe fe-layout"></i> <span>Blogs</span> <span class="menu-arrow"></span></a>
+								<ul>
+									<li><a href="{% url 'admins_addblog' %}">Add Blogs</a></li>
+									<li><a href="{% url 'admins_viewblog' %}">View Blogs</a></li>
+								</ul>
 							</li>
 							
 						</div>		
@@ -379,7 +383,13 @@
 		<!-- Custom JS -->
 		<script  src="assets/js/script.js"></script>
 		<script src="{% static 'assets/js/jquery.min.js'%} " ></script>
-
+		<script>
+			$(document).ready(function(){
+				$(".submenu .menu-arrow").click(function(){
+					$(this).parent().next().toggle();
+				});
+			});
+		</script>
 	<!-- Bootstrap Core JS -->
 	<script src="{% static 'assets/js/popper.min.js'%}">
 	</script>

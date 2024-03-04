@@ -33,7 +33,7 @@
     <style>
         
         body {
-            font-family: Arial, sans-serif;
+           
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -172,18 +172,12 @@
 					</a>
 				</div>
                 <ul class="main-nav">
-					<li class="active">
+					<li >
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="home">Home</a>
 					</li>
 				 <li>
 						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
 					</li> 
-					<li>
-						<a href="{% url 'patientreferences' %}">Patient References</a>
-					</li>
-					{% comment %} <li class="main-nav">
-						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
-					</li> {% endcomment %}
                     <li class="main-nav">
 						{% if existing_certification %}
 				
@@ -200,6 +194,14 @@
 					  {% endif %}
 						
 					</li>
+                    
+					<li class="active">
+						<a href="{% url 'patientreferences' %}">Patient References</a>
+					</li>
+					{% comment %} <li class="main-nav">
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
+					</li> {% endcomment %}
+                    
 					<li class="has-submenu"class="nav-link">
 								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -239,21 +241,40 @@
 										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
 										{% endif %}
 									  {% else %}
-									  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Profile Settings</a>   
+									  <a href="{% url 'profileset' %}"class="nav-link" id="patient">Profile Settings</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
+
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'changepass' %}"class="nav-link">Change Password</a>
+										{% else %}
+										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'changepass' %}"class="nav-link" id="patient">Change Password</a>   
 									  {% endif %}
 										
 										
 									
 									</li>
                                     
+                                    
 									
 								</ul>
 							</li>
 					{% if user.is_authenticated %}
 					<li class="has-submenu">
-						<a href="#"><i class="fa fa-user-circle"></i></a>
+                        <a href="#"><i class="fa fa-user-circle"> Welcome,Dr.{{ user.docprofile.name }}</i></a>
 						<ul class="submenu">
-							<li>{{ user.username }}</li>
+							
 							<li><a href="{% url 'loggout' %}" id="logout">Logout</li></a>
 						</ul>
 					</li>

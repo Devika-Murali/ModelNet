@@ -120,27 +120,28 @@
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Patient Name</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for appointment in appointments %}
-                                    <tr>
-                                        <td>{{appointment.user.userprofile.name }}</td>
-                                        <td>{{ appointment.app_date }}</td>
-                                        <td>{{ appointment.app_time }}</td>
-                                    </tr>
-                                {% empty %}
-                                    <tr>
-                                        <td colspan="3">No Appointments</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+							<thead>
+								<tr>
+									<th>Patient Name</th>
+									<th>Date</th>
+									<th>Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for appointment in appointments %}
+								<tr>
+									<td>{{ appointment.name }}</td>
+									<td>{{ appointment.appointment_date }}</td>
+									<td>{{ appointment.appointment_time }}</td>
+								</tr>
+								{% empty %}
+								<tr>
+									<td colspan="3">No Appointments</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+						
                     </div>
                 </div>
             </div>

@@ -66,8 +66,25 @@
 					<li class="active">
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="home">Home</a>
 					</li>
+					
 				 <li>
 						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+					</li> 
+					<li class="main-nav">
+						{% if existing_certification %}
+				
+						
+			
+						{% if existing_certification.is_approved == 'approved' %}
+						<a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+						
+						{% else %}
+						<a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>                
+						{% endif %}
+					  {% else %}
+					  <a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+					  {% endif %}
+						
 					</li> 
 					<li>
 						<a href="{% url 'patientreferences' %}">
@@ -81,22 +98,7 @@
 					{% comment %} {% comment %} <li class="main-nav">
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
 					</li> {% endcomment %}
-                    {% comment %} <li class="main-nav">
-						{% if existing_certification %}
-				
-						
-			
-						{% if existing_certification.is_approved == 'approved' %}
-						<a href="{% url 'Appointments' %}"class="nav-link" id="app">Appointments</a>
-						
-						{% else %}
-						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>                
-						{% endif %}
-					  {% else %}
-					  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>
-					  {% endif %}
-						
-					</li>  {% endcomment %}
+                 
 					<li class="has-submenu"class="nav-link">
 								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -142,6 +144,25 @@
 										
 									
 									</li>
+
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'changepass' %}"class="nav-link">Change Password</a>
+										{% else %}
+										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Change Password</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
+                                    
                                     
 									
 								</ul>
@@ -163,13 +184,13 @@
 						{% if profile_pic_url %}
 							<img src="{{ profile_pic_url }}" alt="Profile Picture">
 						{% else %}
-							<a href="#"><i class="fa fa-user-circle"></i></a>
+							<a href="#"><i class="fa fa-user-circle"> Welcome,Dr.{{ user.docprofile.name }}</i></a>
 						{% endif %}
 						<ul class="submenu">
-							<li>{{ user.username }}</li>
+							
 							<li><a href="{% url 'loggout' %}" id="logout">Logout</a></li>
 						</ul>
-					</li>
+						
 					{% else %}
 					<li><a href="{% url 'login_page' %}">Login</a></li>				
 					{% endif %}
@@ -194,7 +215,7 @@
 					<!--  Main wrapper -->
 					<div class="body-wrapper" >
 					  <div class="container-fluid" >
-						<div class="card" style="border-style: none; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; ">
+						<div class="card" style="border: none; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; ">
 						  <div class="card-body">
 							<h5 class="card-title fw-semibold mb-4"> </h5>
 						  {% if existing_certification %}
@@ -203,7 +224,7 @@
 							<p class="certification-message">Thank you for submitting your license details. Your access to the website is pending approval.</p>
 				
 							{% elif existing_certification.is_approved == 'approved' %}
-							<p class="certification-message">Welcome</p>
+							<p class="certification-message"></p>
 							{% elif existing_certification.is_approved == 'rejected' %}
 							<p class="certification-message">Your Application is rejected.</p>
 							{% else %}

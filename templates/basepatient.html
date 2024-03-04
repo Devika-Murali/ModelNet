@@ -66,9 +66,7 @@
 					<li class="main-nav">
 						<a href="{% url 'finddoctor' %}">Find a Doctor</a>
 					</li>
-					<li class="main-nav">
-						<a href="{% url 'book_appointment' %}">Book Appointment</a>
-					</li>
+					
 					<li class="has-submenu">
 								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -90,9 +88,8 @@
 							</li>
 					{% if user.is_authenticated %}
 					<li class="has-submenu">
-						<a href="#"><i class="fa fa-user-circle"></i></a>
+						<a href="#"><i class="fa fa-user-circle"> Welcome,{{ user.userprofile.name }}</i></a>
 						<ul class="submenu">
-							<li><a>{{ user.username }}</li></a>
 							<li><a href="{% url 'loggout' %}">Logout</li></a>
 						</ul>
 					</li>

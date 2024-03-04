@@ -52,8 +52,14 @@ class Docprofile(models.Model):
     services = models.TextField( null=True, blank=True)
     about = models.TextField(null=True, blank=True)
     degree= models.CharField(max_length=100, null=True, blank=True)
-    college=models.CharField(max_length=100, null=True, blank=True)
+    college = models.TextField(null=True, blank=True)
     cyear=models.CharField(max_length=100, null=True, blank=True)
+    hospital_name= models.TextField( null=True, blank=True)
+    from_date=models.CharField(max_length=100, null=True, blank=True)
+    to_date=models.CharField(max_length=100, null=True, blank=True)
+    award = models.TextField(null=True, blank=True)
+    ayear=models.CharField(max_length=100, null=True, blank=True)
+
     specialist = models.ForeignKey(Specialization, on_delete=models.CASCADE,  null=True, blank=True)  # Reference to the category
     reset_password=models.CharField(max_length=128,null=True,blank=True)
 
@@ -208,7 +214,7 @@ class Payment(models.Model):
     def _str_(self):
         return f"Payment ID: {self.id}, Status: {self.payment_status}"
 
-class LeaveApplication(models.Model):
+class LeaveRequest(models.Model):
     LEAVE_TYPES = [
         ('sick', 'Sick Leave'),
         ('casual', 'Casual Leave'),
@@ -219,12 +225,16 @@ class LeaveApplication(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     ]
-    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    doctor_name = models.CharField(max_length=100, default='')
+
     leave_type = models.CharField(max_length=20, choices=LEAVE_TYPES)
-    from_date = models.DateField()
-    to_date = models.DateField()
-    reason = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    num_days = models.IntegerField(null=True,blank=True)
+    start_date = models.DateField(null=True,blank=True)
+    end_date = models.DateField(null=True,blank=True)
+    leave_reason = models.TextField(null=True,blank=True)
+    status = models.CharField(max_length=20, null=True,blank=True, default='pending')
+    def __str__(self):
+        return f"{self.get_leave_type_display()} - {self.start_date} to {self.end_date}"
 
 class Blog(models.Model):
     title = models.CharField(max_length=200)
@@ -246,4 +256,14 @@ class ReferPatient(models.Model):
     comments = models.TextField(null=True,blank=True)
     referred_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
     accept = models.BooleanField(default=False)
-    
+
+class Donation(models.Model):
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    place = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Donation #{self.pk}: {self.full_name} - {self.amount}"

@@ -3,14 +3,16 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login as auth_login,logout,get_user_model
-from .models import UserProfile,Docprofile,Specialization,Certification,Appointments
+from .models import UserProfile,Docprofile,Specialization,Certification,Appointments,Donation
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
 from .models import PatientInfo 
-from .models import Specialization,Payment,LeaveApplication
+from .models import Specialization,Payment,LeaveRequest
 from torchvision import transforms
 from django.http import JsonResponse
+from datetime import datetime, timedelta
+from django.urls import reverse
 
 from django.shortcuts import render
 from django.conf import settings
@@ -27,7 +29,27 @@ def About(request):
     return render(request,'About.html')  
 def basepatient(request):
     return render(request,'basepatient.html')
+def changepass(request):
+    if request.method == 'POST':
+        
+        reset_password = request.POST.get('reset_password')
+        old_password = request.POST.get('old_password')
+        confirm_reset_password = request.POST.get('confirm_reset_password')
 
+        if request.user.check_password(old_password):
+            # The old password is correct, set the new password
+            if reset_password == confirm_reset_password:
+                request.user.set_password(reset_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)  # Update the session to prevent logging out
+                messages.success(request, "Password changed successfully.")
+            else:
+                messages.error(request, "New passwords do not match.")
+        else:
+            messages.error(request, "Incorrect old password. Password not updated.")
+        
+    return render(request,'doctors/changepass.html')
+   
 def doctors_basedoctor(request):
     user_id = request.user.id
 
@@ -138,6 +160,7 @@ def Doctor_patienthistory(request):
     return render(request,'Doctor/patienthistory.html')   
 def patientappointment(request):
     return render(request, 'patientappointment.html')    
+
 def scheduletiming(request):
     return render(request, 'scheduletiming.html')
 def patientbooking(request):
@@ -403,6 +426,11 @@ def DoctorProfileView(request):
         degree=request.POST.get('degree')
         college=request.POST.get('college')
         cyear=request.POST.get('cyear')
+        hospital_name=request.POST.get('hospital_name')
+        from_date=request.POST.get('from_date')
+        to_date=request.POST.get('to_date')
+        award=request.POST.get('award')
+        ayear=request.POST.get('ayear')
         reset_password = request.POST.get('reset_password')
         old_password = request.POST.get('old_password')
         
@@ -428,6 +456,11 @@ def DoctorProfileView(request):
         doc_profile.degree = degree
         doc_profile.college = college
         doc_profile.cyear = cyear
+        doc_profile.hospital_name=hospital_name
+        doc_profile.from_date=from_date
+        doc_profile.to_date=to_date
+        doc_profile.award=award
+        doc_profile.ayear=ayear
         if request.user.check_password(old_password):
             #  the old password is correct, set the new password
                 request.user.set_password(reset_password)
@@ -624,68 +657,7 @@ def doctor_list(request):
 
     # Pass the list of doctors to the template
     return render(request, 'finddoctor.html', {'doctors': doctors})
-# @login_required
-# def add_timeslot(request):
-#     if request.method == 'POST':
-#         doctor_name = request.user.Docprofile  # Assuming you have a DoctorProfile model
-#         date = request.POST['date']
-#         start_time = request.POST['start_time']
-#         end_time = request.POST['end_time']
-#         Timeslot.objects.create(doctor_name=doctor_name, date=date, start_time=start_time, end_time=end_time)
-#         return redirect('doctors_timeslot')
-    
-#     return render(request, 'doctors_timeslot.html')
-
-# @login_required
-# def doctor_timeslots(request):
-#     doctor_name = request.user.docprofile  # Assuming you have a DoctorProfile model
-#     timeslots = Timeslot.objects.filter(doctor_name=doctor_name)
-#     return render(request, 'timeslotdisplay.html', {'timeslots': timeslots})
-#liyak
-# def add_timeslot(request):
-#     # Check if a 'Docs' object exists for the logged-in user
-#     try:
-#         logged_in_doctor = Docprofile.objects.get(user=request.staff)
-#     except Docprofile.DoesNotExist:
-#         # Handle the case where a 'Docs' object does not exist for the logged-in user
-#         # You can redirect or display an error message as needed
-#         return render(request, 'error_template.html', {'error_message': 'Doctor profile not found'})
-
-#     # Extract the doctor's name from the 'Name' attribute of the 'Docs' object
-#     doctor_name = logged_in_doctor.doctor_name
-
-#     if request.method == 'POST':
-#         # Retrieve form data from POST request
-#         date = request.POST.get('date')
-#         start_time = request.POST.get('start_time')
-#         end_time = request.POST.get('end_time')
-
-#         if start_time:
-#             # Create and save the time slot associated with the logged-in doctor
-#             doctor = logged_in_doctor  # Use the 'logged_in_doctor' from your previous code
-#             Timeslot = Timeslot(doctor=doctor, date=date, start_time=start_time, end_time=end_time)
-#             Timeslot.save()
-
-#             # Optionally, you can add a success message or redirect to another page
-#             return render(request, 'timeslot.html', {'doctor_name': doctor_name, 'success_message': 'Time slot saved successfully'})
-#         else:
-#             # Handle the case where 'start_time' is not provided
-#             # You can render an error message or take appropriate action
-#             return render(request, 'timeslot.html', {'doctor_name': doctor_name, 'error_message': 'Please provide a valid start time'})
-
-#     # Render the template for both GET and POST requests
-#     return render(request, 'timeslot.html', {'doctor_name': doctor_name})
-
-
-# @login_required
-# def doctor_timeslots(request):
-#     # Get the logged-in doctor
-#     logged_in_doctor = Docprofile.objects.get(user=request.staff)
-
-#     # Fetch time slots associated with the logged-in doctor
-#     time_slots = Timeslot.objects.filter(doctor=logged_in_doctor)
-
-#     return render(request, 'timeslotdisplay.html', {'time_slots': time_slots})
+# 
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -693,29 +665,6 @@ from django.contrib import messages
 from .models import  Docprofile  # Import Docprofile model
 from datetime import datetime
 
-
-# @login_required
-# def add_time_slot(request):
-#     if request.method == 'POST':
-#         # Get user from the request (you may need to adjust this depending on your authentication system)
-#         user = request.user  # Assuming you have authentication and the user is logged in
-#         # doctor_name = user.Docprofile.name
-#         # Get data from the form
-#         date = request.POST.get('date')
-#         start_time = request.POST.get('start_time')
-#         end_time = request.POST.get('end_time')
-        
-#         # Create a new Timeslot object and save it
-#         timeslot = Timeslot(user=user, date=date, start_time=start_time, end_time=end_time)
-#         timeslot.save()
-        
-#         # Optionally, you can add a success message
-#         messages.success(request, 'Time slot added successfully')
-        
-#         # Redirect to a different page or template
-#         return redirect('view_timeslots')  # Replace 'some_success_page' with the actual URL name or path
-        
-#     return render(request, 'doctors/timeslot.html')
 
 
 
@@ -773,84 +722,9 @@ from .models import Slots, Docprofile,Appointments
 
 from django.contrib.auth.decorators import login_required
 
-@login_required
-# 
-
-# def get_dates(request, doctor_id):
-#     try:
-#         # Fetch dates for the selected doctor (doctor_id) from your database
-#         # Replace the following line with your actual database query logic
-        
-#         dates = Slots.objects.filter(doctor_id=doctor_id).values_list('date', flat=True).distinct()
-        
-#         # Construct a list of date options in HTML format
-#         date_options = ["<option value='{0}'>{0}</option>".format(date.strftime('%Y-%m-%d')) for date in dates]
-#     except Slots.DoesNotExist:
-#         # Handle the case where no slots are found for the selected doctor
-#         date_options = []
-
-#     return JsonResponse({"date_options": date_options})
 
 
-# def get_times(request, doctor_id, selected_date):
-#     # Your view logic here
 
-#     try:
-#         # Fetch all time slots for the selected doctor (doctor_id) and date (selected_date) from your database
-#         all_time_slots = Slots.objects.filter(doctor_id=doctor_id, date=selected_date)
-
-#         # Fetch the time slots that are already booked as appointments
-#         booked_time_slots = Appointment.objects.filter(doctor_id=doctor_id, date=selected_date).values_list('slot__id', flat=True)
-
-#         # Filter out the free time slots by excluding the booked ones
-#         free_time_slots = all_time_slots.exclude(id__in=booked_time_slots)
-
-#         # Construct a list of free time slot options in HTML format
-#         time_options = [
-#             {
-#                 "id": slot.id,
-#                 "text": f"{slot.start_time.strftime('%I:%M %p')} - {slot.end_time.strftime('%I:%M %p')}"
-#             }
-#             for slot in free_time_slots
-#         ]
-#     except Slots.DoesNotExist:
-#         # Handle the case where no slots are found for the selected doctor and date
-#         time_options = []
-
-#     return JsonResponse({"time_options": time_options})
-
-# def dr_timeslots(request):
-#     # Check if a 'Docs' object exists for the logged-in user
-#     try:
-#         logged_in_doctor = Docprofile.objects.get(user=request.user)
-#     except Docs.DoesNotExist:
-#         # Handle the case where a 'Docs' object does not exist for the logged-in user
-#         # You can redirect or display an error message as needed
-#         # return render(request, 'error_template.html', {'error_message': 'Doctor profile not found'})
-#         print("Doctor Profile Doesnt exist")
-#     # Extract the doctor's name from the 'Name' attribute of the 'Docs' object
-#     doctor_name = logged_in_doctor.name
-
-#     if request.method == 'POST':
-#         # Retrieve form data from POST request
-#         date = request.POST.get('date')
-#         start_time = request.POST.get('start_time')
-#         end_time = request.POST.get('end_time')
-
-#         if start_time:
-#             doctor = logged_in_doctor  # Use the 'logged_in_doctor' from your previous code
-#             slot = Slots(doctor=doctor, date=date, start_time=start_time, end_time=end_time)
-#             slot.save()
-
-#             # Optionally, you can add a success message or redirect to another page
-#             return redirect('dr_timeslots_shows')  
-#         else:
-#             # Handle the case where 'start_time' is not provided
-#             # You can render an error message or take appropriate action
-#             return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name, 'error_message': 'Please provide a valid start time'})
-
-#     # Render the template for both GET and POST requests
-#     return render(request, 'doctors/timeslot.html', {'doctor_name': doctor_name})
 
 
 
@@ -1023,87 +897,44 @@ def display_booked_appointments(request):
     }
 
     return render(request, 'doctors/appointments.html', context)
-from .models import LeaveApplication
 
-@login_required
-def doctors_leave(request):
-    # Fetch all leave applications
-    leave_applications = LeaveApplication.objects.all()
 
-    if request.method == 'POST':
-        leave_type = request.POST.get('leave_type')
-        from_date = request.POST.get('from_date')
-        to_date = request.POST.get('to_date')
-        reason = request.POST.get('reason')
+# @login_required
+# def doctors_leave(request):
+#     # Fetch all leave applications
+#     leave_applications = LeaveApplication.objects.all()
+
+#     if request.method == 'POST':
+#         leave_type = request.POST.get('leave_type')
+#         from_date = request.POST.get('from_date')
+#         to_date = request.POST.get('to_date')
+#         reason = request.POST.get('reason')
         
-        # Create a new LeaveApplication instance
-        leave_application = LeaveApplication.objects.create(
-            doctor=request.user,
-            leave_type=leave_type,
-            from_date=from_date,
-            to_date=to_date,
-            reason=reason
-        )
+#         # Create a new LeaveApplication instance
+#         leave_application = LeaveApplication.objects.create(
+#             doctor=request.user,
+#             leave_type=leave_type,
+#             from_date=from_date,
+#             to_date=to_date,
+#             reason=reason
+#         )
         
-        # Send notification or perform any other actions here
+#         # Send notification or perform any other actions here
         
-        messages.success(request, 'Leave application submitted successfully.')
-        return redirect('doctors_leavesubmit')  # Redirect to the leavesubmit page after submission
+#         messages.success(request, 'Leave application submitted successfully.')
+#         return redirect('doctors_leavesubmit')  # Redirect to the leavesubmit page after submission
         
-    else:
-        # Check if the user has submitted a leave application
-        leave_application_exists = LeaveApplication.objects.filter(doctor=request.user).exists()
-        if leave_application_exists:
-            return redirect('doctors_leavesubmit')
-        else:
-            return render(request, 'doctors/leave.html', {'leave_applications': leave_applications})
+#     else:
+#         # Check if the user has submitted a leave application
+#         leave_application_exists = LeaveApplication.objects.filter(doctor=request.user).exists()
+#         if leave_application_exists:
+#             return redirect('doctors_leavesubmit')
+#         else:
+#             return render(request, 'doctors/leave.html', {'leave_applications': leave_applications})
 
 
 
-def doctors_leavesubmit(request):
-    # Check if the user has submitted a leave application
-    leave_application_exists = LeaveApplication.objects.filter(doctor=request.user).exists()
-    print("Leave Application Exists:", leave_application_exists)  # Add this line for debugging
-    if leave_application_exists:
-        return render(request, 'doctors/leavesubmit.html')
-    else:
-        print("Redirecting to doctors_leave")  # Add this line for debugging
-        # Redirect to the leave application page if no application exists
-        return redirect('doctors_leave')
 
-def admins_leave(request):
-    
-    pending_leave_applications = LeaveApplication.objects.filter(status='pending')
-    print(pending_leave_applications)
-    return render(request, 'admins/leaveapprove.html', {'leave_applications': pending_leave_applications})
-    
-def admin_view_leave_applications(request):
-    # Fetch pending leave applications
-    pending_leave_applications = LeaveApplication.objects.filter(status='pending')
-    print(pending_leave_applications)
-    return render(request, 'admins/leaveapprove.html', {'leave_applications': pending_leave_applications})
-
-def approve_leave(request, leave_id):
-    # Retrieve the leave application object
-    leave_application = LeaveApplication.objects.get(id=leave_id)
-    
-    # Update the status to 'approved'
-    leave_application.status = 'approved'
-    leave_application.save()
-    
-    # Redirect back to the leave approval page
-    return redirect('admins_leave')
-
-def reject_leave(request, leave_id):
-    # Retrieve the leave application object
-    leave_application = LeaveApplication.objects.get(id=leave_id)
-    
-    # Update the status to 'rejected'
-    leave_application.status = 'rejected'
-    leave_application.save()
-    
-    # Redirect back to the leave approval page
-    return redirect('admins_leave')
 from .models import Blog
 def admins_addblog(request):
 
@@ -1139,11 +970,10 @@ def admins_viewblog(request):
 
 
 
-def showmore_view(request):
-    doctors = Docprofile.objects.all()
-    
-    
-    return render(request, 'patient/showmore.html', {'doctors': doctors})
+def showmore_view(request, doctor_id):
+    doctor = get_object_or_404(Docprofile, pk=doctor_id)
+    return render(request, 'patient/showmore.html', {'doctor': doctor})
+
 
 
 
@@ -1326,48 +1156,163 @@ def patientreferences(request):
 def confirm_appointment(request):
     return render(request, 'confirmapp.html')
 
-def book_appointment(request):
-    doctors = Docprofile.objects.all()
+from django.http import HttpResponseRedirect
+
+
+def book_appointment(request, doc_id):
+    selected_doctor = Docprofile.objects.get(pk=doc_id)
+    cuser=request.user
+    uprofile=UserProfile.objects.get(user=cuser)
+    print(uprofile)
     if request.method == 'POST':
-        name = request.POST.get('name')
-        age = request.POST.get('age')
+        # Handle form submission
+        # Extract data from the POST request
         email = request.POST.get('email')
-        appointment_type = request.POST.get('appointmentType')
+        appointment_type = request.POST.get('appointment_type')
         reason = request.POST.get('reason')
-        doctor_id = request.POST.get('doctor')
-        appointment_time = request.POST.get('apptime')
-        appointment_date = request.POST.get('appdate')
-        
+        appointment_date = request.POST.get('appointment_date')
+        appointment_time = request.POST.get('appointment_time')
+
         # Check if all required fields are provided
-        if name and age and email and appointment_type and doctor_id and appointment_time and appointment_date:
-            try:
-                # Retrieve the UserProfile instance by name
-                user_profile = UserProfile.objects.get(name=name)
-            except UserProfile.DoesNotExist:
-                # If the user does not exist, display an error message and redirect back to the form
-                messages.error(request, 'User with provided name does not exist!')
-                return redirect('book_appointment')            # Create a new DoctorAppointment object and save it to the database
+        if email and appointment_type and appointment_date and appointment_time:
+            # Get the user's profile
+            user_profile = UserProfile.objects.get(email=email)  # Assuming email is the field in UserProfile model
+            # Constraint 1: Check if the patient has already booked an appointment with any doctor at the selected time slot on the specified date
+            if Appointments.objects.filter(name=user_profile, appointment_date=appointment_date, appointment_time=appointment_time).exists():
+                messages.error(request, 'You have already booked an appointment at this time slot.')
+                return HttpResponseRedirect(reverse('book_appointment', args=[doc_id]))
+
+            # Constraint 2: Verify if the selected time slot is already booked for the chosen doctor on the given date
+            if Appointments.objects.filter(doctor=selected_doctor, appointment_date=appointment_date, appointment_time=appointment_time).exists():
+                messages.error(request, 'The selected time slot is already booked for this doctor.')
+                return HttpResponseRedirect(reverse('book_appointment', args=[doc_id]))
+
+            # Constraint 3: Ensure that the doctor is not on leave on the selected date
+            if LeaveRequest.objects.filter(doctor_name=selected_doctor, start_date__lte=appointment_date, end_date__gte=appointment_date, status='approved').exists():
+                messages.error(request, 'The doctor is on leave on the selected date.')
+                return HttpResponseRedirect(reverse('book_appointment', args=[doc_id]))
+
+            # Create a new appointment and save it
             appointment = Appointments(
-                name=user_profile,
-                age=age,
+                name=uprofile,
                 email=email,
                 appointment_type=appointment_type,
                 reason=reason,
-                doctor_id=doctor_id,
-                appointment_time=appointment_time,
-                appointment_date=appointment_date
+                doctor=selected_doctor,
+                appointment_date=appointment_date,
+                appointment_time=appointment_time
             )
             appointment.save()
-            
-            messages.success(request, 'Appointment booked successfully!')
-            return redirect('payment_confirm')  # Redirect to a success page
-            
+
+            # Redirect to a success page
+
+            return redirect('payment_confirm')
         else:
-            messages.error(request, 'Please fill out all required fields!')
-            return redirect('book_appointment')  # Redirect back to the appointment booking form
-    
-    # If the request method is not POST, render the form template
-    return render(request, 'patient/bookappointment.html',{'doctors': doctors})
+            messages.error(request, 'Please fill out all required fields.')
+            return HttpResponseRedirect(reverse('book_appointment', args=[doc_id]))
+
+    else:
+        # Handle GET request
+        # Fetch booked appointments for the selected date and doctor
+        doctor_id = request.GET.get('doctor_id')
+        appointment_date = request.GET.get('appointment_date')
+        if doctor_id and appointment_date:
+            booked_slots = Appointments.objects.filter(doctor_id=doctor_id, appointment_date=appointment_date).values_list('appointment_time', flat=True)
+            booked_slots = [slot.strftime('%H:%M') for slot in booked_slots]  # Convert appointment_time to HH:MM format
+        else:
+            booked_slots = []
+
+        # Generate available time slots for the selected date
+        available_slots = []
+        start_time = datetime.strptime('09:00', '%H:%M')  # Assuming appointments start at 09:00
+        end_time = datetime.strptime('17:00', '%H:%M')    # Assuming appointments end at 17:00
+        delta = timedelta(minutes=30)  # Assuming appointments are in 30-minute intervals
+
+        current_time = start_time
+        while current_time <= end_time:
+            slot = current_time.strftime('%H:%M')
+            if slot not in booked_slots:
+                available_slots.append(slot)
+            current_time += delta
+
+        return render(request, 'patient/bookappointment.html', {'selected_doctor': selected_doctor, 'available_slots': available_slots})
+def doctors_appointments(request, doc_id):
+    selected_doctor = Docprofile.objects.get(pk=doc_id)
+    appointments = Appointments.objects.filter(doctor=selected_doctor)
+    return render(request, 'doctors/appointment.html', {'appointments': appointments})
+def doctors_leave(request):
+    if request.method == 'POST':
+        leave_type = request.POST.get('leave_type')
+        num_days = int(request.POST.get('num_days'))  # Convert to integer
+        date_range = request.POST.get('date_range')
+        leave_reason = request.POST.get('leave_reason')
+        
+        # Extract start and end dates from date_range string
+        start_date_str, end_date_str = date_range.split(' to ')
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+        
+        # Get the currently logged-in doctor's profile
+        doctor_profile = request.user.docprofile
+        
+        # Create a new LeaveRequest object and save it to the database
+        leave_request = LeaveRequest(
+            doctor_name=doctor_profile.name,  # Use the doctor's name from the profile
+            leave_type=leave_type,
+            num_days=num_days,
+            start_date=start_date,
+            end_date=end_date,
+            leave_reason=leave_reason
+        )
+        leave_request.save()
+        
+        # Redirect to a success page or render a confirmation template
+        return redirect(doctors_leave)
+
+    doctors = Docprofile.objects.all()
+    return render(request, 'doctors/leave.html', {'doctors': doctors})
+
+def admins_leave(request):
+    if request.method == 'POST':
+        # Handle approve or reject actions
+        leave_request_id = request.POST.get('leave_request_id')
+        action = request.POST.get('action')
+
+        # Get the leave request object
+        leave_request = LeaveRequest.objects.get(id=leave_request_id)
+
+        # Update status based on the action
+        if action == 'approve':
+            leave_request.status = 'approved'
+        elif action == 'reject':
+            leave_request.status = 'rejected'
+        
+        leave_request.save()
+
+        return JsonResponse({'status': leave_request.status})
+
+    # Fetch all pending leave requests
+    pending_requests = LeaveRequest.objects.filter(status='pending')
+
+    context = {
+        'pending_requests': pending_requests
+    }
+    return render(request, 'admins/leaveapprove.html', context)
+
+# def approve_leave(request):
+#     if request.method == 'POST':
+#         leave_request_id = request.POST.get('leave_request_id')
+#         leave_request = LeaveRequest.objects.get(pk=leave_request_id)
+#         leave_request.status = 'approved'
+#         leave_request.save()
+#     return redirect('admins_leave')
+# def reject_leave(request):
+#     if request.method == 'POST':
+#         leave_request_id = request.POST.get('leave_request_id')
+#         leave_request = LeaveRequest.objects.get(pk=leave_request_id)
+#         leave_request.status = 'rejected'
+#         leave_request.save()
+#     return redirect('admins_leave')
 
 # def patient_bookappointment(request):
 #     # userprofile = request.user.UserProfile
@@ -1419,5 +1364,198 @@ def book_appointment(request):
 #             return render(request, 'patient/bookappointment.html', {'error_message': 'Invalid time format'})
 
 #     return render(request, 'patient/bookappointment.html', {'doctors': doctors})
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from .models import LeaveRequest
+
+def approve_leave(request):
+    if request.method == 'POST':
+        leave_request_id = request.POST.get('leave_request_id')
+        try:
+            leave_request = LeaveRequest.objects.get(id=leave_request_id)
+            leave_request.status = 'Approved'
+            leave_request.save()
+            return JsonResponse({'success': True, 'message': 'Leave request approved successfully.'})
+        except LeaveRequest.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Leave request not found.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+def reject_leave(request):
+    if request.method == 'POST':
+        leave_request_id = request.POST.get('leave_request_id')
+        try:
+            leave_request = LeaveRequest.objects.get(id=leave_request_id)
+            leave_request.status = 'Rejected'
+            leave_request.save()
+            return JsonResponse({'success': True, 'message': 'Leave request rejected successfully.'})
+        except LeaveRequest.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Leave request not found.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+def view_leave_requests(request):
+    pending_requests = LeaveRequest.objects.filter(status='pending')
+
+    # Fetch all approved and rejected leave requests
+    approved_requests = LeaveRequest.objects.exclude(status='pending')
+
+    context = {
+        'pending_requests': pending_requests,
+        'approved_requests': approved_requests,
+    }
+    return render(request, 'doctors/viewleave.html', context)
+
+# def donation(request):
+#     if request.method == 'POST':
+#         # Retrieve form data
+#         full_name = request.POST.get('full_name')
+#         email = request.POST.get('email')
+#         place = request.POST.get('place')
+#         amount = request.POST.get('amount')
+
+#         # Validate form data (you may add more validation as needed)
+
+#         # Save the donation to the database
+#         donation = Donation.objects.create(
+#             full_name=full_name,
+#             email=email,
+#             place=place,
+#             amount=amount
+#         )
+
+#         # Redirect to the Razorpay payment page
+#         return redirect('payment')  # Replace 'payment' with the name of your payment view
+
+#     return render(request, 'donation.html') 
+# Authorize Razorpay client with API Keys
+razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+
+# View to render the donation form
 
 
+# View to handle the payment process
+# def donation(request):
+#     if request.method == "POST":
+#         # Retrieve form data
+#         full_name = request.POST.get('full_name')
+#         email = request.POST.get('email')
+#         place = request.POST.get('place')
+#         amount = float(request.POST.get('amount'))  # Convert amount to float
+
+#         # Create a new Donation object
+#         donation = Donation.objects.create(
+#             full_name=full_name,
+#             email=email,
+#             place=place,
+#             amount=amount
+#         )
+
+#         # Currency and amount conversion
+#         currency = 'INR'
+#         amount_in_paise = int(amount * 100)
+
+#         # Create a Razorpay Order
+#         razorpay_order = razorpay_client.order.create(dict(
+#             amount=amount_in_paise,
+#             currency=currency,
+#             payment_capture='0'  # Payment capture should be '0' for manual capture
+#         ))
+
+#         # Order ID of the newly created order
+#         razorpay_order_id = razorpay_order['id']
+#         callback_url = '/paymenthandler/'  # You can specify your callback URL
+
+#         # Pass these details to the frontend
+#         context = {
+#             'razorpay_order_id': razorpay_order_id,
+#             'razorpay_merchant_key': settings.RAZOR_KEY_ID,
+#             'razorpay_amount': amount,
+#             'currency': currency,
+#             'callback_url': callback_url,
+#         }
+
+#         return render(request,'donation.html',context=context)
+    
+    # return HttpResponse(status=400)
+def donation(request):
+    if request.method == "POST":
+        # Retrieve form data
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        place = request.POST.get('place')
+        amount = float(request.POST.get('amount'))  # Convert amount to float
+
+        # Create a new Donation object
+        donation = Donation.objects.create(
+            full_name=full_name,
+            email=email,
+            place=place,
+            amount=amount
+        )
+
+        # Currency and amount conversion
+        currency = 'INR'
+        amount_in_paise = int(amount * 100)
+
+        # Create a Razorpay Order
+        razorpay_order = razorpay_client.order.create(dict(
+            amount=amount_in_paise,
+            currency=currency,
+            payment_capture='0'  # Payment capture should be '0' for manual capture
+        ))
+
+        # Order ID of the newly created order
+        razorpay_order_id = razorpay_order['id']
+        callback_url = '/paymenthandler_donation/'  # You can specify your callback URL
+
+        # Pass these details to the frontend
+        context = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_merchant_key': settings.RAZOR_KEY_ID,
+            'amount': amount,
+            'currency': currency,
+            'callback_url': callback_url,
+        }
+
+        return render(request, 'donation.html', context=context)
+
+    elif request.method == "GET":
+        # Handle GET requests by rendering the donation form
+        return render(request, 'donation.html')  # Replace 'donation_form.html' with the actual template name
+
+    else:
+        # If the request method is neither GET nor POST, return an error response
+        return HttpResponse(status=405)  # Method Not Allowed
+# View to handle payment response from Razorpay
+@csrf_exempt
+def paymenthandler_donation(request):
+    if request.method == "POST":
+        # Get the required parameters from the POST request.
+        payment_id = request.POST.get('razorpay_payment_id', '')
+        razorpay_order_id = request.POST.get('razorpay_order_id', '')
+        signature = request.POST.get('razorpay_signature', '')
+        params_dict = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': payment_id,
+            'razorpay_signature': signature
+        }
+
+        # Verify the payment signature.
+        result = razorpay_client.utility.verify_payment_signature(params_dict)
+        if result is not None:
+            try:
+                # Retrieve the authorized amount from the Razorpay order
+                razorpay_order = razorpay_client.order.fetch(razorpay_order_id)
+                authorized_amount = razorpay_order['amount']
+
+                # Capture the payment with the authorized amount
+                razorpay_client.payment.capture(payment_id, authorized_amount)
+
+                # Payment capture successful.
+                return render(request, 'payment_success.html')  # Render success page template
+            except razorpay.errors.BadRequestError as e:
+                # Handle the error appropriately, e.g., show an error message to the user.
+                return HttpResponse("Payment capture failed: " + str(e), status=400)
+
+    return HttpResponse(status=400)

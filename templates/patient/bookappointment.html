@@ -8,7 +8,7 @@
 	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
 	<!-- title -->
-	<title>PATIENT-PAGE</title>
+	<title>BOOK APPOINTMENT-PAGE</title>
 
 	<!-- Favicons -->
 	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
@@ -123,7 +123,7 @@
 						<a href="{% url 'finddoctor' %}">Find a Doctor</a>
 					</li>
 					<li class="main-nav">
-						<a href="{% url 'book_appointment' %}">Book Appointment</a>
+						<a href="{% url 'finddoctor' %}">Book Appointment</a>
 					</li>
 					<li class="has-submenu">
 								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
@@ -169,104 +169,79 @@
         <form method="POST" class="needs-validation p-4 border rounded shadow-lg bg-light" novalidate>
             {% csrf_token %}
             <h2 class="mb-4 text-center">Book an Appointment</h2>
-            <div class="row g-3">
-                <!-- Patient Name -->
-                <div class="col-md-6">
-                    <label for="name" class="form-label">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ user.userprofile.name }}" required>
-                    <div class="invalid-feedback">
-                        Please enter your name.
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="age" class="form-label">Age:</label>
-                    <input type="number" class="form-control" id="age" name="age" required>
-                    <div class="invalid-feedback">
-                        Please enter your age.
-                    </div>
-                </div>
-                <!-- Patient Email -->
-                <div class="col-md-6">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
-                    <div class="invalid-feedback">
-                        Please enter a valid email.
-                    </div>
-                </div>
-                
-                <!-- Appointment Type -->
-                <div class="col-md-6">
-                    <label class="form-check-label">Appointment Type:</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="monthlyCheckup" name="appointmentType" value="monthlyCheckup">
-                        <label class="form-check-label" for="monthlyCheckup">Monthly Check-up</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="consultation" name="appointmentType" value="consultation">
-                        <label class="form-check-label" for="consultation">Consultation</label>
-                    </div>
-                </div>
-                
-                <!-- Reason for Consultation (Conditional) -->
-                <div id="consultationReason" class="col-12" style="display: none;">
-                    <label for="reason" class="form-label">Reason for Consultation:</label>
-                    <textarea class="form-control" id="reason" name="reason"></textarea>
-                </div>
-                
-               <!-- Select Doctor -->
-               <div class="col-md-6">
-                <label for="doctor" class="form-label">Select a Doctor:</label>
-                <div class="input-group">
-                    <select class="form-select form-select-lg" id="doctor" name="doctor" required>
-                        <option value="" disabled selected>Select a Doctor</option>
-                        {% for doctor in doctors %}
-                            <option value="{{ doctor.id }}" {% if selected_doctor == doctor.id %} selected {% endif %}>
-                                {{ doctor.name }} - {{ doctor.specialist }}  <!-- Display doctor's name and specialty -->
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <label class="input-group-text" for="doctor"><i class="fas fa-user-md"></i></label>
-                </div>
-                <div class="invalid-feedback">
-                    Please select a doctor.
-                </div>
-            </div>
-
-<!-- Select Time -->
-<div class="col-md-6">
-    <label for="time" class="form-label">Select a Time Slot:</label>
-    <div class="input-group">
-        <select class="form-select form-select-lg" name="apptime" id="apptime" required>
-            <option value="" disabled selected>Select a Time Slot</option>
-            <!-- JavaScript will populate the options here -->
-        </select>
-        <label class="input-group-text" for="time"><i class="fas fa-clock"></i></label>
-    </div>
+            <!-- Name -->
+<div class="mb-3">
+    <label for="name" class="form-label">Name:</label>
+    <input type="text" class="form-control" id="name" name="name" value="{{ user.userprofile.name }}" required>
     <div class="invalid-feedback">
-        Please select a time slot.
+        Please enter your name.
     </div>
 </div>
 
-                
-                <!-- Select Date -->
-                <div class="col-md-6">
-                    <label for="date" class="form-label">Select a Date:</label>
-                    <input type="date" class="form-control" name="appdate" id="appdate" required>
-                    <div class="invalid-feedback">
-                        Please select a date.
-                    </div>
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                <div class="invalid-feedback">
+                    Please enter a valid email.
                 </div>
-                
-                
-                
-                <div id="error-message" style="color: red;"></div>
             </div>
+            
+            <!-- Appointment Type -->
+            <div class="mb-3">
+                <label class="form-label">Appointment Type:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="monthlyCheckup" name="appointment_type" value="monthlyCheckup">
+                    <label class="form-check-label" for="monthlyCheckup">Monthly Check-up</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="consultation" name="appointment_type" value="consultation">
+                    <label class="form-check-label" for="consultation">Consultation</label>
+                </div>
+            </div>
+            
+            <!-- Reason for Consultation (Conditional) -->
+            <div id="consultationReason" class="mb-3" style="display: none;">
+                <label for="reason" class="form-label">Reason for Consultation:</label>
+                <textarea class="form-control" id="reason" name="reason"></textarea>
+            </div>
+            
+            <!-- Doctor Name -->
+            <div class="mb-3">
+                <label for="doctor" class="form-label">Doctor Name:</label>
+                <input type="text" class="form-control" id="doctor" name="doctor" value="Dr.{{ selected_doctor.name }},{{ selected_doctor.specialist }}" required>
+                <div class="invalid-feedback">
+                    Please enter the doctor's name.
+                </div>
+            </div>
+            
+            <!-- Select Date -->
+            <div class="mb-3">
+                <label for="appdate" class="form-label">Select a Date:</label>
+                <input type="date" class="form-control" name="appointment_date" id="appdate" required>
+                <div class="invalid-feedback">
+                    Please select a date.
+                </div>
+            </div>
+            
+            <!-- Select Time -->
+            <select class="form-select" name="appointment_time" id="appointment_time" required>
+                <option value="" disabled selected>Select a Time Slot</option>
+                {% for slot in available_slots %}
+                    <option value="{{ slot }}">{{ slot }}</option>
+                {% endfor %}
+            </select>
+            
+            
+            <div id="error-message" style="color: red;"></div>
+            
             <div class="text-center">
                 <button type="submit" class="btn btn-primary mt-4">Book Appointment</button>
             </div>
         </form>
+        
     </div>
-    </div>
+    
 
     <!-- Include Bootstrap JS (if needed) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.min.js"></script>
@@ -346,35 +321,48 @@
     dateInput.min = currentDate.toISOString().split('T')[0]; // Set min date
     dateInput.max = oneWeekLater.toISOString().split('T')[0]; // Set max date
 
-    function generateTimeSlots() {
-        var select = document.getElementById('apptime');
-        var startTime = 9 * 60; // 9:00 AM in minutes since midnight
-        var endTime = 17 * 60; // 5:00 PM in minutes since midnight
-        
-        for (var i = startTime; i < endTime; i += 15) {
-            var hours = Math.floor(i / 60);
-            var minutes = i % 60;
-            var time = (hours < 10 ? '0' : '') + hours + ':' + (minutes === 0 ? '00' : minutes);
-            var option = new Option(time, time);
-            
-            // Group time slots by hour
-            var groupLabel = (hours < 10 ? '0' : '') + hours + ':00';
-            var optgroup = select.querySelector('optgroup[label="' + groupLabel + '"]');
-            if (!optgroup) {
-                optgroup = document.createElement('optgroup');
-                optgroup.label = groupLabel;
-                select.appendChild(optgroup);
-            }
-            
-            optgroup.appendChild(option);
-        }
-    }
-    
-    // Call the function to generate time slots when the page loads
-    generateTimeSlots();
+ 
+
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Function to disable booked time slots based on selected date
+    function disableBookedTimeSlots(bookedSlots) {
+        var select = document.getElementById('apptime');
+        var selectedDate = new Date(document.getElementById('appdate').value);
+        var currentDate = new Date();
 
+        // Clear previous options
+        select.innerHTML = '';
+
+        // Loop through the available time slots and add them as options if they are not already booked for the selected date
+        for (var i = 0; i < 24; i++) {
+            var optionValue = i.toString().padStart(2, '0') + ':00'; // Format the time HH:00
+
+            // Check if the time slot is not already booked for the selected date
+            if (!bookedSlots.includes(optionValue) || (selectedDate.getDate() === currentDate.getDate() && i <= currentDate.getHours())) {
+                var option = document.createElement('option');
+                option.text = optionValue;
+                option.value = optionValue;
+                select.add(option);
+            }
+        }
+    }
+
+    // Call the function to disable booked time slots when the page loads
+    window.onload = function() {
+        var bookedSlots = {{ booked_slots|safe }};
+        disableBookedTimeSlots(bookedSlots);
+    };
+
+    // Add event listener to the date input to update the available time slots when the date changes
+    document.getElementById('appdate').addEventListener('change', function() {
+        var bookedSlots = {{ booked_slots|safe }};
+        disableBookedTimeSlots(bookedSlots);
+    });
+</script>
         
         
 </body>

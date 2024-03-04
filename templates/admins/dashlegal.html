@@ -85,31 +85,22 @@
 				<!-- Logo -->
                 <div class="header-left">
                     <a href="index.html" class="logo">
-						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" height="1000">
 					</a>
+					
 					<a href="index.html" class="logo logo-small">
-						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" width="30" height="100">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" width="30" height="800">
 					</a>
                 </div>
 				<!-- /Logo -->
 				
-				{% comment %} <a href="javascript:void(0);" id="toggle_btn">
-					<i class="fe fe-text-align-left"></i>
-				</a> {% endcomment %}
 				
-				{% comment %} <div class="top-nav-search">
-					<form>
-						<input type="text" class="form-control" placeholder="Search here">
-						<button class="btn" type="submit"><i class="fa fa-search"></i></button>
-					</form>
-				</div> {% endcomment %}
 				
 				<!-- Mobile Menu Toggle -->
 				<a class="mobile_btn" id="mobile_btn">
 					<i class="fa fa-bars"></i>
 				</a>
 				<!-- /Mobile Menu Toggle -->
-				
 				<ul class="nav user-menu">
 					<!-- User Menu -->
 					<li class="nav-item dropdown has-arrow">
@@ -128,9 +119,9 @@
 					<li><a href=""></a></li>
 					{% endif %}
 				</ul>
-        </div>
-        <div class="sidebar" id="sidebar">
-            <!-- Sidebar -->
+				
+				
+			<!-- Sidebar -->
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu">
@@ -142,20 +133,35 @@
 								<a href="{% url 'admins_index' %}"><i class="fe fe-home"></i> <span>Dashboard</span></a>
 							</li>
 							<li> 
-								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user"></i> <span>Registered Users</span></a>
+								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user" id="user"></i> <span>Registered Users</span></a>
 							</li>
-							<li > 
+							<li> 
 								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
 							</li>
-							<li > 
+							<li> 
 								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
 							</li>
 							<li class="active"> 
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
-							<li> 
-								<a href="{% url 'admins_viewblog' %}"><i class="fe fe-layout"></i> <span>Blogs</span></a>
+							<li class="submenu">
+								<a href="#"><i class="fe fe-layout"></i> <span>Blogs</span> <span class="menu-arrow"></span></a>
+								<ul>
+									<li><a href="{% url 'admins_addblog' %}">Add Blogs</a></li>
+									<li><a href="{% url 'admins_viewblog' %}">View Blogs</a></li>
+								</ul>
 							</li>
+							
+							
+							{% comment %} <li> 
+								<a href=""><i class="fe fe-layout"></i> <span>Payment Details</span></a>
+							</li> {% endcomment %}
+							<li> 
+								<a href="{% url 'admins_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
+							</li>
+							 {% comment %} <li> 
+								<a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>
+							</li>  {% endcomment %}
 							
 						</div>		
                 </div>
@@ -279,7 +285,13 @@
     <!-- Custom JS -->
     <script  src="assets/js/script.js"></script>
     <script src="{% static 'assets/js/jquery.min.js'%} " ></script>
-
+    <script>
+        $(document).ready(function(){
+            $(".submenu .menu-arrow").click(function(){
+                $(this).parent().next().toggle();
+            });
+        });
+    </script>
 <!-- Bootstrap Core JS -->
 <script src="{% static 'assets/js/popper.min.js'%}">
 </script>

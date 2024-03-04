@@ -57,15 +57,16 @@
 					</a>
 				</div>
 				<ul class="main-nav">
-					<li class="active">
+					<li >
 						<a href="{% url 'basepatient' %}">Home</a>
 					</li>
 					<li class="main-nav">
+						<a href="{% url 'finddoctor' %}">Blogs</a>
+					</li>
+					<li class="active">
 						<a href="{% url 'finddoctor' %}">Find a Doctor</a>
 					</li>
-					<li class="main-nav">
-						<a href="{% url 'patient_bookappointment' %}">Book Appointment</a>
-					</li>
+					
 					<li class="has-submenu">
 								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -152,7 +153,7 @@
 													
                                                     
                                                     <div class="patient-details">
-														<p>{{ doctor.services }}</p>
+														<p>{{ doctor.specialist }}</p>
 
 													
                                                         <h5><b>Email:</b> {{ doctor.email }}</h5>
@@ -168,8 +169,11 @@
                                             </ul>
                                         </div>
 										<div>
-											{% comment %} <a href="{% url 'showmore' %}" >Show More <span>&rarr;</a> {% endcomment %}
-												<a href="{% url 'patient_bookappointment' %}" >Book Appointment  <span>&rarr;</a> 
+											<a href="{% url 'showmore' doctor.id %}" >View Profile <span>&rarr;</a> <br>
+												
+													<!-- Link to book appointment page with doctor's ID -->
+												<a href="{% url "book_appointment" doctor.id %}" >Book Appointment  <span>&rarr;</a>
+	
 										</div>
                                         <div>
                                             

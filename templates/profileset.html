@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<!-- title -->
-	<title>PATIENT-PAGE</title>
+	<title>PROFILESET-PAGE</title>
 
 	<!-- Favicons -->
 	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
@@ -62,12 +62,21 @@
 					</a>
 				</div>
 				<ul class="main-nav">
-					<li class="active">
+					<li >
 						<a href="{% url 'doctors_basedoctor' %}">Home</a>
 					</li>
                     <li class="main-nav">
-						<a href="{% url 'doctors_appointments' %}">Appointments</a>
+						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+					</li> 
+                    <li class="main-nav">
+						<a href="">Appointments</a>
 					</li>
+                    <li>
+						<a href="{% url 'patientreferences' %}">
+							Patient References <span class="notification-badge">{{ count }}</span>
+						</a>
+					</li>
+
 					<li class="has-submenu">
 								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -76,10 +85,46 @@
                                 
 							</li>
 						
-							<li class="has-submenu">
-								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
+							<li class="has-submenu"class="nav-link">
+								<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
-                                    <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
+                                    <li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'profileset' %}"class="nav-link"></a>
+										{% else %}
+										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
+										{% endif %}
+									  {% else %}
+									  {% comment %} <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">ttgfgProfile Settings</a>    {% endcomment %}
+									  {% endif %}
+										
+										
+									
+									</li>
+
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'changepass' %}"class="nav-link">Change Password</a>
+										{% else %}
+										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'changepass' %}"class="nav-link" id="patient">Change Password</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
+                                    
+                                    
 									
 								</ul>
 							</li>
@@ -175,7 +220,13 @@
                                                         <span id="fname-error" class="text-danger"></span>
                                                     </div>
                                                 </div>
-                                                
+                                                <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Specialization</label>
+                                                    <input type="text" class="form-control" name="specialization" id="specialization" value="{{ user.docprofile.specialist }}">
+                                                    <span id="specialization-error" class="text-danger"></span>
+                                                </div>
+                                            </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Phone Number</label>
@@ -250,99 +301,111 @@
     <div class="card-body">
         <h4 class="card-title">About Me</h4>
         <div class="form-group">
-            <textarea class="form-control" rows="5" name="about_me" id="about_me">{{ user.docprofile.about }}</textarea>
+            <textarea class="form-control" rows="5" name="about" id="about">{{ doc_profile.about }}</textarea>
         </div>
     </div>
 </div>
-                                    <!-- Services and Specialization -->
-                                    <div class="card services-card">
-                                        <div class="card-body">
-                                            <h4 class="card-title">Services and Specialization</h4>
-                                            <div class="form-group">
-                                                <label>Services</label>
-                                                <input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services" name="services" id="services" value="{{ user.docprofile.services }}">
-                                            </div> 
-                                        </div>              
-                                    </div>
+
                                     <!-- Education -->
-							<div class="card">
-								<div class="card-body">
-									<h4 class="card-title">Education</h4>
-									<div class="education-info">
-										<div class="row form-row education-cont">
-											<div class="col-12 col-md-10 col-lg-11">
-												<div class="row form-row">
-													<div class="col-12 col-md-6 col-lg-4">
-														<div class="form-group">
-															<label>Degree</label>
-															<input type="text" class="form-control">
-														</div> 
-													</div>
-													<div class="col-12 col-md-6 col-lg-4">
-														<div class="form-group">
-															<label>College/Institute</label>
-															<input type="text" class="form-control">
-														</div> 
-													</div>
-													<div class="col-12 col-md-6 col-lg-4">
-														<div class="form-group">
-															<label>Year of Completion</label>
-															<input type="text" class="form-control">
-														</div> 
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									{% comment %} <div class="add-more">
-										<a href="javascript:void(0);" class="add-education"><i class="fa fa-plus-circle"></i> Add More</a>
-									</div> {% endcomment %}
-								</div>
-							</div>
-							<!-- /Education -->
-                            <!-- Experience -->
-							<div class="card">
-								<div class="card-body">
-									<h4 class="card-title">Experience</h4>
-									<div class="experience-info">
-										<div class="row form-row experience-cont">
-											<div class="col-12 col-md-10 col-lg-11">
-												<div class="row form-row">
-													<div class="col-12 col-md-6 col-lg-4">
-														<div class="form-group">
-															<label>Hospital Name</label>
-															<input type="text" class="form-control">
-														</div> 
-													</div>
-													<div class="col-12 col-md-6 col-lg-4">
-														<div class="form-group">
-															<label>From</label>
-															<input type="text" class="form-control">
-														</div> 
-													</div>
-													<div class="col-12 col-md-6 col-lg-4">
-														<div class="form-group">
-															<label>To</label>
-															<input type="text" class="form-control">
-														</div> 
-													</div>
-													<div class="col-12 col-md-6 col-lg-4">
-														<div class="form-group">
-															<label>Designation</label>
-															<input type="text" class="form-control">
-														</div> 
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="add-more">
-										<a href="javascript:void(0);" class="add-experience"><i class="fa fa-plus-circle"></i> Add More</a>
-									</div>
-								</div>
-							</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Education</h4>
+        <div class="education-info">
+            <div class="row form-row education-cont">
+                <div class="col-12 col-md-10 col-lg-11">
+                    <div class="row form-row">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>Degree</label>
+                                <input type="text" class="form-control" name="degree" value={{ doc_profile.degree }}>
+                            </div> 
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>College/Institute</label>
+                                <input type="text" class="form-control" name="college" value={{ doc_profile.college }}>
+                            </div> 
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>Year of Completion</label>
+                                <input type="text" class="form-control" name="cyear" value={{ doc_profile.cyear }}>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add More button (if needed) -->
+    </div>
+</div>
+<!-- /Education -->
+
+                           <!-- Experience -->
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Experience</h4>
+        <div class="experience-info">
+            <div class="row form-row experience-cont">
+                <div class="col-12 col-md-10 col-lg-11">
+                    <div class="row form-row">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>Hospital Name</label>
+                                <input type="text" class="form-control" name="hospital_name"value={{ doc_profile.hospital_name }}>
+                            </div> 
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>From</label>
+                                <input type="text" class="form-control" name="from_date"value={{ doc_profile.from_date }}>
+                            </div> 
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>To</label>
+                                <input type="text" class="form-control" name="to_date" value={{ doc_profile.to_date }}>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="add-more">
+            <a href="javascript:void(0);" class="add-experience"><i class="fa fa-plus-circle"></i> Add More</a>
+        </div>
+    </div>
+</div>
+<!-- Awards -->
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Awards</h4>
+        <div class="awards-info">
+            <div class="row form-row awards-cont">
+                <div class="col-12 col-md-5">
+                    <div class="form-group">
+                        <label>Awards</label>
+                        <input type="text" class="form-control"value={{ doc_profile.award }}>
+                    </div> 
+                </div>
+                <div class="col-12 col-md-5">
+                    <div class="form-group">
+                        <label>Year</label>
+                        <input type="text" class="form-control"value={{ doc_profile.ayear }}>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div class="add-more">
+            <a href="javascript:void(0);" class="add-award"><i class="fa fa-plus-circle"></i> Add More</a>
+        </div>
+    </div>
+</div>
+<!-- /Awards -->
+
+
 							<!-- /Experience -->
-                                    <!-- Change Password -->
+                                    {% comment %} <!-- Change Password -->
                                     <div class="card services-card">
                                         <div class="card-body">
                                             <h4 class="card-title">Change Password</h4>
@@ -359,7 +422,7 @@
                                                 <input type="password" class="form-control" name="confirm_reset_password">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> {% endcomment %}
                                     
                                     <div class="submit-section submit-btn-bottom">
                                         <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
@@ -371,6 +434,14 @@
     <!-- /Page Content -->
     <script>
         $(document).ready(function() {
+        
+                // Add More Experience Button Click Event
+                $('.add-experience').click(function(e) {
+                    e.preventDefault();
+                    var educationTemplate = $('#education-template').html(); // Get the HTML content of the education template
+                    $('.education-info').append(educationTemplate); // Append the cloned education fields to the form
+                });
+        
             // Function to validate first name
             function validateFirstName() {
                 var firstName = $("#fname").val();
