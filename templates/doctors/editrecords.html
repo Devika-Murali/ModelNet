@@ -185,10 +185,7 @@
                                 <label for="cancer_stage">Cancer Stage:</label>
                                 <input type="text" id="cancer_stage" name="cancer_stage" class="form-control" value="{{ patient_info.cancer_stage }}" >
                             </div>
-                            <div class="form-group">
-                                <label for="biopsy_results">Biopsy Results:</label>
-                                <textarea id="biopsy_results" name="biopsy_results" rows="4" class="form-control"></textarea>
-                            </div>
+            
                             <div class="form-group">
                                 <label for="oncologist_name">Oncologist's Name:</label>
                                 <input type="text" id="oncologist_name" name="oncologist_name" class="form-control">
@@ -207,23 +204,42 @@
                                     <option value="severe">Severe</option>
                                 </select>
                             </div>
-                            <h2>Medications</h2>
+                            <h2>Diagnostic Workup</h2>
                             <div class="form-group">
-                                <label for="medication_name">Medication Name:</label>
+                                <label for="colonoscopy_date">Colonoscopy Date:</label>
+                                <input type="date" id="colonoscopy_date" name="colonoscopy_date" class="form-control" value="2022-01-15">
+                            </div>
+                            <div class="form-group">
+                                <label for="colonoscopy_findings">Colonoscopy Findings:</label>
+                                <textarea id="colonoscopy_findings" name="colonoscopy_findings" rows="4" class="form-control">Large mass in sigmoid colon, biopsy taken</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="biopsy_results">Biopsy Results:</label>
+                                <input type="file" id="biopsy_results" name="biopsy_results" class="form-control-file">
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_scan_results">CT Scan Results:</label>
+                                <input type="file" id="ct_scan_results" name="ct_scan_results" class="form-control-file">
+                            </div>
+                            <h2>Treatment History</h2>
+                            
+                            <div class="form-group">
+                                <label for="medication_name">Treatment Plan:</label>
                                 <input type="text" id="medication_name" name="medication_name" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="dosage">Dosage:</label>
+                                <label for="dosage">Date of Initiation:</label>
                                 <input type="text" id="dosage" name="dosage" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="frequency">Frequency:</label>
+                                <label for="frequency">Response to Treatment</label>
                                 <input type="text" id="frequency" name="frequency" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="start_date">Start Date:</label>
-                                <input type="date" id="start_date" name="start_date" class="form-control">
+                                <label for="complications">Complications:</label>
+                                <input type="text" id="complications" name="complications" class="form-control">
                             </div>
+                            
                             <!-- Add more medication input fields as needed -->
                         
                         <input type="submit" value="Submit" class="btn btn-primary">

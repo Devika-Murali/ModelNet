@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .invoice-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .invoice-item {
+            margin-bottom: 30px;
+        }
+        .invoice-info {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .invoice-info h3 {
+            margin-top: 0;
+        }
+        .invoice-details {
+            margin: 0;
+        }
+        .invoice-details p {
+            margin: 5px 0;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-table th,
+        .invoice-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-content">
+        <div class="invoice-item">
+            <div class="invoice-info">
+                <h3>Donation Information</h3>
+                <div class="invoice-details">
+                    <p><strong>Donation From:</strong> {{ donation.full_name }}</p>
+                    <p><strong>Email:</strong> {{ donation.email }}</p>
+                    <p><strong>Place:</strong> {{ donation.place }}</p>
+                    <p><strong>Amount:</strong> ${{ donation.amount }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Add more invoice items as needed -->
+    </div>
+</body>
+</html>

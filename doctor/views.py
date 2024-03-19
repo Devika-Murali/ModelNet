@@ -112,7 +112,7 @@ def doctors_testresult(request):
 #     return render(request,'doctors/timeslotdisplay.html') 
 def testresult(request):
     return render(request,'testresult.html') 
-     
+    
 
 
 def mypatients(request):
@@ -156,8 +156,7 @@ def patient_finddoctor(request):
     doctors = Docprofile.objects.all()
     print(doctors)
     return render(request, 'patient/finddoctor.html',{'doctors':doctors})
-def Doctor_patienthistory(request):
-    return render(request,'Doctor/patienthistory.html')   
+  
 def patientappointment(request):
     return render(request, 'patientappointment.html')    
 
@@ -171,11 +170,6 @@ def adddoctor(request):
     return render(request,'Admin Dashboard/add-doctor.html')
 def admins_doctorlist(request):
     return render(request, 'admins/doctorlist.html')
-def edit_records_view(request, patient_id):
-    # Retrieve the patient based on the patient_id, or handle errors gracefully
-    patient = get_object_or_404(User, id=patient_id)
-
-    return render(request, 'doctors/editrecords.html', {'patient': patient})
 
 def login_page(request):
     if request.method == "POST":
@@ -1121,13 +1115,13 @@ def patientreferences(request):
         if action == 'accept':
             patient.accept = True
             patient.decline = False  # Ensure that the opposite action is reset
-            message = 'Hi Dr.{},\n\nThis is to inform you that the patient has been accepted.'.format(patient.referring_doctor_name)
+            message = 'Hi Dr.{},\n\nI hope this email finds you well. This is to inform you that the patient {} has been accepted for treatment. We have thoroughly reviewed the patient\'s medical records and believe that we can provide the necessary care and support required for their condition.\n\nWe appreciate your referral and trust in our expertise. Your confidence in our ability to provide quality care means a great deal to us.\n\nPlease feel free to reach out if you have any questions or require further information regarding the patient\'s treatment plan. We will keep you updated on their progress throughout their journey with us.\n\nThank you once again for your referral and collaboration in providing the best possible care for your patients.\n\nWarm regards,\nDr.{}\n\n'.format(patient.referring_doctor_name, patient.patient_name,patient.referring_doctor) 
         elif action == 'decline':
             patient.accept = False
             patient.decline = True
        
              # Ensure that the opposite action is reset
-            message = 'Hii{},\n\nThis is to inform you that the patient has been declined.'.format(patient.referring_doctor_name)
+            message = 'Hii Dr. {},\n\nI hope this email finds you well. This is to inform you that the patient {} has been declined. We sincerely apologize for any inconvenience this may cause, and we are available to discuss any concerns or alternative options you may have.\n\nWarm regards,\nDr.{}\n\n'.format(patient.referring_doctor_name, patient.patient_name,patient.referring_doctor)
         else:
             return redirect('patientreferences')  # or handle invalid action
         
@@ -1240,37 +1234,91 @@ def doctors_appointments(request, doc_id):
     selected_doctor = Docprofile.objects.get(pk=doc_id)
     appointments = Appointments.objects.filter(doctor=selected_doctor)
     return render(request, 'doctors/appointment.html', {'appointments': appointments})
+# def doctors_leave(request):
+#     if request.method == 'POST':
+#         leave_type = request.POST.get('leave_type')
+#        # Convert to integer
+#         date_range = request.POST.get('date_range')
+#         leave_reason = request.POST.get('leave_reason')
+        
+#         # Extract start and end dates from date_range string
+#         start_date_str, end_date_str = date_range.split(' to ')
+#         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+#         end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+        
+#         # Get the currently logged-in doctor's profile
+#         doctor_profile = request.user.docprofile
+        
+#         # Create a new LeaveRequest object and save it to the database
+#         leave_request = LeaveRequest(
+#             doctor_name=doctor_profile.name,  # Use the doctor's name from the profile
+#             leave_type=leave_type,
+            
+#             start_date=start_date,
+#             end_date=end_date,
+#             leave_reason=leave_reason
+#         )
+#         leave_request.save()
+        
+#         # Redirect to a success page or render a confirmation template
+#         return redirect(doctors_leave)
+
+#     doctors = Docprofile.objects.all()
+#     return render(request, 'doctors/leave.html', {'doctors': doctors})
+from django.db.models import Q
+
 def doctors_leave(request):
     if request.method == 'POST':
         leave_type = request.POST.get('leave_type')
-        num_days = int(request.POST.get('num_days'))  # Convert to integer
-        date_range = request.POST.get('date_range')
         leave_reason = request.POST.get('leave_reason')
+        doctor_name = request.POST.get('doctor_name')  # Added line to capture doctor's name
+
+        # Validate form data
+        if not leave_type or not leave_reason or not doctor_name:  # Updated condition to include doctor_name
+            return HttpResponse("Leave type, reason, and doctor's name are required.")
+
+        # Extract start and end dates if available
+        start_date_str = request.POST.get('from_date')
+        end_date_str = request.POST.get('to_date')
+
+        if start_date_str and end_date_str:
+            try:
+                # Convert start and end dates to datetime objects
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+                end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            except ValueError:
+                return HttpResponse("Invalid date format.")
+        else:
+            # If start or end date is not provided, set both dates to None
+            start_date = None
+            end_date = None
+
+        # Check if the doctor has already taken 5 days of leave this month
+        leave_count = LeaveRequest.objects.filter(
+            doctor_name=doctor_name,  # Updated to filter by doctor's name
+            start_date__month=datetime.now().month
+        ).count()
         
-        # Extract start and end dates from date_range string
-        start_date_str, end_date_str = date_range.split(' to ')
-        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
-        
-        # Get the currently logged-in doctor's profile
-        doctor_profile = request.user.docprofile
-        
+        if leave_count >= 5:
+            # Render the error message directly in the HTML
+            return render(request, 'doctors/leave.html', {'error_message': "You have already taken 5 days of leave this month."})
+
         # Create a new LeaveRequest object and save it to the database
         leave_request = LeaveRequest(
-            doctor_name=doctor_profile.name,  # Use the doctor's name from the profile
+            doctor_name=doctor_name,
             leave_type=leave_type,
-            num_days=num_days,
             start_date=start_date,
             end_date=end_date,
             leave_reason=leave_reason
         )
         leave_request.save()
-        
+
         # Redirect to a success page or render a confirmation template
-        return redirect(doctors_leave)
+        return redirect('view_leave_requests')
 
     doctors = Docprofile.objects.all()
     return render(request, 'doctors/leave.html', {'doctors': doctors})
+
 
 def admins_leave(request):
     if request.method == 'POST':
@@ -1484,7 +1532,7 @@ def donation(request):
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
         place = request.POST.get('place')
-        amount = float(request.POST.get('amount'))  # Convert amount to float
+        amount = int(request.POST.get('amount')) # Convert amount to float
 
         # Create a new Donation object
         donation = Donation.objects.create(
@@ -1513,20 +1561,29 @@ def donation(request):
         context = {
             'razorpay_order_id': razorpay_order_id,
             'razorpay_merchant_key': settings.RAZOR_KEY_ID,
-            'amount': amount,
+            'razorpay_amount': amount,
             'currency': currency,
             'callback_url': callback_url,
+            'fullname': full_name,
+            'email': email,
+            'place': place,
+            'amount': amount,
+            'key': True
         }
 
         return render(request, 'donation.html', context=context)
 
     elif request.method == "GET":
-        # Handle GET requests by rendering the donation form
-        return render(request, 'donation.html')  # Replace 'donation_form.html' with the actual template name
+        donations = Donation.objects.all()  # Retrieve all donation objects from the database
+        context = {
+            'donations': donations  # Pass donation objects to the template
+        }
+        return render(request, 'donation.html', context=context)
 
     else:
         # If the request method is neither GET nor POST, return an error response
         return HttpResponse(status=405)  # Method Not Allowed
+
 # View to handle payment response from Razorpay
 @csrf_exempt
 def paymenthandler_donation(request):
@@ -1553,9 +1610,92 @@ def paymenthandler_donation(request):
                 razorpay_client.payment.capture(payment_id, authorized_amount)
 
                 # Payment capture successful.
-                return render(request, 'payment_success.html')  # Render success page template
+                return render(request, 'donationpay.html')  # Render success page template
             except razorpay.errors.BadRequestError as e:
                 # Handle the error appropriately, e.g., show an error message to the user.
                 return HttpResponse("Payment capture failed: " + str(e), status=400)
 
     return HttpResponse(status=400)
+def donation_payment(request):
+    # Handle POST request for processing payment
+    if request.method == "POST":
+        # Process payment logic here
+        # For example, you might want to save payment details to the database
+        
+        # After processing payment, render the payment success page
+         return render(request, 'donationpay.html')
+    # For GET request, render the donation payment form
+def admins_donations(request):
+    donation=Donation.objects.all()
+
+    return render(request, 'admins/donations.html',{'donations':donation})
+def doctors_leavehistory(request):
+    # Query leave request data
+    leave_requests = LeaveRequest.objects.all()
+
+    # Pass leave request data to the template context
+    context = {
+        'leave_requests': leave_requests,
+    }
+
+    return render(request, 'doctors/leavehistory.html', context)
+def doctors_patienthistory(request, patient_id):
+    # Retrieve the user profile object associated with the provided patient_id
+    user_profile = get_object_or_404(UserProfile, user_id=patient_id)
+
+    # Pass the user profile object to the template as context data
+    return render(request, 'doctors/patienthistory.html', {'user_profile': user_profile})
+def edit_records_view(request, patient_id):
+    # Retrieve the patient based on the patient_id, or handle errors gracefully
+    patient = get_object_or_404(User, id=patient_id)
+
+    return render(request, 'doctors/editrecords.html', {'patient': patient})
+def admins_invoiceview(request, donation_id):
+    donation = get_object_or_404(Donation, id=donation_id)
+    context = {
+        'donation': donation
+    }
+    return render(request, 'admins/invoiceview.html', {'donation': donation})
+
+
+from django.http import HttpResponse
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from .models import Donation
+
+def generate_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="donation_details.pdf"'
+
+    donations = Donation.objects.all()
+
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+
+    # Define table data
+    data = [['Full Name', 'Email', 'Place', 'Amount', 'Date']]
+    for donation in donations:
+        data.append([donation.full_name, donation.email, donation.place, str(donation.amount), donation.created_at.strftime('%Y-%m-%d %H:%M:%S')])
+
+    # Create the table
+    table = Table(data)
+
+    # Add style to the table
+    style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                        ('GRID', (0, 0), (-1, -1), 1, colors.black)])
+
+    table.setStyle(style)
+
+    # Add table to the elements
+    elements.append(table)
+
+    # Build PDF
+    doc.build(elements)
+
+    return response

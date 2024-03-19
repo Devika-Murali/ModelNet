@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:20 GMT -->
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Admin - Dashboard</title>
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.png' %}">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/bootstrap.min.css' %}">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/font-awesome.min.css' %}">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/feathericon.min.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'admin/assets/plugins/morris/morris.css' %}">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+		
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+		<style>
+			i.fa.fa-user-circle {
+				color: black;
+			}
+			/* Style for the user menu */
+		.user-menu {
+    list-style: none;
+}
+
+/* Style for the user icon */
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+/* Style for the user welcome message */
+.user-welcome {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Style for the dropdown */
+.dropdown-menu {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+		</style>
+		
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+			
+				<!-- Logo -->
+                <div class="header-left">
+                    <a href="index.html" class="logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" height="1000">
+					</a>
+					
+					<a href="index.html" class="logo logo-small">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" width="30" height="800">
+					</a>
+                </div>
+				<!-- /Logo -->
+				
+				
+				
+				<!-- Mobile Menu Toggle -->
+				<a class="mobile_btn" id="mobile_btn">
+					<i class="fa fa-bars"></i>
+				</a>
+				<!-- /Mobile Menu Toggle -->
+				<ul class="nav user-menu">
+					<!-- User Menu -->
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-user-circle"></i>
+						</a>
+						<div class="dropdown-menu">
+							{% if user.is_authenticated %}
+							<ul class="submenu">
+								<li>Welcome,{{ user.username }}</li>
+							<li><a class="dropdown-item" href="{% url 'loggout' %}">Logout</a></li>
+							</ul>
+						</div>
+					</li>
+					{% else %}
+					<li><a href=""></a></li>
+					{% endif %}
+				</ul>
+				
+				
+			<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu">
+						<ul>
+							<li class="menu-title"> 
+								<span>Main</span>
+							</li>
+							<li class="active"> 
+								<a href="{% url 'admins_index' %}"><i class="fe fe-home"></i> <span>Dashboard</span></a>
+							</li>
+							<li> 
+								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user" id="user"></i> <span>Registered Users</span></a>
+							</li>
+							<li> 
+								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
+							</li>
+							<li> 
+								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
+							</li>
+							<li> 
+								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
+							</li>
+							<li class="submenu">
+								<a href="#"><i class="fe fe-layout"></i> <span>Blogs</span> <span class="menu-arrow"></span></a>
+								<ul>
+									<li><a href="{% url 'admins_addblog' %}">Add Blogs</a></li>
+									<li><a href="{% url 'admins_viewblog' %}">View Blogs</a></li>
+								</ul>
+							</li>
+							
+							
+							{% comment %} <li> 
+								<a href=""><i class="fe fe-layout"></i> <span>Payment Details</span></a>
+							</li> {% endcomment %}
+							<li> 
+								<a href="{% url 'admins_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
+							</li>
+							 {% comment %} <li> 
+								<a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>
+							</li>  {% endcomment %}
+							
+						</div>		
+                </div>
+            </div>
+			<!-- /Sidebar -->
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-title">DONATIONS</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Donations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="card shadow">
+            <div class="card-body">
+              <div id="filters" class="mb-4">
+                <div class="row">
+                  
+                   {% comment %} <div class="col-md-6">
+                    <form class="d-flex">
+                      <input type="text" id="username" name="username" class="form-control me-2" placeholder="Search by Username">
+                      <button type="submit" class="btn btn-search">Search</button> 
+                    </form>
+                  </div>  {% endcomment %}
+                </div>
+              </div>
+              <p id="no-user-message" class="alert alert-warning" style="display: none;">No such user</p>
+			  <div class="row">
+				<div class="col-sm-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="datatable table table-hover table-center mb-0">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Email</th>
+											<th>Place</th>
+											<th>Amount Paid</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for donation in donations %}
+										<tr>
+											<td>{{ donation.full_name }}</td>
+											<td>{{ donation.email }}</td>
+											<td>{{ donation.place }}</td>
+											<td>{{ donation.amount }}</td>
+											<td class="text-right">
+												<div class="table-action">
+													<a href="{% url 'admins_invoiceview' donation.id %}" class="btn btn-sm bg-info-light">
+														<i class="far fa-eye"></i> View
+													</a>
+													 {% comment %} <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
+														<i class="fas fa-print"></i> Print
+													</a>  {% endcomment %}
+												</div>
+											</td>
+										</tr>
+										{% endfor %}
+										
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="3"><strong>Total Amount:</strong></td>
+											<td id="totalAmount">0</td> <!-- Ensure the id is set here -->
+										</tr>
+									</tfoot>
+									<a href="{% url 'generate_pdf' %}" class="btn" download>Download Donation Details PDF</a>
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<script>
+				// Assuming 'donations' is an array of objects with 'amount' property representing the donation amount
+				var totalAmount = 0;
+				{% for donation in donations %}
+					totalAmount += {{ donation.amount }};
+				{% endfor %}
+				document.getElementById('totalAmount').innerText = totalAmount;
+			</script>
+			

@@ -143,6 +143,7 @@
                                                 <th>Leave Type</th>
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
+                                                <th>Leave Count</th>
                                                 <th class="text-center">Status</th>
                                                 <th class="text-right">Actions</th>
                                             </tr>
@@ -154,6 +155,7 @@
                                                     <td>{{ request.leave_type }}</td>
                                                     <td>{{ request.start_date }}</td>
                                                     <td>{{ request.end_date }}</td>
+                                                    <td>{{ request.leave_count }}</td>
                                                     <td class="text-center" id="status-{{ request.id }}">
                                                         {% if request.status %}
                                                             {{ request.status }}
@@ -162,30 +164,30 @@
                                                         {% endif %}
                                                     </td>
                                                     <td class="text-right">
-                                                        <button class="btn btn-success approve-btn" data-leave-request-id="{{ request.id }}">Approve</button>
+                                                        {% if request.leave_count < 5 %}
+                                                            <button class="btn btn-success approve-btn" data-leave-request-id="{{ request.id }}">Approve</button>
+                                                        {% else %}
+                                                            <button class="btn btn-success disabled" disabled>Approve</button>
+                                                        {% endif %}
                                                         <button class="btn btn-danger reject-btn" data-leave-request-id="{{ request.id }}">Reject</button>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
-                                        
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
-            </div>
-        </div>
-    </div>
+                
     <!-- Include your existing script tags here -->
      
     <script src="{% static 'assets/js/jquery.min.js'%}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Approve Button Click Event
+            // Existing script for leave approval and rejection
             $('.approve-btn').click(function() {
                 var leaveRequestId = $(this).data('leave-request-id');
                 $.ajax({
@@ -209,7 +211,53 @@
                 });
             });
     
-            // Reject Button Click Event
+            $('.reject-btn').click(function() {
+                var leaveRequestId = $(this).data('leave-request-id');
+                $.ajax({
+                    url: "{% url 'reject_leave' %}",
+                    method: "POST",
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        leave_request_id: leaveRequestId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#status-' + leaveRequestId).text('Rejected');
+                            alert(response.message); // You can show a success message
+                        } else {
+                            alert(response.message); // Show error message if request failed
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+    
+            // New script for handling approval and rejection of doctor's leave
+            $('.approve-btn').click(function() {
+                var leaveRequestId = $(this).data('leave-request-id');
+                $.ajax({
+                    url: "{% url 'approve_leave' %}",
+                    method: "POST",
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        leave_request_id: leaveRequestId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#status-' + leaveRequestId).text('Approved');
+                            alert(response.message); // You can show a success message
+                        } else {
+                            alert(response.message); // Show error message if request failed
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+    
             $('.reject-btn').click(function() {
                 var leaveRequestId = $(this).data('leave-request-id');
                 $.ajax({
@@ -234,6 +282,7 @@
             });
         });
     </script>
+    
     
 </body>
 </html>

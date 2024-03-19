@@ -228,7 +228,7 @@ class LeaveRequest(models.Model):
     doctor_name = models.CharField(max_length=100, default='')
 
     leave_type = models.CharField(max_length=20, choices=LEAVE_TYPES)
-    num_days = models.IntegerField(null=True,blank=True)
+    
     start_date = models.DateField(null=True,blank=True)
     end_date = models.DateField(null=True,blank=True)
     leave_reason = models.TextField(null=True,blank=True)

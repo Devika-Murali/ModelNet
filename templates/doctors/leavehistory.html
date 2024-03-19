@@ -1,0 +1,281 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+
+	
+	<!-- title -->
+	<title>APPLY LEAVE-PAGE</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	
+	<!-- Favicons -->
+	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
+		
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+	
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+	<style>
+	.container {
+		max-width: 600px; 
+		margin: 0 auto;
+	  }
+	</style>
+</head>
+<body>
+    <div class="main-wrapper">
+		
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">
+                <div class="navbar-header">
+                    <a id="mobile_btn" href="javascript:void(0);">
+                        <span class="bar-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </a>
+                    <a href="index-2.html" class="navbar-brand logo">
+                        <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+                    </a>
+                </div>
+                <div class="main-menu-wrapper">
+                    <div class="menu-header">
+                        <a href="index-2.html" class="menu-logo">
+                            <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
+                        </a>
+                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                    <ul class="main-nav">
+                        <li class="active">
+                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="home">Home</a>
+                        </li>
+                        
+                     <li>
+                            <a href="{% url 'doctors_leave' %}">Apply Leave</a>
+                        </li> 
+                        <li class="main-nav">
+                            {% if existing_certification %}
+                    
+                            
+                
+                            {% if existing_certification.is_approved == 'approved' %}
+                            <a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+                            
+                            {% else %}
+                            <a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>                
+                            {% endif %}
+                          {% else %}
+                          <a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+                          {% endif %}
+                            
+                        </li> 
+                        <li class='position-relative'>
+                            <a href="{% url 'patientreferences' %}" id="patient_references_link">
+                                Patient References 
+                            </a>
+                            <span class="notification-badge badge badge-danger position-absolute" id="notification_count">{{ count }}</span>
+                        </li>
+                        
+                        
+                        
+                        {% comment %} {% comment %} <li class="main-nav">
+                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
+                        </li> {% endcomment %}
+                     
+                        <li class="has-submenu"class="nav-link">
+                                    <a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
+                                    <ul class="submenu">
+    
+                                        <li>
+                                            {% if existing_certification %}
+                    
+                            
+                
+                            {% if existing_certification.is_approved == 'approved' %}
+                            <a href="{% url 'mypatients' %}"class="nav-link" id="patient">My Patients</a>
+                            {% else %}
+                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>               
+                            {% endif %}
+                          {% else %}
+                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>   
+                          {% endif %}
+                            
+                                            
+                                        </li>
+                                        
+                                    </ul>
+                                    
+                                </li>
+                            
+                                <li class="has-submenu"class="nav-link">
+                                    <a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
+                                    <ul class="submenu">
+                                        <li>
+                                            {% if existing_certification %}
+                    
+                            
+                
+                                            {% if existing_certification.is_approved == 'approved' %}
+                                            <a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a>
+                                            {% else %}
+                                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
+                                            {% endif %}
+                                          {% else %}
+                                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Profile Settings</a>   
+                                          {% endif %}
+                                            
+                                            
+                                        
+                                        </li>
+                                        <li>
+                                            {% if existing_certification %}
+                    
+                            
+                
+                                            {% if existing_certification.is_approved == 'approved' %}
+                                            <a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+                                            {% else %}
+                                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Leave History</a>
+                                            {% endif %}
+                                          {% else %}
+                                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Leave History</a>   
+                                          {% endif %}
+                                            
+                                            
+                                        
+                                        </li>
+                                        <li>
+                                            {% if existing_certification %}
+                    
+                            
+                
+                                            {% if existing_certification.is_approved == 'approved' %}
+                                            <a href="{% url 'changepass' %}"class="nav-link">Change Password</a>
+                                            {% else %}
+                                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
+                                            {% endif %}
+                                          {% else %}
+                                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Change Password</a>   
+                                          {% endif %}
+                                            
+                                            
+                                        
+                                        </li>
+                                        
+                                        
+                                        
+                                    </ul>
+                                </li>
+                        {% if user.is_authenticated %}
+                        {% comment %} <li class="has-submenu">
+                            {% if profile_pic_url %}
+                        
+        <img src="{{ profile_pic_url }}" alt="Profile Picture">
+    {% else %}
+        <a href="#"><i class="fa fa-user-circle"></i></a>
+    {% endif %}
+                            <ul class="submenu">
+                                <li>{{ user.username }}</li>
+                                <li><a href="{% url 'loggout' %}" id="logout">Logout</li></a>
+                            </ul>
+                        </li> {% endcomment %}
+                        <li class="has-submenu">
+                            {% if profile_pic_url %}
+                                <img src="{{ profile_pic_url }}" alt="Profile Picture">
+                            {% else %}
+                                <a href="#"><i class="fa fa-user-circle"> Welcome,Dr.{{ user.docprofile.name }}</i></a>
+                            {% endif %}
+                            <ul class="submenu">
+                                
+                                <li><a href="{% url 'loggout' %}" id="logout">Logout</a></li>
+                            </ul>
+                            
+                        {% else %}
+                        <li><a href="{% url 'login_page' %}">Login</a></li>				
+                        {% endif %}
+                            </ul>
+                        </li>
+    
+                    </ul>		 
+                </div>		 
+            </nav>
+        </header>
+        <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Leave History</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Leave History</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="leave-history">
+            <h3>Leave History</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Leave Type</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterate through the leave requests and display them in the table -->
+                    {% for request in leave_requests %}
+                    <tr id="leave-request-{{ request.id }}">
+                        <td>{{ request.leave_type }}</td>
+                        <td>{{ request.start_date }}</td>
+                        <td>{{ request.end_date }}</td>
+                        <td>{{ request.leave_reason }}</td>
+                        <td class="text-center" id="status-{{ request.id }}">
+                            {% if request.status %}
+                                {{ request.status }}
+                            {% else %}
+                                Pending
+                            {% endif %}
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    </div>
+
+    <!-- Include the necessary JavaScript files -->
+    <!-- Make sure to include jQuery and Bootstrap JS files -->
+</body>
+</html>

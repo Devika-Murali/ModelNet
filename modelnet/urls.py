@@ -30,6 +30,7 @@ urlpatterns = [
     path('basepatient/',views.basepatient,name='basepatient'),
     path('bookscreening/',views.bookscreening,name='bookscreening'),
     path('donation/', views.donation, name='donation'),
+    path('donationpay/', views.donation_payment, name='donation_payment'),
     path('patientreferences/', views.patientreferences, name='patientreferences'),
     path('accept-patient/<int:patient_id>/',views.accept_patient, name='accept_patient'),
     path('decline-patient/<int:patient_id>/', views.decline_patient, name='decline_patient'),
@@ -46,6 +47,7 @@ urlpatterns = [
     path('admins_addblog/', views.admins_addblog, name='admins_addblog'),
     path('admins_viewblog/', views.admins_viewblog, name='admins_viewblog'),
     path('admins_leave/', views.admins_leave, name='admins_leave'), 
+    path('admins/donations/', views.admins_donations, name='admins_donations'),
     path('patientappointment/',views.patientappointment,name='patientappointment'),
     path('patientbooking/',views.patientbooking,name='patientbooking'),
     path('patientprofileset/',views.profile,name='patientprofileset'),
@@ -56,7 +58,7 @@ urlpatterns = [
     # path('doctors_leavesubmit/',views.doctors_leavesubmit,name='doctors_leavesubmit'),
     path('view_leave_requests/', views.view_leave_requests, name='view_leave_requests'),
     path('doctors_testresult/',views.doctors_testresult,name='doctors_testresult'),
-    path('Doctor_patienthistory/',views.Doctor_patienthistory,name='Doctor_patienthistory'),
+    path('leave-history/', views.doctors_leavehistory, name='doctors_leavehistory'),
     path('delete_specialization/', views.delete_specialization, name='delete_specialization'),
     path('scheduletiming/',views.scheduletiming,name='scheduletiming'),
     path('testresult/',views.testresult,name='testresult'),
@@ -74,7 +76,7 @@ urlpatterns = [
     path('edituser/<int:user_id>/', views.edituser, name='edituser'),
     path('approve_certification/<int:certification_id>/', views.approve_certification, name='approve_certification'),
     path('reject_certification/<int:certification_id>/', views.reject_certification, name='reject_certification'),
-    
+    path('doctors_patienthistory/<int:patient_id>/', views.doctors_patienthistory, name='doctors_patienthistory'),
     path('editrecords/<int:patient_id>/', views.submit_medical_history, name='editrecords'),
     path('finddoctor/', views.patient_finddoctor, name='finddoctor'),
     path('edit_specialization/<int:specialization_id>/', views.edit_specialization, name='edit_specialization'),
@@ -100,6 +102,9 @@ urlpatterns = [
     path('approve-leave/', views.approve_leave, name='approve_leave'),
     path('reject-leave/', views.reject_leave, name='reject_leave'), 
     path('doctors/appointments/', views.doctors_appointments, name='doctors_appointments'),
-]
+    path('invoice/<int:donation_id>/', views.admins_invoiceview, name='admins_invoiceview'),
+    path('generate-pdf/', views.generate_pdf, name='generate_pdf'),
+
+    ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

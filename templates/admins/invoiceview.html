@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en">
+	
+<!-- doccure/invoice-view.html  30 Nov 2019 04:12:19 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Admin - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.png' %}">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'admin/assets/css/bootstrap.min.css' %}">
+    
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="{% static 'admin/assets/css/font-awesome.min.css' %}">
+    
+    <!-- Feathericon CSS -->
+    <link rel="stylesheet" href="{% static 'admin/assets/css/feathericon.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'admin/assets/plugins/morris/morris.css' %}">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+
+<!-- Fontawesome CSS -->
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css'%}">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+<!-- Main CSS -->
+<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+	</head>
+	<body>
+
+		<!-- Main Wrapper -->
+		<div class="main-wrapper">
+		
+			
+			<!-- Breadcrumb -->
+			<div class="breadcrumb-bar">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-md-12 col-12">
+							<nav aria-label="breadcrumb" class="page-breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Invoice View</li>
+								</ol>
+							</nav>
+							<h2 class="breadcrumb-title">Invoice View</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Breadcrumb -->
+			
+			<!-- Page Content -->
+			<div class="content">
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-8 offset-lg-2">
+							<div class="invoice-content">
+								<div class="invoice-item">
+									<div class="row">
+										<div class="col-md-6">
+											
+                                            <!-- Logo -->
+                <div class="header-left">
+                    <a href="index.html" class="logo">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" height="1000">
+					</a>
+					
+					<a href="index.html" class="logo logo-small">
+						<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo" width="30" height="800">
+					</a>
+                </div>
+				<!-- /Logo -->
+										</div>
+										<div class="col-md-6">
+											<p class="invoice-details">
+												<strong>Order:</strong> #00124 <br>
+												<strong>Issued:</strong> 20/07/2019
+											</p>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Invoice Item -->
+                                
+
+								<div class="invoice-item">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="invoice-info">
+												<strong class="customer-text">Donation From</strong>
+												<p class="invoice-details invoice-details-two">
+                                                    {{ donation.full_name }} <br>
+													806  Twin Willow Lane, Old Forge,<br>
+													Newyork, USA <br>
+												</p>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="invoice-info invoice-info2">
+												<strong class="customer-text">Donation To</strong>
+												<p class="invoice-details">
+													ColonCare Cancer Centre<br>
+													Kottayam ,Kerala<br>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Invoice Item -->
+								
+								<!-- Invoice Item -->
+								<div class="invoice-item">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="invoice-info">
+												<strong class="customer-text">Payment Method</strong>
+												<p class="invoice-details invoice-details-two">
+													Debit Card <br>
+													XXXXXXXXXXXX-2541 <br>
+													HDFC Bank<br>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Invoice Item -->
+								
+								<!-- Invoice Item -->
+								<div class="invoice-item invoice-table-wrap">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table-responsive">
+												
+											</div>
+										</div>
+										<div class="col-md-6 col-xl-4 ml-auto">
+											<div class="table-responsive">
+												<table class="invoice-table-two table">
+													<tbody>
+                                                        <tr>
+                                                            <th>Amount Paid:</th>
+                                                            <td><span>${{ donation.amount }}</span></td>
+                                                        </tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Invoice Item -->
+								
+								<a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
+                                    <i class="fas fa-print"></i> Print
+                                </a>
+								
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>		
+			<!-- /Page Content -->
+   
+			
+		   
+		</div>
+		<!-- /Main Wrapper -->
+	  
+		<!-- jQuery -->
+		<script src="assets/js/jquery.min.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+		<script src="assets/js/popper.min.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script src="assets/js/script.js"></script>
+		
+	</body>
+
+<!-- doccure/invoice-view.html  30 Nov 2019 04:12:20 GMT -->
+</html>

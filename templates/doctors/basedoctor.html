@@ -86,12 +86,12 @@
 					  {% endif %}
 						
 					</li> 
-					<li>
-						<a href="{% url 'patientreferences' %}">
-							Patient References <span class="notification-badge">{{ count }}</span>
+					<li class='position-relative'>
+						<a href="{% url 'patientreferences' %}" id="patient_references_link">
+							Patient References 
 						</a>
+						<span class="notification-badge badge badge-danger position-absolute" id="notification_count">{{ count }}</span>
 					</li>
-					
 					
 					
 					
@@ -144,7 +144,23 @@
 										
 									
 									</li>
-
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+										{% else %}
+										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Leave History</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Leave History</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
 									<li>
 										{% if existing_certification %}
 				
@@ -364,6 +380,7 @@
 							link.classList.add('disabled'); // Add a 'disabled' class to style as needed
 							link.href = 'javascript:void(0)'; // Remove the href attribute to disable the link
 						  });
+						  
 						}
 				
 					

@@ -152,6 +152,25 @@
 				  </div>
 				</div>
 			  </div>
+			  <div class="modal fade" id="leave-count-error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Leave Count Error</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							You have already taken 5 days of leave this month.
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<!-- /Breadcrumb -->
             <div class="appointment-form-container">
 				<div class="container">
@@ -170,22 +189,26 @@
 								<option value="emergency">Emergency Leave</option>
 							</select>
 						</div>
+						
 						<div class="form-group col-md-6">
-							<label>Number of Days</label>
-							<input type="number" class="form-control" name="num_days" id="num_days" min="1" required>
-						</div>
-						<div class="form-group col-md-6">
-							<label>Select Dates for Leave</label>
-							<input type="text" class="form-control" name="date_range" id="date_range" required>
+							<label>From Date</label>
+							<input type="date" class="form-control" name="from_date" id="from_date" required>
 						</div> 
+						
+						<div class="form-group col-md-6">
+							<label>To Date</label>
+							<input type="date" class="form-control" name="to_date" id="to_date" required>
+						</div>
 						<div class="form-group col-md-12">
 							<label>Reason for Leave</label>
-							<textarea class="form-control" name="leave_reason" id="leave_reason" rows="3"></textarea>
+							<textarea class="form-control" name="leave_reason" id="leave_reason" rows="3" ></textarea>
+							<span id="leave_reason_error" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-12">
 							<input type="submit" class="btn btn-primary" value="Submit">
 						</div>
 					</form>
+					
             </div>
 		</div>
               
@@ -203,28 +226,114 @@
 	<!-- Your HTML code -->
 
 	
-	
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-    // Calculate tomorrow's date
-    var tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
+	<!-- Include Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-    flatpickr("#date_range", {
-        mode: "range",
-        dateFormat: "Y-m-d",
-        minDate: tomorrow,
-        onClose: function(selectedDates, dateStr, instance) {
-            var numDays = parseInt(document.getElementById("num_days").value);
-            if (!isNaN(numDays) && numDays > 0) {
-                var endDate = new Date(selectedDates[0]);
-                endDate.setDate(endDate.getDate() + (numDays - 1));
-                instance.setDate([selectedDates[0], endDate], true);
-            }
-        }
-    });
+<!-- Include Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Calculate tomorrow's date
+			var tomorrow = new Date();
+			tomorrow.setDate(tomorrow.getDate() + 1);
 	
-</script>
+			// Initialize Flatpickr for "From Date"
+			flatpickr("#from_date", {
+				minDate: tomorrow,
+				dateFormat: "Y-m-d",
+				onClose: function(selectedDates) {
+					// Set minimum date for "To Date" based on selected "From Date"
+					var toDateInstance = flatpickr("#to_date");
+					if (selectedDates[0]) {
+						toDateInstance.set("minDate", selectedDates[0]);
+					}
+				}
+			});
+	
+			// Initialize Flatpickr for "To Date"
+			flatpickr("#to_date", {
+				minDate: tomorrow,
+				dateFormat: "Y-m-d"
+			});
+	
+			$('#leave-form').submit(function(event){
+				// Prevent form submission if validation fails
+				if(!validateForm()){
+					event.preventDefault();
+				}
+			});
+	
+			function validateForm(){
+				var valid = true;
+	
+				// Check if leave type is selected
+				if($('#leave_type').val() == ''){
+					valid = false;
+					$('#leave_type').addClass('is-invalid');
+				} else {
+					$('#leave_type').removeClass('is-invalid');
+				}
+	
+				// Check if "From Date" is selected
+				if($('#from_date').val() == ''){
+					valid = false;
+					$('#from_date').addClass('is-invalid');
+					$('#from_date_error').text('Please select From Date.');
+				} else {
+					$('#from_date').removeClass('is-invalid');
+					$('#from_date_error').text('');
+				}
+	
+				// Check if "To Date" is selected
+				if($('#to_date').val() == ''){
+					valid = false;
+					$('#to_date').addClass('is-invalid');
+					$('#to_date_error').text('Please select To Date.');
+				} else {
+					$('#to_date').removeClass('is-invalid');
+					$('#to_date_error').text('');
+				}
+	
+				// Check if "To Date" is not earlier than "From Date"
+				var fromDate = new Date($('#from_date').val());
+				var toDate = new Date($('#to_date').val());
+				if (toDate < fromDate) {
+					valid = false;
+					$('#to_date').addClass('is-invalid');
+					$('#to_date_error').text('To Date cannot be earlier than From Date.');
+				} else {
+					$('#to_date').removeClass('is-invalid');
+					$('#to_date_error').text('');
+				}
+	
+				// Check if reason for leave is provided
+				if($('#leave_reason').val().trim() == ''){
+					valid = false;
+					$('#leave_reason').addClass('is-invalid');
+					$('#leave_reason_error').text('Please provide reason for leave.');
+				} else {
+					$('#leave_reason').removeClass('is-invalid');
+					$('#leave_reason_error').text('');
+				}
+	
+				return valid;
+			}
+			$('#leave-form').submit(function(event) {
+				// Check if leave count is 5 or greater
+				var leaveCount = parseInt($('#leave_count').val());
+				if (leaveCount >= 5) {
+					// Show the error message
+					$('#leave-count-error').modal('show');
+					// Prevent form submission
+					event.preventDefault();
+				}
+			});
+		});
+	</script>
+	
+	
 	
 	
 	
@@ -238,6 +347,11 @@
 	
 	
 <!-- Your remaining HTML code -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 	<script src="{% static 'assets/js/jquery.min.js'%} " ></script>

@@ -114,6 +114,13 @@
 				</div>
 			</div>
 			<!-- /Breadcrumb -->
+			<div class="top-nav-search">
+					<form>
+						<input type="text" class="form-control" placeholder="Search here">
+						<button class="btn" type="submit"><i class="fa fa-search"></i></button>
+					</form>
+				</div>
+				
 	<!-- Page Content -->
     <div class="content">
         <div class="container-fluid">
@@ -164,6 +171,8 @@
 										
                                         {% comment %} <a href="{% url 'edit_records' user.id %}" class="btn btn-primary">Edit Medical Records</a> {% endcomment %}
 										<a href="{% url 'editrecords' user.id %}"class="btn btn-primary">Edit Records</a><br><br>
+										<a href="{% url 'doctors_patienthistory' user.id %}"class="btn btn-primary">View Patient History</a>
+
 										{% comment %} <a href="{% url 'editrecords' user.id %}" class="btn btn-primary">Edit Records</a> {% endcomment %}
 
                                     </div>

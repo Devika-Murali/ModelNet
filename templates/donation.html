@@ -99,33 +99,37 @@
                                     <div class="login-header">
                                         <h3>Make a Donation</h3>
                                     </div>
-                                    <form action="" method="POST" class="card donation-form" onsubmit="return validateForm()">
+                                    <form action="{% url 'donation' %}" method="POST" class="card donation-form" onsubmit="return validateForm()">
                                         {% csrf_token %}
                                         <div class="card-body">
                                             <div class="form-group card-label">
                                                 <label for="full_name">Full Name:</label>
-                                                <input type="text" id="full_name" name="full_name" class="form-control" required>
+                                                <input type="text" id="full_name" name="full_name" class="form-control" required {% if fullname %} value="{{fullname}}" disabled{% endif %}>
                                                 <div class="invalid-feedback">Please enter your full name.</div>
                                             </div>
                                     
                                             <div class="form-group card-label">
                                                 <label for="email">Email:</label>
-                                                <input type="email" id="email" name="email" class="form-control" required>
+                                                <input type="email" id="email" name="email" class="form-control"  required {% if email %} value="{{email}}" disabled{% endif %}>
                                                 <div class="invalid-feedback">Please enter a valid email address (e.g., name@gmail.com).</div>
                                             </div>
                                             <div class="form-group card-label">
                                                 <label for="place">Place:</label>
-                                                <input type="text" id="place" name="place" class="form-control" required>
+                                                <input type="text" id="place" name="place" class="form-control" required {% if place %} value="{{place}}" disabled{% endif %}>
                                                 <div class="invalid-feedback">Please enter the place.</div>
                                             </div>
                                             <div class="form-group card-label">
                                                 <label for="amount">Donation Amount :</label>
-                                                <input type="number" id="amount" name="amount" class="form-control" min="1" required>
+                                                <input type="number" id="amount" name="amount" class="form-control" min="1" required {% if amount %} value="{{amount}}" disabled{% endif %}>
                                                 <div class="invalid-feedback">Please enter the donation amount.</div>
                                             </div>
-                                    
+                                            
                                             <div class="text-center">
-                                                <button type="submit" id="pay-btn" class="btn btn-primary">Make My Gift</button>
+                                                {% if key %}
+                                                <input type="button" id="btn" class="btn btn-primary" value="Edit">
+                                                        
+                                                {% endif %}
+                                                <button type="submit" id="pay-btn" class="btn btn-primary"> {% if key %} Pay {% else %}Make My Gift{% endif %} </button>
                                             </div>
                                         </div>
                                     </form>
@@ -163,36 +167,7 @@
     };
   </script> {% endcomment %}
   <!-- Razorpay's Javascript code. -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-	var options = {
-	
-	// Enter the Key ID generated from the Dashboard
-	key: "{{ razorpay_merchant_key }}",
-	
-	// Amount is in currency subunits.
-	// Default currency is INR. Hence,
-	// 50000 refers to 50000 paise
-	amount: "{{ razorpay_amount }}",
-	currency: "{{ currency }}",
-	
-	// Your/store name.
-	name: "Dj Razorpay",
-	
-	// Pass the id obtained in the response of Step 1
-	order_id: "{{ razorpay_order_id }}",
-	callback_url: "{{ callback_url }}",
-	};
-	
-	// initialise razorpay with the options.
-	var rzp1 = new Razorpay(options);
-	
-	// add event listener to the payment button.
-	document.getElementById("pay-btn").onclick = function (e) {
-	rzp1.open();
-	e.preventDefault();
-	};
-</script>
+
                             <!-- /Form -->
             
                             <!-- Image -->
@@ -211,5 +186,43 @@
 </div>
 </div>
 </div>
+{% if key %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+	var options = {
+	
+	// Enter the Key ID generated from the Dashboard
+	key: "{{ razorpay_merchant_key }}",
+	
+	// Amount is in currency subunits.
+	// Default currency is INR. Hence,
+	// 50000 refers to 50000 paise
+	amount: "{{ razorpay_amount }}",
+	currency: "{{ currency }}",
+	
+	// Your/store name.
+	name: "ColonCare",
+	
+	// Pass the id obtained in the response of Step 1
+	order_id: "{{ razorpay_order_id }}",
+	callback_url: "{{ callback_url }}",
+	};
+	
+	// initialise razorpay with the options.
+	var rzp1 = new Razorpay(options);
+	
+	// add event listener to the payment button.
+	document.getElementById("pay-btn").onclick = function (e) {
+	rzp1.open();
+	e.preventDefault();
+	};
+    a=document.getElementById('btn');
+    a.addEventListener("click", myFunction);
+
+function myFunction() {
+  window.location.href="/donation/";
+}
+</script>
+{% endif %}
 </body>
 </html>

@@ -4,183 +4,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Patient Medical History</title>
+    <title>Colon Cancer Patient Medical Details</title>
     <style>
-        /* Basic Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #007BFF;
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         h1 {
-            font-size: 32px;
+            text-align: center;
         }
-
-        h2 {
-            font-size: 24px;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        /* Form Styles */
-        form {
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
         }
-
-        label, input, select, textarea {
-            display: block;
-            margin-bottom: 10px;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
-
-        input[type="text"],
-        input[type="date"],
-        input[type="tel"],
-        input[type="email"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        select {
-            height: 40px;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Enter Patient Medical History</h1>
-    </header>
-    <nav>
-        <!-- Add navigation links if needed -->
-    </nav>
-    <main>
-        <form action="/submit_medical_history/" method="POST">
-            {% csrf_token %} <!-- Include this for CSRF protection -->
-            
-            <!-- Patient Information -->
-            <section class="patient-info">
-                <h2>Patient Information</h2>
-                <label for="patient_name">Name:</label>
-                <input type="text" id="patient_name" name="patient_name" required>
+    <h1>Colon Cancer Patient Medical Details</h1>
+    <table>
+        <tr>
+            <th>Patient Information</th>
+            <td colspan="3">
+                <p><strong>Name:</strong> {{ user_profile.name }}</p>
+                <p><strong>Email:</strong> {{ user_profile.email }}</p>
+                <p><strong>Phone:</strong> {{ user_profile.name }}</p>
+                <p><strong>Age:</strong> {{ user_profile.age }}</p>
+                <strong>Medical Record Number (MRN):</strong> 1234567890<br>
                 
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required>
-                
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-
-                <label for="contact_number">Contact Number:</label>
-                <input type="tel" id="contact_number" name="contact_number">
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email">
-                <!-- Add more patient details input fields as needed -->
-            </section>
-
-            <!-- Medical History -->
-            <section class="medical-history">
-                <h2>Medical History</h2>
-                <label for="diagnosis_date">Diagnosis Date:</label>
-                <input type="date" id="diagnosis_date" name="diagnosis_date" required>
-                
-                <label for="cancer_stage">Cancer Stage:</label>
-                <input type="text" id="cancer_stage" name="cancer_stage" required>
-
-                <label for="biopsy_results">Biopsy Results:</label>
-                <textarea id="biopsy_results" name="biopsy_results" rows="4" required></textarea>
-
-                <label for="oncologist_name">Oncologist's Name:</label>
-                <input type="text" id="oncologist_name" name="oncologist_name">
-                <!-- Add more medical history input fields as needed -->
-            </section>
-
-            <!-- Allergies -->
-            <section class="allergies">
-                <h2>Allergies</h2>
-                <label for="allergy_name">Allergy Name:</label>
-                <input type="text" id="allergy_name" name="allergy_name">
-
-                <label for="allergy_severity">Allergy Severity:</label>
-                <select id="allergy_severity" name="allergy_severity">
-                    <option value="mild">Mild</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="severe">Severe</option>
-                </select>
-                <!-- Add more allergy input fields as needed -->
-            </section>
-
-            <!-- Medications -->
-            <section class="medications">
-                <h2>Medications</h2>
-                <label for="medication_name">Medication Name:</label>
-                <input type="text" id="medication_name" name="medication_name">
-
-                <label for="dosage">Dosage:</label>
-                <input type="text" id="dosage" name="dosage">
-
-                <label for="frequency">Frequency:</label>
-                <input type="text" id="frequency" name="frequency">
-
-                <label for="start_date">Start Date:</label>
-                <input type="date" id="start_date" name="start_date">
-                <!-- Add more medication input fields as needed -->
-            </section>
-
-            <!-- Additional Sections -->
-            <!-- Add more sections for surgical history, family history, etc. as needed -->
-
-            <!-- Submit Button -->
-            <input type="submit" value="Submit">
-        </form>
-    </main>
-
-    <footer>
-        <!-- Add footer content if needed -->
-    </footer>
+            </td>
+        </tr>
+        <tr>
+            <th>Medical History</th>
+            <td colspan="3">
+                <strong>Presenting symptoms:</strong> Abdominal pain, rectal bleeding<br>
+                <strong>Past medical history:</strong> Hypertension, diabetes mellitus<br>
+                <strong>Family history:</strong> Father diagnosed with colon cancer at age 60<br>
+                <strong>Previous surgeries:</strong> Appendectomy (2000)<br>
+                <strong>Medications:</strong> Lisinopril, Metformin<br>
+                <strong>Allergies:</strong> None reported
+            </td>
+        </tr>
+        <tr>
+            <th>Diagnostic Workup</th>
+            <td colspan="3">
+                <strong>Colonoscopy Date:</strong> January 15, 2022<br>
+                <strong>Colonoscopy Findings:</strong> Large mass in sigmoid colon, biopsy taken<br>
+                <strong>Biopsy Results:</strong> Adenocarcinoma<br>
+                <strong>CT Scan:</strong> Evidence of liver metastases
+            </td>
+        </tr>
+        <tr>
+            <th>Pathology Reports</th>
+            <td colspan="3">
+                <strong>Histological Type:</strong> Adenocarcinoma<br>
+                <strong>Tumor Grade:</strong> Moderately differentiated<br>
+                <strong>Tumor Stage:</strong> T3N1M1 (Stage IV)<br>
+                <strong>Other Pathological Features:</strong> Perineural invasion, lymphovascular invasion
+            </td>
+        </tr>
+        <tr>
+            <th>Treatment History</th>
+            <td colspan="3">
+                <strong>Treatment Plan:</strong> Chemotherapy and targeted therapy<br>
+                <strong>Date of Initiation:</strong> February 1, 2022<br>
+                <strong>Response to Treatment:</strong> Partial response, stable disease<br>
+                <strong>Complications:</strong> Neutropenia, fatigue
+            </td>
+        </tr>
+        <tr>
+            <th>Follow-up and Surveillance</th>
+            <td colspan="3">
+                <strong>Last Follow-up Date:</strong> March 15, 2022<br>
+                <strong>Surveillance Plan:</strong> CT scan every 3 months, CEA monitoring<br>
+                <strong>Recurrence:</strong> None reported
+            </td>
+        </tr>
+        <tr>
+            <th>Other Relevant Information</th>
+            <td colspan="3">
+                <strong>Functional Status:</strong> Able to perform activities of daily living independently<br>
+                <strong>Palliative Care:</strong> Not initiated<br>
+                <strong>Advanced Care Planning:</strong> Discussed and documented
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
