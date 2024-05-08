@@ -116,7 +116,9 @@
                  {% comment %} <li> 
                     <a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>
                 </li>  {% endcomment %}
-                
+                <li> 
+                    <a href="{% url 'admins_donations' %}"><i class="fe fe-activity" id="donate"></i> <span>Donations</span></a>
+                </li>
             </div>		
     </div>
 </div>
@@ -161,7 +163,7 @@
                                 <label for="images">Blog Images</label>
                                 <input type="file" class="form-control" id="images" name="images">
                             </div>
-                            <button type="submit" class="btn btn-primary">Add Blog</button>
+                            <button type="submit" class="btn btn-primary" id="createblog">Add Blog</button>
                         </form>
                         <!-- /Blog Creation Form -->
                     </div>

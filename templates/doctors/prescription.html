@@ -2,18 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-
-	
-	<!-- title -->
-	<title>APPLY LEAVE-PAGE</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	
 	<!-- Favicons -->
 	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
 		
@@ -27,24 +20,13 @@
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
 	
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-	<![endif]-->
-	<style>
-	.container {
-		max-width: 600px; 
-		margin: 0 auto;
-	  }
-	</style>
 </head>
 <body>
     <div class="main-wrapper">
 		
         <!-- Header -->
         <header class="header">
-            <nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">
+            <nav class="navbar navbar-expand-lg header-nav" style="padding-right:200px;">	
                 <div class="navbar-header">
                     <a id="mobile_btn" href="javascript:void(0);">
                         <span class="bar-icon">
@@ -67,12 +49,11 @@
                         </a>
                     </div>
                     <ul class="main-nav">
-                        <li class="active">
+                        <li >
                             <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="home">Home</a>
                         </li>
-                        
                      <li>
-                            <a href="{% url 'doctors_leave' me.id%}">Apply Leave</a>
+                            <a href="{% url 'doctors_leave' %}">Apply Leave</a>
                         </li> 
                         <li class="main-nav">
                             {% if existing_certification %}
@@ -80,29 +61,24 @@
                             
                 
                             {% if existing_certification.is_approved == 'approved' %}
-                            <a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>
+                            <a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
                             
                             {% else %}
-                            <a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>                
+                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>                
                             {% endif %}
                           {% else %}
-                          <a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>
+                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="app">Appointments</a>
                           {% endif %}
                             
-                        </li> 
-                        <li class='position-relative'>
-                            <a href="{% url 'patientreferences' me.id %}" id="patient_references_link">
-                                Patient References 
-                            </a>
-                            <span class="notification-badge badge badge-danger position-absolute" id="notification_count">{{ count }}</span>
                         </li>
                         
-                        
-                        
-                        {% comment %} {% comment %} <li class="main-nav">
+                        <li class="active">
+                            <a href="{% url 'patientreferences' %}">Patient References</a>
+                        </li>
+                        {% comment %} <li class="main-nav">
                             <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
                         </li> {% endcomment %}
-                     
+                        
                         <li class="has-submenu"class="nav-link">
                                     <a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
                                     <ul class="submenu">
@@ -142,29 +118,13 @@
                                             <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
                                             {% endif %}
                                           {% else %}
-                                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Profile Settings</a>   
+                                          <a href="{% url 'profileset' %}"class="nav-link" id="patient">Profile Settings</a>   
                                           {% endif %}
                                             
                                             
                                         
                                         </li>
-                                        <li>
-                                            {% if existing_certification %}
-                    
-                            
-                
-                                            {% if existing_certification.is_approved == 'approved' %}
-                                            <a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
-                                            {% else %}
-                                            <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Leave History</a>
-                                            {% endif %}
-                                          {% else %}
-                                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Leave History</a>   
-                                          {% endif %}
-                                            
-                                            
-                                        
-                                        </li>
+    
                                         <li>
                                             {% if existing_certification %}
                     
@@ -176,7 +136,7 @@
                                             <a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
                                             {% endif %}
                                           {% else %}
-                                          <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Change Password</a>   
+                                          <a href="{% url 'changepass' %}"class="nav-link" id="patient">Change Password</a>   
                                           {% endif %}
                                             
                                             
@@ -188,29 +148,13 @@
                                     </ul>
                                 </li>
                         {% if user.is_authenticated %}
-                        {% comment %} <li class="has-submenu">
-                            {% if profile_pic_url %}
-                        
-        <img src="{{ profile_pic_url }}" alt="Profile Picture">
-    {% else %}
-        <a href="#"><i class="fa fa-user-circle"></i></a>
-    {% endif %}
-                            <ul class="submenu">
-                                <li>{{ user.username }}</li>
-                                <li><a href="{% url 'loggout' %}" id="logout">Logout</li></a>
-                            </ul>
-                        </li> {% endcomment %}
                         <li class="has-submenu">
-                            {% if profile_pic_url %}
-                                <img src="{{ profile_pic_url }}" alt="Profile Picture">
-                            {% else %}
-                                <a href="#"><i class="fa fa-user-circle"> Welcome,Dr.{{ user.docprofile.name }}</i></a>
-                            {% endif %}
+                            <a href="#"><i class="fa fa-user-circle"> Welcome,Dr.{{ user.docprofile.name }}</i></a>
                             <ul class="submenu">
                                 
-                                <li><a href="{% url 'loggout' %}" id="logout">Logout</a></li>
+                                <li><a href="{% url 'loggout' %}" id="logout">Logout</li></a>
                             </ul>
-                            
+                        </li>
                         {% else %}
                         <li><a href="{% url 'login_page' %}">Login</a></li>				
                         {% endif %}
@@ -218,64 +162,81 @@
                         </li>
     
                     </ul>		 
-                </div>		 
-            </nav>
+                    
         </header>
+        <div id="popup-message" class="alert alert-success" style="display: none;">
+            Email has been sent successfully.
+        </div>
         <!-- Breadcrumb -->
-    <div class="breadcrumb-bar">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-12 col-12">
-                    <nav aria-label="breadcrumb" class="page-breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Leave History</li>
-                        </ol>
-                    </nav>
-                    <h2 class="breadcrumb-title">Leave History</h2>
+        <div class="breadcrumb-bar">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <nav aria-label="breadcrumb" class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Refer a Patient</li>
+                            </ol>
+                        </nav>
+                        <h2 class="breadcrumb-title">Refer a Patient</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="leave-history">
-            <h3>Leave History</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Leave Type</th>
-                        <th>From Date</th>
-                        <th>To Date</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Iterate through the leave requests and display them in the table -->
-                    {% for request in leave_requests %}
-                    <tr id="leave-request-{{ request.id }}">
-                        <td>{{ request.leave_type }}</td>
-                        <td>{{ request.start_date }}</td>
-                        <td>{{ request.end_date }}</td>
-                        <td>{{ request.leave_reason }}</td>
-                        <td class="text-center" id="status-{{ request.id }}">
-                            {% if request.status %}
-                                {{ request.status }}
-                            {% else %}
-                                Pending
-                            {% endif %}
-                        </td>
-                        
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- /Breadcrumb -->
+        
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h2>Prescription</h2>
+                    <form action="/submit_medication_details" method="post" class="appointment-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="patient_name">Name:</label>
+                            <input type="text" id="patient_name" name="patient_name" class="form-control" value="{{ user.userprofile.name }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" name="age" class="form-control" value="{{ user.userprofile.age }}"readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="medication_name">Medication Name:</label>
+                            <input type="text" id="medication_name" name="medication_name" class="form-control" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="dosage_strength">Dosage Strength:</label>
+                            <input type="text" id="dosage_strength" name="dosage_strength" class="form-control" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="dosage_form">Dosage Form:</label>
+                            <input type="text" id="dosage_form" name="dosage_form" class="form-control" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="duration">Duration of Treatment:</label>
+                            <input type="text" id="duration" name="duration" class="form-control" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="quantity">Quantity to Dispense:</label>
+                            <input type="text" id="quantity" name="quantity" class="form-control" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="special_instructions">Special Instructions:</label>
+                            <textarea id="special_instructions" name="special_instructions" class="form-control" rows="4" cols="50"></textarea>
+                        </div>
+        
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+        
     
-    </div>
-
-    <!-- Include the necessary JavaScript files -->
-    <!-- Make sure to include jQuery and Bootstrap JS files -->
 </body>
 </html>

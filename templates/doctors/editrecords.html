@@ -1,4 +1,4 @@
-{% load static %}
+    {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,12 +82,12 @@
 						<a href="{% url 'doctors_basedoctor' %}">Refer a Patient</a>
 					</li> {% endcomment %}
                     <li class="main-nav">
-						<a href="{% url 'doctors_appointments' %}">Appointments</a>
+						<a href="{% url 'doctors_appointments' me.id %}">Appointments</a>
 					</li>
 					<li class="has-submenu">
 								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
-									<li><a href="{% url 'mypatients' %}">My Patients</a></li>
+									<li><a href="{% url 'mypatients' me.id %}">My Patients</a></li>
                                     {% comment %} <li><a href="{% url 'patientprofile' %}">Patients Medical Records</a></li> {% endcomment %}
 								</ul>
                                 
@@ -170,48 +170,38 @@
                     </section> {% endcomment %}
                     <form action="" method="POST">
                         {% csrf_token %}
+                        <!-- Personal Details -->
+                        <section class="personal-details">
+                            <h2>Personal Details</h2>
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="patient_name" name="patient_name" class="form-control" value="{{ user.userprofile.name }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age:</label>
+                                <input type="number" id="age" name="age" class="form-control" value="{{ user.userprofile.age }}">
+                            </div>
+                        
+                    
                         <!-- Medical History -->
-                        <section class="medical-history">
+                        
                             <h2>Medical History</h2>
                             <div class="form-group">
-                                <label for="patient_name">Name :</label>
-                                <input type="text" id="patient_name" name="patient_name" class="form-control" value="{{ patient.name }}">
+                                <label for="presenting_symptoms">Presenting Symptoms:</label>
+                                <input type="text" id="presenting_symptoms" name="presenting_symptoms" class="form-control" value="{{ request.POST.presenting_symptoms }}">
                             </div>
                             <div class="form-group">
-                                <label for="diagnosis_date">Diagnosis Date:</label>
-                                <input type="date" id="diagnosis_date" name="diagnosis_date" class="form-control"  value="{{ patient_info.diagnosis_date }}">
+                                <label for="allergies">Allergies:</label>
+                                <input type="text" id="allergies" name="allergies" class="form-control" value="{{ request.POST.allergies }}">
                             </div>
-                            <div class="form-group">
-                                <label for="cancer_stage">Cancer Stage:</label>
-                                <input type="text" id="cancer_stage" name="cancer_stage" class="form-control" value="{{ patient_info.cancer_stage }}" >
-                            </div>
-            
-                            <div class="form-group">
-                                <label for="oncologist_name">Oncologist's Name:</label>
-                                <input type="text" id="oncologist_name" name="oncologist_name" class="form-control">
-                            </div>
-                            <!-- Add more medical history input fields as needed -->
-                            <h2>Allergies</h2>
-                            <div class="form-group">
-                                <label for="allergy_name">Allergy Name:</label>
-                                <input type="text" id="allergy_name" name="allergy_name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="allergy_severity">Allergy Severity:</label>
-                                <select id="allergy_severity" name="allergy_severity" class="form-control">
-                                    <option value="mild">Mild</option>
-                                    <option value="moderate">Moderate</option>
-                                    <option value="severe">Severe</option>
-                                </select>
-                            </div>
+                        
+                    
+                        <!-- Diagnostic Workup -->
+                     
                             <h2>Diagnostic Workup</h2>
                             <div class="form-group">
-                                <label for="colonoscopy_date">Colonoscopy Date:</label>
-                                <input type="date" id="colonoscopy_date" name="colonoscopy_date" class="form-control" value="2022-01-15">
-                            </div>
-                            <div class="form-group">
                                 <label for="colonoscopy_findings">Colonoscopy Findings:</label>
-                                <textarea id="colonoscopy_findings" name="colonoscopy_findings" rows="4" class="form-control">Large mass in sigmoid colon, biopsy taken</textarea>
+                                <input type="text" id="colonoscopy_findings" name="colonoscopy_findings" class="form-control" value="{{ request.POST.colonoscopy_findings }}">
                             </div>
                             <div class="form-group">
                                 <label for="biopsy_results">Biopsy Results:</label>
@@ -221,30 +211,33 @@
                                 <label for="ct_scan_results">CT Scan Results:</label>
                                 <input type="file" id="ct_scan_results" name="ct_scan_results" class="form-control-file">
                             </div>
-                            <h2>Treatment History</h2>
                             
+                        
+                    
+                        <!-- Treatment History -->
+                        <section class="treatment-history">
+                            <h2>Treatment History</h2>
                             <div class="form-group">
-                                <label for="medication_name">Treatment Plan:</label>
-                                <input type="text" id="medication_name" name="medication_name" class="form-control">
+                                <label for="treatment_plan">Treatment Plan:</label>
+                                <input type="text" id="treatment_plan" name="treatment_plan" class="form-control" value="{{ request.POST.treatment_plan }}">
                             </div>
+                            {% comment %} <div class="form-group">
+                                <label for="date_of_initiation">Date of Initiation:</label>
+                                <input type="text" id="date_of_initiation" name="date_of_initiation" class="form-control" value="{{ request.POST.date_of_initiation }}">
+                            </div> {% endcomment %}
                             <div class="form-group">
-                                <label for="dosage">Date of Initiation:</label>
-                                <input type="text" id="dosage" name="dosage" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="frequency">Response to Treatment</label>
-                                <input type="text" id="frequency" name="frequency" class="form-control">
+                                <label for="response_to_treatment">Response to Treatment:</label>
+                                <input type="text" id="response_to_treatment" name="response_to_treatment" class="form-control" value="{{ request.POST.response_to_treatment }}">
                             </div>
                             <div class="form-group">
                                 <label for="complications">Complications:</label>
-                                <input type="text" id="complications" name="complications" class="form-control">
+                                <input type="text" id="complications" name="complications" class="form-control" value="{{ request.POST.complications }}">
                             </div>
-                            
-                            <!-- Add more medication input fields as needed -->
-                        
+                        </section>
+                    
                         <input type="submit" value="Submit" class="btn btn-primary">
-                    </section>
                     </form>
+                    
             </main>
         </div>
 </body>

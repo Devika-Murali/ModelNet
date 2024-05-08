@@ -72,8 +72,8 @@
             <div class="confirmation-details">
                 <!-- Add your confirmation details here -->
                 <p>Patient's Name: <span id="patientName"></span></p>
-                <p>Doctor's Name: Dr.{{appointments.doctor.name  }} <span id="doctorname"></span></p>
-                <p>Appointment Date and Time: {{ appointments.app_date|date:"F j, Y" }}, {{ appointments.app_time|time:"P" }}</p>
+                {% comment %} <p>Doctor's Name: Dr.{{appointments.doctor.name  }} <span id="doctorname"></span></p> {% endcomment %}
+                {% comment %} <p>Appointment Date and Time: {{ appointments.app_date|date:"F j, Y" }}, {{ appointments.app_time|time:"P" }}</p> {% endcomment %}
                 <p>Payment Amount: ₹200</p>
                 <!-- You can include more details here -->
             </div>
@@ -116,7 +116,7 @@
         // JavaScript code to set the user's name
         document.getElementById('patientName').textContent = "{{ user.userprofile.name }}";
         document.getElementById('doctorname').textContent = "{{ user.Docprofile.name }}";
-
+        conslo
     </script>
     <script>
         // Function to update confirmation details

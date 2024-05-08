@@ -68,7 +68,7 @@
 					</li>
 					
 				 <li>
-						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+						<a href="{% url 'doctors_leave' me.id %}">Apply Leave</a>
 					</li> 
 					<li class="main-nav">
 						{% if existing_certification %}
@@ -76,18 +76,18 @@
 						
 			
 						{% if existing_certification.is_approved == 'approved' %}
-						<a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+						<a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>
 						
 						{% else %}
-						<a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>                
+						<a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>                
 						{% endif %}
 					  {% else %}
-					  <a href="{% url 'doctors_appointments' %}"class="nav-link" id="app">Appointments</a>
+					  <a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>
 					  {% endif %}
 						
 					</li> 
 					<li class='position-relative'>
-						<a href="{% url 'patientreferences' %}" id="patient_references_link">
+						<a href="{% url 'patientreferences' me.id %}" id="patient_references_link">
 							Patient References 
 						</a>
 						<span class="notification-badge badge badge-danger position-absolute" id="notification_count">{{ count }}</span>
@@ -109,7 +109,7 @@
 						
 			
 						{% if existing_certification.is_approved == 'approved' %}
-						<a href="{% url 'mypatients' %}"class="nav-link" id="patient">My Patients</a>
+						<a href="{% url 'mypatients' me.id %}"class="nav-link" id="patient">My Patients</a>
 						{% else %}
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>               
 						{% endif %}
@@ -133,7 +133,7 @@
 						
 			
 										{% if existing_certification.is_approved == 'approved' %}
-										<a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a>
+										<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
 										{% else %}
 										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
 										{% endif %}
@@ -167,7 +167,7 @@
 						
 			
 										{% if existing_certification.is_approved == 'approved' %}
-										<a href="{% url 'changepass' %}"class="nav-link">Change Password</a>
+										<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
 										{% else %}
 										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
 										{% endif %}

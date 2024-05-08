@@ -29,7 +29,8 @@ def About(request):
     return render(request,'About.html')  
 def basepatient(request):
     return render(request,'basepatient.html')
-def changepass(request):
+def changepass(request,doc_id):
+    me=Docprofile.objects.get(pk=doc_id)
     if request.method == 'POST':
         
         reset_password = request.POST.get('reset_password')
@@ -48,7 +49,7 @@ def changepass(request):
         else:
             messages.error(request, "Incorrect old password. Password not updated.")
         
-    return render(request,'doctors/changepass.html')
+    return render(request,'doctors/changepass.html',{'me': me})
    
 def doctors_basedoctor(request):
     user_id = request.user.id
@@ -72,7 +73,8 @@ def doctors_basedoctor(request):
     existing_certification = Certification.objects.filter(user=request.user).first()
 
     if existing_certification:
-        return render(request, 'doctors/basedoctor.html', {'existing_certification': existing_certification, 'count': count})
+        
+        return render(request, 'doctors/basedoctor.html', {'existing_certification': existing_certification, 'count': count,'me':me})
 
     if request.method == 'POST':
         # Handle form submission
@@ -96,7 +98,7 @@ def doctors_basedoctor(request):
         return redirect('doctors_basedoctor')  
 
     return render(request,'doctors/basedoctor.html', {
-        'existing_certification': existing_certification,
+        'existing_certification': existing_certification,'me':me
     })
 
     return render(request,'doctors_basedoctor.html' ,{'count': count}) 
@@ -115,13 +117,10 @@ def testresult(request):
     
 
 
-def mypatients(request):
-    users = User.objects.all()
-    return render(request,'mypatients.html', {'users': users})  
+ 
 def patientprofile(request):
     return render(request,'patientprofile.html')     
-def profileset(request):
-    return render(request,'profileset.html')  
+
 def DoctorProfileView(request):
     return render(request, 'doctor_profile.html')
 def admins_index(request):
@@ -397,7 +396,9 @@ def delete_specialization(request):
         response_data = {'success': False, 'message': str(e)}
     return JsonResponse(response_data)
 
-def DoctorProfileView(request):
+def DoctorProfileView(request,doc_id):
+    me=Docprofile.objects.get(pk=doc_id)
+
     doc_profile = Docprofile.objects.get(user=request.user)
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -473,6 +474,7 @@ def DoctorProfileView(request):
     context = {
         'doc_profile': doc_profile,
         'profile_pic_url': doc_profile.profile_pic.url if doc_profile.profile_pic else None
+        
     }
     
     return render(request, 'profileset.html', context)
@@ -606,45 +608,45 @@ def reject_certification(request, certification_id):
         certification.save()
     return redirect('admins_dashlegal')
 
-def submit_medical_history(request,patient_id):
-    user = User.objects.get(id=patient_id)
-    patient = UserProfile.objects.get(user=user)
-    patient_info = PatientInfo.objects.get(user=user)
-    if request.method == 'POST':
-        # Retrieve data from the form
-        diagnosis_date = request.POST.get('diagnosis_date')
-        cancer_stage = request.POST.get('cancer_stage')
-        biopsy_results = request.POST.get('biopsy_results')
-        oncologist_name = request.POST.get('oncologist_name')
-        allergy_name = request.POST.get('allergy_name')
-        allergy_severity = request.POST.get('allergy_severity')
-        medication_name = request.POST.get('medication_name')
-        dosage = request.POST.get('dosage')
-        frequency = request.POST.get('frequency')
-        start_date = request.POST.get('start_date')
-        # Create a new instance of the PatientInfo model and save it
-           # Associate the data with the patient identified by patient_id
+# def submit_medical_history(request,patient_id):
+#     user = User.objects.get(id=patient_id)
+#     patient = UserProfile.objects.get(user=user)
+#     patient_info = PatientInfo.objects.get(user=user)
+#     if request.method == 'POST':
+#         # Retrieve data from the form
+#         diagnosis_date = request.POST.get('diagnosis_date')
+#         cancer_stage = request.POST.get('cancer_stage')
+#         biopsy_results = request.POST.get('biopsy_results')
+#         oncologist_name = request.POST.get('oncologist_name')
+#         allergy_name = request.POST.get('allergy_name')
+#         allergy_severity = request.POST.get('allergy_severity')
+#         medication_name = request.POST.get('medication_name')
+#         dosage = request.POST.get('dosage')
+#         frequency = request.POST.get('frequency')
+#         start_date = request.POST.get('start_date')
+#         # Create a new instance of the PatientInfo model and save it
+#            # Associate the data with the patient identified by patient_id
 
-        patient_info.diagnosis_date = diagnosis_date
-        patient_info.cancer_stage = cancer_stage
-        patient_info.biopsy_results = biopsy_results
-        patient_info.oncologist_name = oncologist_name
-        patient_info.allergy_name = allergy_name
-        patient_info.allergy_severity = allergy_severity
-        patient_info.medication_name = medication_name
-        patient_info.dosage = dosage
-        patient_info.frequency = frequency
-        patient_info.start_date = start_date
+#         patient_info.diagnosis_date = diagnosis_date
+#         patient_info.cancer_stage = cancer_stage
+#         patient_info.biopsy_results = biopsy_results
+#         patient_info.oncologist_name = oncologist_name
+#         patient_info.allergy_name = allergy_name
+#         patient_info.allergy_severity = allergy_severity
+#         patient_info.medication_name = medication_name
+#         patient_info.dosage = dosage
+#         patient_info.frequency = frequency
+#         patient_info.start_date = start_date
 
         
-        patient_info.save()
-        patient.save()
-        # Redirect to the 'editrecords' URL after successful submission
-        return redirect('mypatients')
+#         patient_info.save()
+#         patient.save()
+#         # Redirect to the 'editrecords' URL after successful submission
+#         return redirect('mypatients')
  
 
-    # Handle GET request or invalid submissions here
-    return render(request, 'doctors/editrecords.html',{'patient':patient,'patient_info':patient_info})
+#     # Handle GET request or invalid submissions here
+#     return render(request, 'doctors/editrecords.html',{'patient':patient,'patient_info':patient_info})
 def doctor_list(request):
     # Retrieve a list of doctor objects from the database
     doctors = Docprofile.objects.all()
@@ -805,6 +807,7 @@ def payment_confirm(request):
         payment_amount=amount,  # Specify the payment amount
         payment_status='Pending',  # Set payment status to "Pending"
     )
+    
 
     # Render the success template with the necessary context
     context = {
@@ -1104,7 +1107,8 @@ def refer_patient(request):
     
    
 
-def patientreferences(request):
+def patientreferences(request,doc_id):
+    me=Docprofile.objects.get(pk=doc_id)
     if request.method == 'POST':
         patient_id = request.POST.get('patient_id')
         action = request.POST.get('action')  # Accept or Decline
@@ -1140,12 +1144,13 @@ def patientreferences(request):
 
         # Adding email sent flag to the context
         context['email_sent'] = True
+        context['me'] = me
 
         return render(request, 'doctors/patientreferences.html', context)
     
     referring_doctor = request.user.docprofile
     referred_patients = ReferPatient.objects.filter(referring_doctor=referring_doctor)
-    return render(request, 'doctors/patientreferences.html', {'referred_patients': referred_patients})
+    return render(request, 'doctors/patientreferences.html', {'referred_patients': referred_patients,'me':me})
 
 def confirm_appointment(request):
     return render(request, 'confirmapp.html')
@@ -1230,10 +1235,7 @@ def book_appointment(request, doc_id):
             current_time += delta
 
         return render(request, 'patient/bookappointment.html', {'selected_doctor': selected_doctor, 'available_slots': available_slots})
-def doctors_appointments(request, doc_id):
-    selected_doctor = Docprofile.objects.get(pk=doc_id)
-    appointments = Appointments.objects.filter(doctor=selected_doctor)
-    return render(request, 'doctors/appointment.html', {'appointments': appointments})
+
 # def doctors_leave(request):
 #     if request.method == 'POST':
 #         leave_type = request.POST.get('leave_type')
@@ -1261,13 +1263,15 @@ def doctors_appointments(request, doc_id):
 #         leave_request.save()
         
 #         # Redirect to a success page or render a confirmation template
-#         return redirect(doctors_leave)
+#         return redirect(
+# )
 
 #     doctors = Docprofile.objects.all()
 #     return render(request, 'doctors/leave.html', {'doctors': doctors})
 from django.db.models import Q
 
-def doctors_leave(request):
+def doctors_leave(request,doc_id):
+    me=Docprofile.objects.get(pk=doc_id)
     if request.method == 'POST':
         leave_type = request.POST.get('leave_type')
         leave_reason = request.POST.get('leave_reason')
@@ -1317,7 +1321,7 @@ def doctors_leave(request):
         return redirect('view_leave_requests')
 
     doctors = Docprofile.objects.all()
-    return render(request, 'doctors/leave.html', {'doctors': doctors})
+    return render(request, 'doctors/leave.html', {'doctors': doctors,'me':me})
 
 
 def admins_leave(request):
@@ -1631,11 +1635,13 @@ def admins_donations(request):
     return render(request, 'admins/donations.html',{'donations':donation})
 def doctors_leavehistory(request):
     # Query leave request data
+    me=Docprofile.objects.get(user=request.user)
     leave_requests = LeaveRequest.objects.all()
 
     # Pass leave request data to the template context
     context = {
         'leave_requests': leave_requests,
+        'me':me
     }
 
     return render(request, 'doctors/leavehistory.html', context)
@@ -1699,3 +1705,90 @@ def generate_pdf(request):
     doc.build(elements)
 
     return response
+def submit_medical_history(request, patient_id):
+    me=Docprofile.objects.get(user=request.user)
+    # Retrieve the user and profile
+    user = get_object_or_404(User, id=patient_id)
+    patient = get_object_or_404(UserProfile, user=user)
+
+    # Retrieve or create the PatientInfo object
+    patient_info, created = PatientInfo.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        # Retrieve data from the form
+        diagnosis_date = request.POST.get('diagnosis_date')
+        cancer_stage = request.POST.get('cancer_stage')
+        biopsy_results = request.FILES.get('biopsy_results')
+        oncologist_name = request.POST.get('oncologist_name')
+        presenting_symptoms = request.POST.get('presenting_symptoms')
+        allergies = request.POST.get('allergies')
+        colonoscopy_date = request.POST.get('colonoscopy_date')
+        colonoscopy_findings = request.POST.get('colonoscopy_findings')
+        ct_scan_results = request.FILES.get('ct_scan_results')
+        treatment_plan = request.POST.get('treatment_plan')
+        date_of_initiation = request.POST.get('date_of_initiation')
+        response_to_treatment = request.POST.get('response_to_treatment')
+        complications = request.POST.get('complications')
+
+        # Update the patient info with the retrieved data
+        patient_info.diagnosis_date = diagnosis_date
+        patient_info.cancer_stage = cancer_stage
+        patient_info.biopsy_results = biopsy_results
+        patient_info.oncologist_name = oncologist_name
+        patient_info.presenting_symptoms = presenting_symptoms
+        patient_info.allergies = allergies
+        patient_info.colonoscopy_date = colonoscopy_date
+        patient_info.colonoscopy_findings = colonoscopy_findings
+        patient_info.ct_scan_results = ct_scan_results
+        patient_info.treatment_plan = treatment_plan
+        patient_info.date_of_initiation = date_of_initiation
+        patient_info.response_to_treatment = response_to_treatment
+        patient_info.complications = complications
+
+        # Save the updated patient info
+        patient_info.save()
+
+        # Redirect to the appropriate page or render the same page
+        # return redirect('mypatients')  # Replace 'mypatients' with the actual URL name
+
+    # Handle GET request or invalid submissions here
+    return render(request, 'doctors/editrecords.html', {'user': user, 'patient': patient, 'patient_info': patient_info,'me':me})
+def doctors_prescription(request, patient_id):
+    user = get_object_or_404(User, id=patient_id)
+    patient = get_object_or_404(UserProfile, user=user)
+    prescription = None  # Initialize prescription variable to None
+
+    if request.method == 'POST':
+        medication_name = request.POST.get('medication_name')
+        dosage_strength = request.POST.get('dosage_strength')
+        dosage_form = request.POST.get('dosage_form')
+        duration = request.POST.get('duration')
+        quantity = request.POST.get('quantity')
+        special_instructions = request.POST.get('special_instructions')
+
+        # Create a new Prescription instance
+        prescription = Prescription(
+            medication_name=medication_name,
+            dosage_strength=dosage_strength,
+            dosage_form=dosage_form,
+            duration=duration,
+            quantity=quantity,
+            special_instructions=special_instructions
+        )
+        prescription.save()
+
+    return render(request, 'doctors/prescription.html', {'user': user, 'patient': patient, 'prescription': prescription})
+
+def doctors_appointments(request, doc_id):
+    selected_doctor = Docprofile.objects.get(pk=doc_id)
+    appointments = Appointments.objects.filter(doctor=selected_doctor)
+    return render(request, 'doctors/appointments.html', {'appointments': appointments,'me':selected_doctor})
+def mypatients(request,doc_id):
+    selected_doctor = Docprofile.objects.get(pk=doc_id)
+
+    users = User.objects.all()
+    return render(request,'mypatients.html', {'users': users,'me':selected_doctor}) 
+def profileset(request,doc_id):
+    me=Docprofile.objects.get(pk=doc_id)
+    print(me,123)
+    return render(request,'profileset.html',{'me': me})  

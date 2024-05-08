@@ -8,7 +8,7 @@
 	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
 	<!-- title -->
-	<title>PATIENT-PAGE</title>
+	<title>-PAGE</title>
 
 	<!-- Favicons -->
 	<link type="image/x-icon" href="assets/img/favicon.png" rel="icon">
@@ -61,12 +61,12 @@
 					</li>
                    
                     <li class="active">
-						<a href="{% url 'doctors_appointments' %}">Appointments</a>
+						<a href="{% url 'doctors_appointments' me.id %}">Appointments</a>
 					</li>
 					<li class="has-submenu">
                         <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                            <li><a href="{% url 'mypatients' %}">My Patients</a></li>
+                            <li><a href="{% url 'mypatients' me.id %}">My Patients</a></li>
                         </ul>
                         
                     </li>

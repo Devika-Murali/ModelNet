@@ -176,7 +176,7 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">DONATIONS</h3>
+                    <h3 class="page-title" id="view">DONATIONS</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active">Donations</li>
@@ -240,7 +240,7 @@
 											<td id="totalAmount">0</td> <!-- Ensure the id is set here -->
 										</tr>
 									</tfoot>
-									<a href="{% url 'generate_pdf' %}" class="btn" download>Download Donation Details PDF</a>
+									<a href="{% url 'generate_pdf' %}" class="btn" id="down" download>Download Donation Details PDF</a>
 
 								</table>
 							</div>

@@ -96,6 +96,9 @@
                         {% comment %} <li>
                             <a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>
                         </li> {% endcomment %}
+                        <li> 
+                            <a href="{% url 'admins_donations' %}"><i class="fe fe-activity" id="donate"></i> <span>Donations</span></a>
+                        </li>
                     </div>
             </div>
         </div>
@@ -107,7 +110,7 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="page-title">View Blog</h3>
+                            <h3 class="page-title" id="view">View Blog</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                                 <li class="breadcrumb-item active">View Blog</li>

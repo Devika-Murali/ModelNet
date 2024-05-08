@@ -65,14 +65,15 @@
 					<li >
 						<a href="{% url 'doctors_basedoctor' %}">Home</a>
 					</li>
-                    <li class="main-nav">
-						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+                    <li class="main-nav"> 
+                        
+						<a href="{% url 'doctors_leave' me.id %}">Apply Leave</a>
 					</li> 
                     <li class="main-nav">
 						<a href="">Appointments</a>
 					</li>
                     <li>
-						<a href="{% url 'patientreferences' %}">
+						<a href="{% url 'patientreferences' me.id %}">
 							Patient References <span class="notification-badge">{{ count }}</span>
 						</a>
 					</li>
@@ -80,7 +81,7 @@
 					<li class="has-submenu">
 								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
-									<li><a href="{% url 'mypatients' %}">My Patients</a></li>
+									<li><a href="{% url 'mypatients' me.id %}">My Patients</a></li>
 								</ul>
                                 
 							</li>
@@ -112,12 +113,12 @@
 						
 			
 										{% if existing_certification.is_approved == 'approved' %}
-										<a href="{% url 'changepass' %}"class="nav-link">Change Password</a>
+										<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
 										{% else %}
 										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
 										{% endif %}
 									  {% else %}
-									  <a href="{% url 'changepass' %}"class="nav-link" id="patient">Change Password</a>   
+									  <a href="{% url 'changepass' me.id %}"class="nav-link" id="patient">Change Password</a>   
 									  {% endif %}
 										
 										

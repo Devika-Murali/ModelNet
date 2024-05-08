@@ -33,3 +33,6 @@ admin.site.register(ReferPatient)
 
 from .models import Donation  
 admin.site.register(Donation)
+
+from .models import Prescription  
+admin.site.register(Prescription)

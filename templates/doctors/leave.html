@@ -73,7 +73,7 @@
 						<a href="{% url 'doctors_appointments' %}">Appointments</a>
 					</li> {% endcomment %}
                     <li class="active">
-						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+						<a href="{% url 'doctors_leave' me.id %}">Apply Leave</a>
 					</li>
 					<li class="">
 						<a href="{% url 'view_leave_requests' %}">View Leave</a>
@@ -82,21 +82,21 @@
 						<a href=""> Appointments</a>
 					</li>
 					<li>
-						<a href="{% url 'patientreferences' %}">
+						<a href="{% url 'patientreferences' me.id %}">
 							Patient References <span class="notification-badge">{{ count }}</span>
 						</a>
 					</li>
 					<li class="has-submenu">
                         <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                            <li><a href="{% url 'mypatients' %}">My Patients</a></li>
+                            <li><a href="{% url 'mypatients' me.id %}">My Patients</a></li>
                         </ul>
                         
                     </li>
                     <li class="has-submenu">
                         <a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                            <li><a href="{% url 'profileset' %}">Profile Settings</a></li>
+                            <li><a href="{% url 'profileset' me.id%}">Profile Settings</a></li>
                             <li><a href="{% url 'patientappointment' %}">Change Password</a></li>
                             
                         </ul>

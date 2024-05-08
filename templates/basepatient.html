@@ -94,6 +94,7 @@
 				<a href="index-2.html" class="navbar-brand logo">
 					<img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
 				</a>
+				
 			</div>
 			<div class="main-menu-wrapper">
 				<div class="menu-header">
@@ -103,20 +104,21 @@
 					<a id="menu_close" class="menu-close" href="javascript:void(0);">
 						<i class="fas fa-times"></i>
 					</a>
+					
 				</div>
+				
 				<ul class="main-nav">
+					
 					<li class="active">
 						<a href="{% url 'basepatient' %}">Home</a>
 					</li>
-					<li class="main-nav">
+					{% comment %} <li class="main-nav">
 						<a href="{% url 'finddoctor' %}">Blogs</a>
-					</li>
+					</li> {% endcomment %}
 					<li class="main-nav">
 						<a href="{% url 'finddoctor' %}">Find a Doctor</a>
 					</li>
-					<div ><span>Select Language: </span>
-
-						<div id="google_translate_element"></div></div>
+					
 					<li class="has-submenu">
 								<a href="#">Medical Records <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">

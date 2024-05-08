@@ -263,9 +263,9 @@
 							<li> 
 								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user" id="user"></i> <span>Registered Users</span></a>
 							</li>
-							<li> 
+							{% comment %} <li> 
 								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
-							</li>
+							</li> {% endcomment %}
 							<li> 
 								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
 							</li>
@@ -273,9 +273,9 @@
 								<a href="{% url 'admins_dashlegal' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
 							</li>
 							<li class="submenu">
-								<a href="#"><i class="fe fe-layout"></i> <span>Blogs</span> <span class="menu-arrow"></span></a>
+								<a href="#"><i class="fe fe-layout"></i> <span>Blogs</span> <span class="menu-arrow"id="blog"></span></a>
 								<ul>
-									<li><a href="{% url 'admins_addblog' %}">Add Blogs</a></li>
+									<li><a href="{% url 'admins_addblog' %}" id="blog2">Add Blogs</a></li>
 									<li><a href="{% url 'admins_viewblog' %}">View Blogs</a></li>
 								</ul>
 							</li>
@@ -291,13 +291,10 @@
 								<a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>
 							</li>  {% endcomment %}
 							<li> 
-								<a href="{% url 'admins_donations' %}"><i class="fe fe-activity"></i> <span>Donations</span></a>
+								<a href="{% url 'admins_donations' %}"><i class="fe fe-activity" id="donate"></i> <span>Donations</span></a>
 							</li>
 						</div>		
-						<div class="language-selector">
-							<span>Select Language: </span>
-							<div id="google_translate_element"></div>
-						</div>
+						
                 </div>
             </div>
 			<!-- /Sidebar -->

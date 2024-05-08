@@ -176,11 +176,11 @@
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="home">Home</a>
 					</li>
 				 <li>
-						<a href="{% url 'doctors_leave' %}">Apply Leave</a>
+						<a href="{% url 'doctors_leave' me.id %}">Apply Leave</a>
 					</li> 
                     <li class="main-nav">
 						{% if existing_certification %}
-				
+                        
 						
 			
 						{% if existing_certification.is_approved == 'approved' %}
@@ -196,7 +196,7 @@
 					</li>
                     
 					<li class="active">
-						<a href="{% url 'patientreferences' %}">Patient References</a>
+						<a href="{% url 'patientreferences' me.id %}">Patient References</a>
 					</li>
 					{% comment %} <li class="main-nav">
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
@@ -236,12 +236,12 @@
 						
 			
 										{% if existing_certification.is_approved == 'approved' %}
-										<a href="{% url 'profileset' %}"class="nav-link">Profile Settings</a>
+										<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
 										{% else %}
 										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
 										{% endif %}
 									  {% else %}
-									  <a href="{% url 'profileset' %}"class="nav-link" id="patient">Profile Settings</a>   
+									  <a href="{% url 'profileset' me.id %}"class="nav-link" id="patient">Profile Settings</a>   
 									  {% endif %}
 										
 										
@@ -254,12 +254,12 @@
 						
 			
 										{% if existing_certification.is_approved == 'approved' %}
-										<a href="{% url 'changepass' %}"class="nav-link">Change Password</a>
+										<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
 										{% else %}
 										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
 										{% endif %}
 									  {% else %}
-									  <a href="{% url 'changepass' %}"class="nav-link" id="patient">Change Password</a>   
+									  <a href="{% url 'changepass' me.id %}"class="nav-link" id="patient">Change Password</a>   
 									  {% endif %}
 										
 										
@@ -380,7 +380,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <form action="{% url 'patientreferences' %}" method="post" style="display: inline;">
+                <form action="{% url 'patientreferences' me.id%}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <input type="hidden" name="patient_id" value="{{ patient.id }}">
                     <input type="hidden" name="action" value="accept"> <!-- Add hidden input field for action -->
@@ -406,7 +406,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <form action="{% url 'patientreferences' %}" method="post" style="display: inline;">
+                <form action="{% url 'patientreferences' me.id %}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <input type="hidden" name="patient_id" value="{{ patient.id }}">
                     <input type="hidden" name="action" value="decline"> <!-- Add hidden input field for action -->

@@ -84,28 +84,53 @@ class Docprofile(models.Model):
 
 #     def __str__(self):
 #         return f"Medical Record ({self.diagnosis_date})"
+# class PatientInfo(models.Model):
+#     # Medical History Fields
+#     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True, blank=True)
+#     diagnosis_date = models.DateField(null=True, blank=True)
+#     cancer_stage = models.CharField(max_length=255, blank=True)
+#     biopsy_results = models.TextField(blank=True)
+#     oncologist_name = models.CharField(max_length=255, blank=True)
+
+#     # Allergies Fields
+#     allergy_name = models.CharField(max_length=255, blank=True)
+#     allergy_severity = models.CharField(
+#         max_length=10,
+#         choices=[('mild', 'Mild'), ('moderate', 'Moderate'), ('severe', 'Severe')],
+#         blank=True
+#     )
+
+#     # Medications Fields
+#     medication_name = models.CharField(max_length=255, blank=True)
+#     dosage = models.CharField(max_length=255, blank=True)
+#     frequency = models.CharField(max_length=255, blank=True)
+#     start_date = models.DateField(null=True, blank=True)
+    
+#     # Add more fields as needed
+
+#     def __str__(self):
+#         return f"Patient Information - {self.pk}"
 class PatientInfo(models.Model):
     # Medical History Fields
-    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     diagnosis_date = models.DateField(null=True, blank=True)
-    cancer_stage = models.CharField(max_length=255, blank=True)
-    biopsy_results = models.TextField(blank=True)
-    oncologist_name = models.CharField(max_length=255, blank=True)
+    biopsy_results = models.FileField(upload_to='biopsy_results/', blank=True)  # Changed to FileField for file upload
 
     # Allergies Fields
-    allergy_name = models.CharField(max_length=255, blank=True)
-    allergy_severity = models.CharField(
-        max_length=10,
-        choices=[('mild', 'Mild'), ('moderate', 'Moderate'), ('severe', 'Severe')],
-        blank=True
-    )
+    presenting_symptoms = models.CharField(max_length=255, blank=True)  # Renamed from 'allergy_name'
+    allergies = models.CharField(max_length=255, blank=True)  # Renamed from 'allergy_severity'
 
-    # Medications Fields
-    medication_name = models.CharField(max_length=255, blank=True)
-    dosage = models.CharField(max_length=255, blank=True)
-    frequency = models.CharField(max_length=255, blank=True)
-    start_date = models.DateField(null=True, blank=True)
-    
+    # Diagnostic Workup Fields
+    colonoscopy_date = models.DateField(null=True, blank=True)
+    colonoscopy_findings = models.CharField(max_length=255, blank=True)
+    ct_scan_results = models.FileField(upload_to='ct_scan_results/', blank=True)  # Added for CT scan results
+
+    # Treatment History Fields
+    treatment_plan = models.CharField(max_length=255, blank=True)
+    date_of_initiation = models.DateField(null=True, blank=True)
+    response_to_treatment = models.CharField(max_length=255, blank=True)
+    complications = models.CharField(max_length=255, blank=True)
+
     # Add more fields as needed
 
     def __str__(self):
@@ -267,3 +292,17 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"Donation #{self.pk}: {self.full_name} - {self.amount}"
+
+class Prescription(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    medication_name = models.CharField(max_length=100)
+    dosage_strength = models.CharField(max_length=50)
+    dosage_form = models.CharField(max_length=50)
+    route_of_admin = models.CharField(max_length=50)
+    frequency = models.CharField(max_length=50)
+    duration = models.CharField(max_length=50)
+    quantity = models.CharField(max_length=50)
+    special_instructions = models.TextField()
+
+    def __str__(self):
+        return self.medication_name
