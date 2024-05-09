@@ -276,7 +276,7 @@ def register(request):
         else:
             messages.info(request, " ")
             return redirect('register')
-    return render(request, 'register.html')
+    return render(request, 'Register.html')
 
 
 def DoctorReg(request):
@@ -401,6 +401,7 @@ def DoctorProfileView(request,doc_id):
 
     doc_profile = Docprofile.objects.get(user=request.user)
     if request.method == 'POST':
+        print('hello')
         name = request.POST.get('name')
         email = request.POST.get('email')
         profile_pic= request.POST.get('profile_pic')
@@ -418,6 +419,7 @@ def DoctorProfileView(request,doc_id):
         services= request.POST.get('services')
         specialist= request.POST.get('specialist')
         about=request.POST.get('about')
+        print(about)
         degree=request.POST.get('degree')
         college=request.POST.get('college')
         cyear=request.POST.get('cyear')

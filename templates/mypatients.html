@@ -60,25 +60,117 @@
 					<li class="main-nav">
 						<a href="{% url 'doctors_basedoctor' %}" id="basedoctor">Home</a>
 					</li>
-                    
+                    <li>
+						<a href="{% url 'doctors_leave' me.id %}">Apply Leave</a>
+					</li> 
+
                     <li class="main-nav">
 						<a href="{% url 'doctors_appointments' me.id %}">Appointments</a>
 					</li>
-					<li class="has-submenu" >
+					<li class='position-relative'>
+						<a href="{% url 'patientreferences' me.id %}" id="patient_references_link">
+							Patient References 
+						</a>
+						<span class="notification-badge badge badge-danger position-absolute" id="notification_count">{{ count }}</span>
+					</li>
+					<li class="has-submenu"class="nav-link">
+						<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
+						<ul class="submenu">
+
+							<li>
+								{% if existing_certification %}
+		
+				
+	
+				{% if existing_certification.is_approved == 'approved' %}
+				<a href="{% url 'mypatients' me.id %}"class="nav-link" id="patient">My Patients</a>
+				{% else %}
+				<a href="{% url 'mypatients' me.id %}"class="nav-link" id="patient">My Patients</a>               
+				{% endif %}
+			  {% else %}
+			  <a href="{% url 'mypatients' me.id %}"class="nav-link" id="patient">My Patients</a>   
+			  {% endif %}
+				
+								
+							</li>
+							
+						</ul>
+						
+					</li>
+					<li class="has-submenu"class="nav-link">
+						<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
+						<ul class="submenu">
+							<li>
+								{% if existing_certification %}
+		
+				
+	
+								{% if existing_certification.is_approved == 'approved' %}
+								<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
+								{% else %}
+								<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
+								{% endif %}
+							  {% else %}
+							  <a href="{% url 'profileset' me.id %}"class="nav-link" id="patient">Profile Settings</a>   
+							  {% endif %}
+								
+								
+							
+							</li>
+							<li>
+								{% if existing_certification %}
+		
+				
+	
+								{% if existing_certification.is_approved == 'approved' %}
+								<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+								{% else %}
+								<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+								{% endif %}
+							  {% else %}
+							  <a href="{% url 'doctors_leavehistory' %}"class="nav-link" id="patient">Leave History</a>   
+							  {% endif %}
+								
+								
+							
+							</li>
+							<li>
+								{% if existing_certification %}
+		
+				
+	
+								{% if existing_certification.is_approved == 'approved' %}
+								<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
+								{% else %}
+								<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
+								{% endif %}
+							  {% else %}
+							  <a href="{% url 'changepass' me.id %}"class="nav-link" id="patient">Change Password</a>   
+							  {% endif %}
+								
+								
+							
+							</li>
+							
+							
+							
+						</ul>
+					</li>
+					{% comment %} <li class="has-submenu" >
 								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
 									<li><a href="{% url 'mypatients' me.id %}">My Patients</a></li>
 								</ul>
                                 
-							</li>
+							</li> {% endcomment %}
 						
-							<li class="has-submenu">
+							{% comment %} <li class="has-submenu">
 								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
                                     <li><a href="{% url 'profileset' me.id %}">Profile Settings</a></li>
 									
 								</ul>
-							</li>
+							</li> {% endcomment %}
 					{% if user.is_authenticated %}
 					<li class="has-submenu">
 						<a href="#"><i class="fa fa-user-circle"></i></a>
@@ -114,12 +206,12 @@
 				</div>
 			</div>
 			<!-- /Breadcrumb -->
-			<div class="top-nav-search">
+			{% comment %} <div class="top-nav-search">
 					<form>
 						<input type="text" class="form-control" placeholder="Search here">
 						<button class="btn" type="submit"><i class="fa fa-search"></i></button>
 					</form>
-				</div>
+				</div> {% endcomment %}
 				
 	<!-- Page Content -->
     <div class="content">
@@ -172,7 +264,7 @@
                                         {% comment %} <a href="{% url 'edit_records' user.id %}" class="btn btn-primary">Edit Medical Records</a> {% endcomment %}
 										<a href="{% url 'submit_medical_history' user.id %}"class="btn btn-primary">Records</a><br><br>
 										<a href="{% url 'doctors_patienthistory' user.id %}"class="btn btn-primary">View Patient History</a><br><br>
-										<a href="{% url 'doctors_prescription' user.id %}"class="btn btn-primary">Add Prescription</a>
+										{% comment %} <a href="{% url 'doctors_prescription' user.id %}"class="btn btn-primary">Add Prescription</a> {% endcomment %}
 
 										{% comment %} <a href="{% url 'editrecords' user.id %}" class="btn btn-primary">Edit Records</a> {% endcomment %}
 

@@ -212,9 +212,9 @@
 						
 			
 						{% if existing_certification.is_approved == 'approved' %}
-						<a href="{% url 'mypatients' %}"class="nav-link" id="patient">My Patients</a>
+						<a href="{% url 'mypatients' me.id %}"class="nav-link" id="patient">My Patients</a>
 						{% else %}
-						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>               
+						<a href="{% url 'mypatients' %}"class="nav-link" id="patient">My Patients</a>               
 						{% endif %}
 					  {% else %}
 					  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>   
@@ -238,7 +238,7 @@
 										{% if existing_certification.is_approved == 'approved' %}
 										<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
 										{% else %}
-										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
+										<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
 										{% endif %}
 									  {% else %}
 									  <a href="{% url 'profileset' me.id %}"class="nav-link" id="patient">Profile Settings</a>   
@@ -247,7 +247,23 @@
 										
 									
 									</li>
-
+									<li>
+										{% if existing_certification %}
+			
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+										{% else %}
+										<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'doctors_leavehistory' %}"class="nav-link" id="patient">Leave History</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
 									<li>
 										{% if existing_certification %}
 				
@@ -256,7 +272,7 @@
 										{% if existing_certification.is_approved == 'approved' %}
 										<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
 										{% else %}
-										<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Change Password</a>
+										<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
 										{% endif %}
 									  {% else %}
 									  <a href="{% url 'changepass' me.id %}"class="nav-link" id="patient">Change Password</a>   

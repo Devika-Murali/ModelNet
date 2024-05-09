@@ -130,15 +130,13 @@
 							<li class="menu-title"> 
 								<span>Main</span>
 							</li>
-							<li class="active"> 
+							<li > 
 								<a href="{% url 'admins_index' %}"><i class="fe fe-home"></i> <span>Dashboard</span></a>
 							</li>
 							<li> 
 								<a href="{% url 'admins_registereduser' %}"><i class="fe fe-user" id="user"></i> <span>Registered Users</span></a>
 							</li>
-							<li> 
-								<a href="{% url 'admins_appointmentlist' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
-							</li>
+							
 							<li> 
 								<a href="{% url 'admins_specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
 							</li>
@@ -159,6 +157,9 @@
 							</li> {% endcomment %}
 							<li> 
 								<a href="{% url 'admins_leave' %}"><i class="fe fe-document"></i> <span>Leave Approval</span></a>
+							</li>
+							<li class="active"> 
+								<a href="{% url 'admins_donations' %}"><i class="fe fe-activity" id="donate"></i> <span>Donations</span></a>
 							</li>
 							 {% comment %} <li> 
 								<a href="{% url 'admins_bookscreening' %}"></i> <span>Screening Timeslots</span></a>

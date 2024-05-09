@@ -103,8 +103,125 @@
 				</div>
 				<ul class="main-nav">
 					<li class="active">
-						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Home</a>
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="home">Home</a>
 					</li>
+					
+				 <li>
+						<a href="{% url 'doctors_leave' me.id %}">Apply Leave</a>
+					</li> 
+					<li class="main-nav">
+						{% if existing_certification %}
+				
+						
+			
+						{% if existing_certification.is_approved == 'approved' %}
+						<a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>
+						
+						{% else %}
+						<a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>                
+						{% endif %}
+					  {% else %}
+					  <a href="{% url 'doctors_appointments' me.id %}"class="nav-link" id="app">Appointments</a>
+					  {% endif %}
+						
+					</li> 
+					<li class='position-relative'>
+						<a href="{% url 'patientreferences' me.id %}" id="patient_references_link">
+							Patient References 
+						</a>
+						<span class="notification-badge badge badge-danger position-absolute" id="notification_count">{{ count }}</span>
+					</li>
+					
+					
+					
+					{% comment %} {% comment %} <li class="main-nav">
+						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
+					</li> {% endcomment %}
+                 
+					<li class="has-submenu"class="nav-link">
+								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+						{% if existing_certification.is_approved == 'approved' %}
+						<a href="{% url 'mypatients' me.id %}"class="nav-link" id="patient">My Patients</a>
+						{% else %}
+						<a href="{% url 'mypatients' me.id  %}"class="nav-link" id="patient">My Patients</a>               
+						{% endif %}
+					  {% else %}
+					  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">My Patients</a>   
+					  {% endif %}
+						
+										
+									</li>
+                                    
+								</ul>
+                                
+							</li>
+						
+							<li class="has-submenu"class="nav-link">
+								<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+                                    <li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
+										{% else %}
+										<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'profileset' me.id %}"class="nav-link" id="patient">Profile Settings</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
+									<li>
+										{% if existing_certification %}
+			
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+										{% else %}
+										<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'doctors_leavehistory' %}"class="nav-link" id="patient">Leave History</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
+									<li>
+										{% if existing_certification %}
+				
+						
+			
+										{% if existing_certification.is_approved == 'approved' %}
+										<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
+										{% else %}
+										<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
+										{% endif %}
+									  {% else %}
+									  <a href="{% url 'changepass' me.id %}"class="nav-link" id="patient">Change Password</a>   
+									  {% endif %}
+										
+										
+									
+									</li>
+                                    
+                                    
+									
+								</ul>
+							</li>
 					{% comment %} <li class="active">
 						<a href="{% url 'doctors_basedoctor' %}">Detections</a>
 					</li> {% endcomment %}
@@ -112,7 +229,7 @@
 						<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Refer a Patient</a>
 					</li> {% endcomment %}
                    
-					<li class="has-submenu"class="nav-link">
+					{% comment %} <li class="has-submenu"class="nav-link">
 								<a href="#" id="prof"class="nav-link">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
 									<li><a href="{% url 'mypatients' me.id%}"class="nav-link">My Patients</a></li>
@@ -129,7 +246,7 @@
                                     
 									
 								</ul>
-							</li>
+							</li> {% endcomment %}
 					{% if user.is_authenticated %}
 					<li class="has-submenu">
 						<a href="#"><i class="fa fa-user-circle"></i></a>

@@ -93,14 +93,65 @@
                         </ul>
                         
                     </li>
-                    <li class="has-submenu">
-                        <a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
-                        <ul class="submenu">
-                            <li><a href="{% url 'profileset' me.id%}">Profile Settings</a></li>
-                            <li><a href="{% url 'patientappointment' %}">Change Password</a></li>
-                            
-                        </ul>
-                    </li>
+					<li class="has-submenu"class="nav-link">
+						<a href="#"class="nav-link">Dashboard <i class="fas fa-chevron-down"></i></a>
+						<ul class="submenu">
+							<li>
+								{% if existing_certification %}
+		
+				
+	
+								{% if existing_certification.is_approved == 'approved' %}
+								<a href="{% url 'profileset' me.id %}"class="nav-link">Profile Settings</a>
+								{% else %}
+								<a href="{% url 'doctors_basedoctor' %}"class="nav-link">Profile Settings</a>
+								{% endif %}
+							  {% else %}
+							  <a href="{% url 'doctors_basedoctor' %}"class="nav-link" id="patient">Profile Settings</a>   
+							  {% endif %}
+								
+								
+							
+							</li>
+							<li>
+								{% if existing_certification %}
+	
+				
+	
+								{% if existing_certification.is_approved == 'approved' %}
+								<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+								{% else %}
+								<a href="{% url 'doctors_leavehistory' %}"class="nav-link">Leave History</a>
+								{% endif %}
+							  {% else %}
+							  <a href="{% url 'doctors_leavehistory' %}"class="nav-link" id="patient">Leave History</a>   
+							  {% endif %}
+								
+								
+							
+							</li>
+							<li>
+								{% if existing_certification %}
+		
+				
+	
+								{% if existing_certification.is_approved == 'approved' %}
+								<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
+								{% else %}
+								<a href="{% url 'changepass' me.id %}"class="nav-link">Change Password</a>
+								{% endif %}
+							  {% else %}
+							  <a href="{% url 'changepass' me.id %}"class="nav-link" id="patient">Change Password</a>   
+							  {% endif %}
+								
+								
+							
+							</li>
+							
+							
+							
+						</ul>
+					</li>
 					{% if user.is_authenticated %}
 					<li class="has-submenu">
 						<a href="#"><i class="fa fa-user-circle"> Welcome,Dr.{{ user.docprofile.name }}</i></a>
